@@ -3,7 +3,19 @@
     "allow": [
       "Bash(npx --yes create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --use-npm --yes)",
       "Bash(npm run *)",
-      "Bash(git remote *)"
+      "Bash(git remote *)",
+      "PowerShell(npm install *)",
+      "PowerShell(npx shadcn@latest add input label card dialog form select textarea sonner --yes 2>&1 | Select-Object -Last 40)",
+      "PowerShell(npx shadcn@latest add form --yes 2>&1 | Select-Object -Last 20)",
+      "Bash(npx shadcn@latest add form --yes)",
+      "Bash(npx shadcn@latest add form --yes --silent)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(npx shadcn@latest add https://ui.shadcn.com/r/styles/new-york/form.json --yes)",
+      "Bash(git add *)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
 }
