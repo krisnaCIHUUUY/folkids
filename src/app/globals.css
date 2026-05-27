@@ -132,3 +132,73 @@
     @apply font-sans;
   }
 }
+
+@theme {
+  --color-clay-cream: #fff7ec;
+  --color-clay-peach: #ffd6b8;
+  --color-clay-pink: #ffb3c6;
+  --color-clay-rose: #ff7a9c;
+  --color-clay-coral: #ff6b6b;
+  --color-clay-sun: #ffd93d;
+  --color-clay-mint: #9bf6c5;
+  --color-clay-sky: #a0d8ff;
+  --color-clay-blue: #5b8def;
+  --color-clay-lavender: #c8b6ff;
+  --color-clay-grape: #8b5cf6;
+  --color-clay-ink: #2b1b4a;
+}
+
+@utility clay {
+  border-radius: 2rem;
+  box-shadow:
+    inset 6px 6px 0 rgba(255, 255, 255, 0.55),
+    inset -6px -6px 0 rgba(0, 0, 0, 0.08),
+    8px 10px 0 rgba(43, 27, 74, 0.08),
+    0 18px 32px -12px rgba(43, 27, 74, 0.18);
+}
+
+@utility clay-sm {
+  border-radius: 1.25rem;
+  box-shadow:
+    inset 4px 4px 0 rgba(255, 255, 255, 0.5),
+    inset -4px -4px 0 rgba(0, 0, 0, 0.08),
+    4px 6px 0 rgba(43, 27, 74, 0.08),
+    0 10px 20px -10px rgba(43, 27, 74, 0.18);
+}
+
+@utility clay-inset {
+  border-radius: 1.5rem;
+  box-shadow:
+    inset 6px 6px 12px rgba(43, 27, 74, 0.12),
+    inset -4px -4px 10px rgba(255, 255, 255, 0.6);
+}
+
+@utility clay-press {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+@utility clay-press-hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 6px 6px 0 rgba(255, 255, 255, 0.55),
+    inset -6px -6px 0 rgba(0, 0, 0, 0.08),
+    10px 14px 0 rgba(43, 27, 74, 0.1),
+    0 22px 40px -14px rgba(43, 27, 74, 0.22);
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(-14px) rotate(var(--rot, 0deg)); }
+}
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes shine {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.animate-float { animation: float-slow 6s ease-in-out infinite; }
+.animate-wiggle { animation: wiggle 2.4s ease-in-out infinite; }
