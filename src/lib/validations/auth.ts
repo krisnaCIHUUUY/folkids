@@ -7,12 +7,42 @@ export const loginGuruAdminSchema = z.object({
 });
 export type LoginGuruAdminValues = z.infer<typeof loginGuruAdminSchema>;
 
-// Login — Siswa (kode kelas + username, tanpa password)
+// Username siswa: huruf kecil/angka/._- , 3–30 karakter (valid sebagai bagian lokal email sintetis).
+const usernameField = z
+  .string()
+  .min(3, "Username minimal 3 karakter")
+  .max(30, "Username maksimal 30 karakter")
+  .regex(
+    /^[a-z0-9._-]+$/,
+    "Username hanya boleh huruf kecil, angka, titik, garis bawah, atau strip",
+  );
+
+// Username → email sintetis untuk menjembatani ke Supabase Auth (berbasis email).
+export function siswaEmail(username: string): string {
+  return `${username.trim().toLowerCase()}@siswa.folkids.local`;
+}
+
+// Login — Siswa (kode kelas + username + password)
 export const loginSiswaSchema = z.object({
   classCode: z.string().min(1, "Kode kelas wajib diisi"),
-  username: z.string().min(1, "Username wajib diisi"),
+  username: usernameField,
+  password: z.string().min(6, "Password minimal 6 karakter"),
 });
 export type LoginSiswaValues = z.infer<typeof loginSiswaSchema>;
+
+// Register — Siswa (nama + username + password)
+export const registerSiswaSchema = z
+  .object({
+    name: z.string().min(3, "Nama minimal 3 karakter"),
+    username: usernameField,
+    password: z.string().min(6, "Password minimal 6 karakter"),
+    confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password tidak cocok",
+    path: ["confirmPassword"],
+  });
+export type RegisterSiswaValues = z.infer<typeof registerSiswaSchema>;
 
 // Register — Guru
 export const registerGuruSchema = z

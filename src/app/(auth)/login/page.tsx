@@ -12,7 +12,7 @@ import {
   type LoginGuruAdminValues,
   type LoginSiswaValues,
 } from "@/lib/validations/auth";
-import { loginGuruAdmin } from "@/lib/actions/auth";
+import { loginGuruAdmin, loginSiswa } from "@/lib/actions/auth";
 import {
   Form,
   FormControl,
@@ -141,12 +141,15 @@ function SiswaLoginForm() {
   const form = useForm<LoginSiswaValues>({
     resolver: zodResolver(loginSiswaSchema),
     mode: "onTouched",
-    defaultValues: { classCode: "", username: "" },
+    defaultValues: { classCode: "", username: "", password: "" },
   });
 
-  function onSubmit(values: LoginSiswaValues) {
-    console.log("login siswa", values);
-    toast.success("Masuk (stub) — autentikasi belum tersambung");
+  async function onSubmit(values: LoginSiswaValues) {
+    const result = await loginSiswa(values);
+    // Sukses → server action melakukan redirect; hanya error yang kembali ke sini.
+    if (result?.error) {
+      toast.error(result.error);
+    }
   }
 
   return (
@@ -161,7 +164,7 @@ function SiswaLoginForm() {
                 Kode Kelas
               </FormLabel>
               <FormControl>
-                <ClayInput placeholder="Contoh: 4A-WAYANG" {...field} />
+                <ClayInput placeholder="Contoh: AB3K72" {...field} />
               </FormControl>
               <FormMessage className="text-clay-coral" />
             </FormItem>
@@ -177,16 +180,54 @@ function SiswaLoginForm() {
                 Username
               </FormLabel>
               <FormControl>
-                <ClayInput placeholder="Nama panggilanmu" {...field} />
+                <ClayInput
+                  autoComplete="username"
+                  placeholder="Nama panggilanmu"
+                  {...field}
+                />
               </FormControl>
               <FormMessage className="text-clay-coral" />
             </FormItem>
           )}
         />
 
-        <button type="submit" className={submitClass}>
-          Masuk
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-sm font-bold text-clay-ink">
+                Password
+              </FormLabel>
+              <FormControl>
+                <PasswordInput
+                  autoComplete="current-password"
+                  placeholder="Masukkan password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage className="text-clay-coral" />
+            </FormItem>
+          )}
+        />
+
+        <button
+          type="submit"
+          disabled={form.formState.isSubmitting}
+          className={submitClass}
+        >
+          {form.formState.isSubmitting ? "Memproses…" : "Masuk"}
         </button>
+
+        <p className="text-center text-sm font-semibold text-clay-ink/70">
+          Belum punya akun?{" "}
+          <Link
+            href="/register"
+            className="font-black text-clay-rose hover:underline"
+          >
+            Daftar di sini
+          </Link>
+        </p>
       </form>
     </Form>
   );

@@ -56,6 +56,7 @@ export async function createStory(
   }
 
   revalidatePath("/cms");
+  revalidatePath("/dashboard");
   return { id: data.id };
 }
 
@@ -105,6 +106,7 @@ export async function deleteStory(id: number): Promise<ActionError | { ok: true 
   }
 
   revalidatePath("/cms");
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 

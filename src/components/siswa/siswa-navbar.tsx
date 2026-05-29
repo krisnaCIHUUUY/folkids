@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Bell } from "lucide-react";
+import { Search, Bell, Users } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import type { CurrentUser } from "@/lib/auth";
 
@@ -17,6 +17,13 @@ export function SiswaNavbar({ user }: { user: CurrentUser }) {
           <span className="hidden text-xl font-black tracking-tight sm:inline">
             Wayang<span className="text-clay-rose">Folkids</span>
           </span>
+        </Link>
+
+        <Link
+          href="/gabung-kelas"
+          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
+        >
+          <Users className="size-4" /> Gabung Kelas
         </Link>
 
         <div className="relative mx-auto w-full max-w-md">

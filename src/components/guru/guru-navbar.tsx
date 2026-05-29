@@ -29,6 +29,12 @@ export function GuruNavbar({ user }: { user: CurrentUser }) {
             Dasbor
           </Link>
           <Link
+            href="/kelas"
+            className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
+          >
+            Kelas
+          </Link>
+          <Link
             href="/cms"
             className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
           >
