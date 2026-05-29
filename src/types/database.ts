@@ -394,6 +394,10 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      reorder_story_page: {
+        Args: { p_direction: string; p_page_id: number }
+        Returns: undefined
+      }
     }
     Enums: {
       difficulty: "mudah" | "sedang" | "sulit"

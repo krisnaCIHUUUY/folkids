@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BookOpen, PencilLine, Users, Plus } from "lucide-react";
 import type { GuruMetrics } from "@/lib/mock/guru-dashboard";
 import { WayangAccent } from "@/components/wayang-accent";
@@ -49,13 +50,13 @@ export function ContentSummaryCard({
         </div>
 
         <div className="mt-5 flex flex-wrap gap-3">
-          <button
-            type="button"
+          <Link
+            href="/cms/buat"
             className="clay-sm inline-flex items-center gap-2 bg-white px-5 py-2.5 text-sm font-black text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
           >
             <Plus className="size-4" />
             Unggah Cerita
-          </button>
+          </Link>
           <button
             type="button"
             className="clay-sm inline-flex items-center gap-2 bg-white px-5 py-2.5 text-sm font-black text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"

@@ -1,15 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check } from "lucide-react";
+import { Check, MailCheck } from "lucide-react";
 import { toast } from "sonner";
 
 import {
   registerGuruSchema,
   type RegisterGuruValues,
 } from "@/lib/validations/auth";
+import { registerGuru } from "@/lib/actions/auth";
 import {
   Form,
   FormControl,
@@ -25,6 +27,7 @@ import { PasswordStrengthMeter } from "@/components/auth/password-strength";
 import { cn } from "@/lib/utils";
 
 export default function RegisterPage() {
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const form = useForm<RegisterGuruValues>({
     resolver: zodResolver(registerGuruSchema),
     mode: "onChange",
@@ -39,9 +42,48 @@ export default function RegisterPage() {
 
   const password = useWatch({ control: form.control, name: "password" });
 
-  function onSubmit(values: RegisterGuruValues) {
-    console.log("register guru", values);
-    toast.success("Akun dibuat (stub) — autentikasi belum tersambung");
+  async function onSubmit(values: RegisterGuruValues) {
+    const result = await registerGuru(values);
+    // Sukses tanpa konfirmasi → server action melakukan redirect.
+    if (result && "error" in result) {
+      toast.error(result.error);
+      return;
+    }
+    if (result && "needsConfirmation" in result) {
+      setSubmittedEmail(values.email);
+      toast.success("Akun dibuat! Cek email untuk konfirmasi.");
+    }
+  }
+
+  if (submittedEmail) {
+    return (
+      <AuthShell
+        title="Cek Email Kamu"
+        subtitle="Satu langkah lagi untuk mengaktifkan akun."
+        footer={
+          <>
+            Sudah konfirmasi?{" "}
+            <Link
+              href="/login"
+              className="font-black text-clay-rose hover:underline"
+            >
+              Masuk
+            </Link>
+          </>
+        }
+      >
+        <div className="flex flex-col items-center gap-4 text-center">
+          <span className="clay grid size-16 place-items-center bg-clay-mint text-white">
+            <MailCheck className="size-8" />
+          </span>
+          <p className="font-semibold text-clay-ink/80">
+            Kami mengirim tautan konfirmasi ke{" "}
+            <span className="font-black text-clay-ink">{submittedEmail}</span>.
+            Buka email tersebut untuk mengaktifkan akun gurumu.
+          </p>
+        </div>
+      </AuthShell>
+    );
   }
 
   return (
@@ -185,10 +227,10 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            disabled={!form.formState.isValid}
+            disabled={!form.formState.isValid || form.formState.isSubmitting}
             className="clay w-full bg-clay-rose px-7 py-4 text-base font-black text-white transition hover:[transform:translateY(-3px)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:[transform:none]"
           >
-            Buat Akun
+            {form.formState.isSubmitting ? "Memproses…" : "Buat Akun"}
           </button>
         </form>
       </Form>

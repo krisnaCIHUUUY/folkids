@@ -21,6 +21,21 @@ export function GuruNavbar({ user }: { user: CurrentUser }) {
           </span>
         </Link>
 
+        <nav className="ml-4 hidden items-center gap-1 md:flex">
+          <Link
+            href="/dashboard"
+            className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
+          >
+            Dasbor
+          </Link>
+          <Link
+            href="/cms"
+            className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
+          >
+            Cerita
+          </Link>
+        </nav>
+
         <div className="ml-auto flex items-center gap-3">
           <button
             type="button"
