@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -31,6 +32,10 @@ export async function submitQuiz(
   if (!result?.ok) {
     return { error: result?.error ?? "Gagal mengirim jawaban." };
   }
+
+  // Segarkan cache rute agar halaman kuis & hasil membaca attempt terbaru.
+  revalidatePath(`/kuis/${quizId}`);
+  revalidatePath(`/kuis/${quizId}/hasil`);
 
   return { ok: true, totalScore: result.total_score ?? 0, maxScore: result.max_score ?? 0 };
 }

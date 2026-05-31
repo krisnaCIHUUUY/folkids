@@ -75,8 +75,8 @@ export function QuizRunner({
     }
     toast.success("Jawaban terkirim!");
     // Tetap submitting=true: kita pindah halaman ke hasil (komponen unmount).
+    // revalidatePath di action sudah menyegarkan cache rute hasil.
     router.replace(`/kuis/${quizId}/hasil`);
-    router.refresh();
   }
 
   return (
