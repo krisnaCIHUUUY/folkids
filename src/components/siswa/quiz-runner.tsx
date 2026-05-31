@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { submitQuiz, type QuizAnswers } from "@/lib/actions/quiz-attempts";
@@ -39,7 +39,7 @@ export function QuizRunner({
   questions: RunnerQuestion[];
 }) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [submitting, setSubmitting] = useState(false);
   const [answers, setAnswers] = useState<QuizAnswers>({});
 
   // Acak posisi opsi "kanan" untuk tiap soal mencocokkan (sekali saja).
@@ -65,17 +65,18 @@ export function QuizRunner({
     });
   }
 
-  function handleSubmit() {
-    startTransition(async () => {
-      const result = await submitQuiz(quizId, answers);
-      if ("error" in result) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success("Jawaban terkirim!");
-      router.push(`/kuis/${quizId}/hasil`);
-      router.refresh();
-    });
+  async function handleSubmit() {
+    setSubmitting(true);
+    const result = await submitQuiz(quizId, answers);
+    if ("error" in result) {
+      toast.error(result.error);
+      setSubmitting(false);
+      return;
+    }
+    toast.success("Jawaban terkirim!");
+    // Tetap submitting=true: kita pindah halaman ke hasil (komponen unmount).
+    router.replace(`/kuis/${quizId}/hasil`);
+    router.refresh();
   }
 
   return (
@@ -179,11 +180,11 @@ export function QuizRunner({
 
       <button
         type="button"
-        disabled={pending}
+        disabled={submitting}
         onClick={handleSubmit}
         className="clay-sm w-full bg-clay-rose py-3.5 text-base font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)] disabled:opacity-60"
       >
-        {pending ? "Mengirim…" : "Kirim Jawaban"}
+        {submitting ? "Mengirim…" : "Kirim Jawaban"}
       </button>
     </div>
   );
