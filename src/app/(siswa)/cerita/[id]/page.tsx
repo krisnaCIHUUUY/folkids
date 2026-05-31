@@ -29,7 +29,7 @@ export default async function CeritaPage({
 
   if (!story) notFound();
 
-  const [pagesRes, quizzesRes, progressRes] = await Promise.all([
+  const [pagesRes, quizzesRes, progressRes, attemptsRes] = await Promise.all([
     supabase
       .from("story_pages")
       .select("id, page_number, content, illustration_url, audio_url, character_values")
@@ -42,10 +42,16 @@ export default async function CeritaPage({
       .eq("student_id", user!.id)
       .eq("story_id", storyId)
       .maybeSingle(),
+    supabase.from("quiz_attempts").select("quiz_id").eq("student_id", user!.id),
   ]);
 
   const pages = (pagesRes.data ?? []) as ReaderPage[];
-  const quizzes = (quizzesRes.data ?? []) as ReaderQuiz[];
+  const attemptedQuizzes = new Set((attemptsRes.data ?? []).map((a) => a.quiz_id));
+  const quizzes: ReaderQuiz[] = (quizzesRes.data ?? []).map((q) => ({
+    id: q.id,
+    title: q.title,
+    done: attemptedQuizzes.has(q.id),
+  }));
   const initialPageNumber = progressRes.data?.last_page_read ?? 1;
 
   return (

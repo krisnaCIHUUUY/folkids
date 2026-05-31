@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Sparkles, ListChecks } from "lucide-react";
+import { ChevronLeft, ChevronRight, Sparkles, ListChecks, CheckCircle2 } from "lucide-react";
 import { upsertReadingProgress } from "@/lib/actions/reading";
 
 export type ReaderPage = {
@@ -15,7 +15,7 @@ export type ReaderPage = {
   character_values: string | null;
 };
 
-export type ReaderQuiz = { id: number; title: string };
+export type ReaderQuiz = { id: number; title: string; done: boolean };
 
 export function StoryReader({
   storyId,
@@ -148,9 +148,21 @@ export function StoryReader({
               <Link
                 key={q.id}
                 href={`/kuis/${q.id}`}
-                className="clay-sm inline-flex items-center gap-1.5 bg-clay-mint px-5 py-2.5 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
+                className={`clay-sm inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-black transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)] ${
+                  q.done
+                    ? "bg-clay-lavender text-clay-ink"
+                    : "bg-clay-mint text-white"
+                }`}
               >
-                <ListChecks className="size-4" /> {q.title}
+                {q.done ? (
+                  <>
+                    <CheckCircle2 className="size-4" /> {q.title} · Lihat Hasil
+                  </>
+                ) : (
+                  <>
+                    <ListChecks className="size-4" /> {q.title}
+                  </>
+                )}
               </Link>
             ))}
           </div>
