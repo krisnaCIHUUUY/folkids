@@ -408,6 +408,10 @@ export type Database = {
         Args: { p_direction: string; p_page_id: number }
         Returns: undefined
       }
+      submit_quiz_attempt: {
+        Args: { p_answers: Json; p_quiz_id: number }
+        Returns: Json
+      }
     }
     Enums: {
       difficulty: "mudah" | "sedang" | "sulit"

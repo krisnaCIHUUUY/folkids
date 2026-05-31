@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Bell, Users } from "lucide-react";
+import { Search, Bell, Users, BookOpen } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import type { CurrentUser } from "@/lib/auth";
 
@@ -19,6 +19,12 @@ export function SiswaNavbar({ user }: { user: CurrentUser }) {
           </span>
         </Link>
 
+        <Link
+          href="/perpustakaan"
+          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
+        >
+          <BookOpen className="size-4" /> Perpustakaan
+        </Link>
         <Link
           href="/gabung-kelas"
           className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
