@@ -1,9 +1,10 @@
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import {
-  students,
-  quizResults,
-  type GuruMetrics,
+import type {
+  GuruMetrics,
+  StudentParticipation,
+  StudentStatus,
+  QuizResult,
 } from "@/lib/mock/guru-dashboard";
 import { ContentSummaryCard } from "@/components/guru/content-summary-card";
 import { ClassSection } from "@/components/guru/class-section";
@@ -25,7 +26,8 @@ export default async function DashboardPage() {
   const name = user?.name ?? "Bu/Pak Guru";
 
   const supabase = await createClient();
-  const [ceritaRes, kuisRes, kelasRes] = await Promise.all([
+  const [ceritaRes, kuisRes, kelasRes, siswaRes, attemptsRes, readingRes] =
+    await Promise.all([
     // Cerita milik guru + jumlah halaman.
     supabase
       .from("stories")
@@ -45,6 +47,14 @@ export default async function DashboardPage() {
       .from("classes")
       .select("id, name, grade_level, code, class_students(count)")
       .order("created_at", { ascending: false }),
+    // Siswa di kelas guru (RLS: hanya keanggotaan kelas milik guru).
+    supabase.from("class_students").select("student_id, users(name)"),
+    // Attempt kuis siswa di kelas guru (RLS membatasi ke siswa kelasnya).
+    supabase
+      .from("quiz_attempts")
+      .select("quiz_id, student_id, total_score, max_score"),
+    // Progres baca siswa di kelas guru.
+    supabase.from("reading_progress").select("student_id, is_completed"),
   ]);
 
   const kelasList = (kelasRes.data ?? []).map((c) => ({
@@ -87,6 +97,101 @@ export default async function DashboardPage() {
 
   const contents = [...storyContents, ...quizContents];
 
+  // ===== Monitoring siswa & hasil kuis (data nyata) =====
+  const pct = (score: number, max: number) =>
+    max > 0 ? Math.round((score / max) * 100) : 0;
+
+  // Kuis milik guru (judul + cerita induk).
+  const guruQuizzes = (kuisRes.data ?? []).map((q) => {
+    const story = Array.isArray(q.stories) ? q.stories[0] : q.stories;
+    return { id: q.id, title: q.title, storyTitle: story?.title ?? "Cerita" };
+  });
+  const quizIdSet = new Set(guruQuizzes.map((q) => q.id));
+
+  // Siswa unik di kelas guru.
+  const studentName = new Map<string, string>();
+  for (const r of siswaRes.data ?? []) {
+    const u = (Array.isArray(r.users) ? r.users[0] : r.users) as { name: string } | null;
+    if (!studentName.has(r.student_id)) {
+      studentName.set(r.student_id, u?.name ?? "Siswa");
+    }
+  }
+  const totalStudents = studentName.size;
+
+  // Attempt hanya untuk kuis milik guru.
+  const attempts = (attemptsRes.data ?? []).filter((a) => quizIdSet.has(a.quiz_id));
+
+  const attemptsByStudent = new Map<string, { title: string; pct: number }[]>();
+  const attemptsByQuiz = new Map<number, { students: Set<string>; pcts: number[] }>();
+  const quizTitleById = new Map(guruQuizzes.map((q) => [q.id, q.title]));
+  for (const a of attempts) {
+    const p = pct(a.total_score, a.max_score);
+    const list = attemptsByStudent.get(a.student_id) ?? [];
+    list.push({ title: quizTitleById.get(a.quiz_id) ?? "Kuis", pct: p });
+    attemptsByStudent.set(a.student_id, list);
+
+    const agg = attemptsByQuiz.get(a.quiz_id) ?? { students: new Set<string>(), pcts: [] };
+    agg.students.add(a.student_id);
+    agg.pcts.push(p);
+    attemptsByQuiz.set(a.quiz_id, agg);
+  }
+
+  const readingByStudent = new Map<string, { started: number; completed: number }>();
+  for (const r of readingRes.data ?? []) {
+    const cur = readingByStudent.get(r.student_id) ?? { started: 0, completed: 0 };
+    cur.started += 1;
+    if (r.is_completed) cur.completed += 1;
+    readingByStudent.set(r.student_id, cur);
+  }
+
+  const studentList: StudentParticipation[] = [...studentName.entries()].map(
+    ([sid, sname]) => {
+      const sAttempts = attemptsByStudent.get(sid) ?? [];
+      const avgScore = sAttempts.length
+        ? Math.round(sAttempts.reduce((s, x) => s + x.pct, 0) / sAttempts.length)
+        : 0;
+      const distinctQuizzes = new Set(
+        attempts.filter((a) => a.student_id === sid).map((a) => a.quiz_id),
+      ).size;
+      const completion =
+        guruQuizzes.length > 0
+          ? Math.round((distinctQuizzes / guruQuizzes.length) * 100)
+          : 0;
+      const reading = readingByStudent.get(sid);
+      const hasActivity = sAttempts.length > 0 || (reading?.started ?? 0) > 0;
+
+      let status: StudentStatus = "active";
+      if (!hasActivity) status = "inactive";
+      else if (sAttempts.length > 0 && avgScore < 60) status = "at-risk";
+
+      const recentActivity =
+        sAttempts.length > 0
+          ? sAttempts.slice(-3).reverse().map((x) => `Kuis ${x.title}: ${x.pct}%`)
+          : reading && reading.started > 0
+            ? [`Membaca cerita (${reading.completed} selesai)`]
+            : ["Belum ada aktivitas"];
+
+      return { id: sid, name: sname, status, completion, avgScore, recentActivity };
+    },
+  );
+
+  const quizResultList: QuizResult[] = guruQuizzes.map((q) => {
+    const agg = attemptsByQuiz.get(q.id);
+    const pcts = agg?.pcts ?? [];
+    const submitted = agg?.students.size ?? 0;
+    return {
+      id: `quiz-${q.id}`,
+      title: q.title,
+      className: q.storyTitle,
+      status: totalStudents > 0 && submitted >= totalStudents ? "closed" : "in-progress",
+      submitted,
+      total: totalStudents,
+      avg: pcts.length ? Math.round(pcts.reduce((s, x) => s + x, 0) / pcts.length) : 0,
+      highest: pcts.length ? Math.max(...pcts) : 0,
+      lowest: pcts.length ? Math.min(...pcts) : 0,
+    };
+  });
+
   const metrics: GuruMetrics = {
     ceritaDiunggah: storyContents.length,
     kuisDibuat: quizContents.length,
@@ -97,8 +202,8 @@ export default async function DashboardPage() {
     <div className="pt-2">
       <ContentSummaryCard name={name} metrics={metrics} />
       <ClassSection classes={kelasList} />
-      <StudentMonitoringSection students={students} />
-      <QuizResultsSection results={quizResults} />
+      <StudentMonitoringSection students={studentList} />
+      <QuizResultsSection results={quizResultList} />
       <ContentSection contents={contents} />
     </div>
   );

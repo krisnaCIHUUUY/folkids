@@ -22,11 +22,17 @@ export function StudentMonitoringSection({
         </h2>
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {students.map((data) => (
-          <StudentCard key={data.id} data={data} />
-        ))}
-      </div>
+      {students.length === 0 ? (
+        <div className="clay mt-5 bg-white p-8 text-center font-semibold text-clay-ink/60">
+          Belum ada siswa di kelasmu. Bagikan kode kelas agar siswa bergabung.
+        </div>
+      ) : (
+        <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {students.map((data) => (
+            <StudentCard key={data.id} data={data} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

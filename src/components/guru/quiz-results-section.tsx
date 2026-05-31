@@ -18,11 +18,17 @@ export function QuizResultsSection({ results }: { results: QuizResult[] }) {
         </h2>
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
-        {results.map((data) => (
-          <QuizResultCard key={data.id} data={data} />
-        ))}
-      </div>
+      {results.length === 0 ? (
+        <div className="clay mt-5 bg-white p-8 text-center font-semibold text-clay-ink/60">
+          Belum ada kuis. Buat kuis di cerita untuk melihat hasil asesmen di sini.
+        </div>
+      ) : (
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          {results.map((data) => (
+            <QuizResultCard key={data.id} data={data} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
