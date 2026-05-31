@@ -51,6 +51,7 @@ export async function createQuiz(
   }
 
   revalidatePath(`/cms/${storyId}/kuis`);
+  revalidatePath("/dashboard");
   return { id: data.id };
 }
 
@@ -81,6 +82,7 @@ export async function updateQuiz(
 
   revalidatePath(`/cms/${storyId}/kuis`);
   revalidatePath(`/cms/${storyId}/kuis/${quizId}`);
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 
@@ -100,6 +102,7 @@ export async function deleteQuiz(
   }
 
   revalidatePath(`/cms/${storyId}/kuis`);
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 
@@ -146,6 +149,8 @@ export async function createQuestion(
   }
 
   revalidatePath(`/cms/${storyId}/kuis/${quizId}`);
+  revalidatePath(`/cms/${storyId}/kuis`);
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 
@@ -199,6 +204,8 @@ export async function deleteQuestion(
   }
 
   revalidatePath(`/cms/${storyId}/kuis/${quizId}`);
+  revalidatePath(`/cms/${storyId}/kuis`);
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 

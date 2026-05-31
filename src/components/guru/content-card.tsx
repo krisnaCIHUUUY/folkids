@@ -1,34 +1,10 @@
-"use client";
+import Link from "next/link";
+import { BookOpen, HelpCircle, ChevronRight } from "lucide-react";
+import { PublishToggle } from "@/components/guru/publish-toggle";
+import type { DashboardContent } from "@/components/guru/content-section";
 
-import { useState, useRef, useEffect } from "react";
-import { BookOpen, HelpCircle, MoreVertical } from "lucide-react";
-import type { ContentItem, ContentState } from "@/lib/mock/guru-dashboard";
-
-const STATE_BADGE: Record<ContentState, { label: string; className: string }> = {
-  published: { label: "Terbit", className: "bg-clay-mint/30 text-clay-ink" },
-  draft: { label: "Draf", className: "bg-clay-ink/10 text-clay-ink/60" },
-  "under-review": { label: "Ditinjau", className: "bg-clay-sun/30 text-clay-ink" },
-};
-
-const MENU_ITEMS = ["Edit", "Duplikat", "Hapus"];
-
-export function ContentCard({ data }: { data: ContentItem }) {
-  const [published, setPublished] = useState(data.published);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const badge = STATE_BADGE[data.state];
+export function ContentCard({ data }: { data: DashboardContent }) {
   const Icon = data.type === "story" ? BookOpen : HelpCircle;
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    function onClick(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, [menuOpen]);
 
   return (
     <article className="clay-sm flex flex-col gap-3 bg-white p-5 transition hover:[transform:translateY(-4px)]">
@@ -45,38 +21,20 @@ export function ContentCard({ data }: { data: ContentItem }) {
             {data.title}
           </h3>
           <span
-            className={`clay-sm mt-1 inline-block px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider ${badge.className}`}
+            className={`clay-sm mt-1 inline-block px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider ${
+              data.type === "story"
+                ? data.published
+                  ? "bg-clay-mint/30 text-clay-ink"
+                  : "bg-clay-ink/10 text-clay-ink/60"
+                : "bg-clay-lavender/40 text-clay-ink"
+            }`}
           >
-            {badge.label}
+            {data.type === "story"
+              ? data.published
+                ? "Terbit"
+                : "Draf"
+              : "Kuis"}
           </span>
-        </div>
-
-        <div ref={menuRef} className="relative shrink-0">
-          <button
-            type="button"
-            aria-label="Aksi konten"
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((v) => !v)}
-            className="clay-sm grid size-9 place-items-center bg-white text-clay-ink/60 transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
-          >
-            <MoreVertical className="size-4" />
-          </button>
-          {menuOpen && (
-            <div className="clay absolute right-0 top-11 z-50 w-36 overflow-hidden bg-white p-1.5">
-              {MENU_ITEMS.map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setMenuOpen(false)}
-                  className={`block w-full rounded-xl px-3 py-2 text-left text-sm font-bold transition hover:bg-clay-cream ${
-                    item === "Hapus" ? "text-clay-coral" : "text-clay-ink"
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
@@ -93,26 +51,20 @@ export function ContentCard({ data }: { data: ContentItem }) {
         ))}
       </div>
 
-      <div className="mt-auto flex items-center justify-between border-t border-clay-ink/10 pt-3">
-        <span className="font-mono text-xs font-bold uppercase tracking-wider text-clay-ink/55">
-          {published ? "Dipublikasikan" : "Tidak Terbit"}
-        </span>
-        <button
-          type="button"
-          role="switch"
-          aria-checked={published}
-          aria-label="Alihkan publikasi"
-          onClick={() => setPublished((v) => !v)}
-          className={`clay-inset relative h-7 w-12 shrink-0 rounded-full transition-colors ${
-            published ? "bg-clay-mint" : "bg-clay-ink/15"
-          }`}
+      <div className="mt-auto flex items-center justify-between gap-2 border-t border-clay-ink/10 pt-3">
+        {data.type === "story" && data.storyId != null ? (
+          <PublishToggle storyId={data.storyId} initial={data.published} />
+        ) : (
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-clay-ink/55">
+            Asesmen
+          </span>
+        )}
+        <Link
+          href={data.href}
+          className="clay-sm inline-flex shrink-0 items-center gap-1 bg-white px-3 py-1.5 text-xs font-black text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
         >
-          <span
-            className={`clay-sm absolute top-1 size-5 rounded-full bg-white transition-all ${
-              published ? "left-6" : "left-1"
-            }`}
-          />
-        </button>
+          Kelola <ChevronRight className="size-3.5" />
+        </Link>
       </div>
     </article>
   );

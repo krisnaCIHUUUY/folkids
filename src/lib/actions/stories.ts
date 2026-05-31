@@ -90,6 +90,7 @@ export async function updateStory(
 
   revalidatePath("/cms");
   revalidatePath(`/cms/${id}/edit`);
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 
@@ -129,6 +130,7 @@ export async function togglePublish(
   }
 
   revalidatePath("/cms");
+  revalidatePath("/dashboard");
   return { ok: true };
 }
 
