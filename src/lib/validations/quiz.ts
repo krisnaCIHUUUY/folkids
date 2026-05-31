@@ -134,8 +134,8 @@ export const questionFormSchema = z
     boolAnswer: z.enum(["benar", "salah"]).nullable(),
     // isian
     isianAnswer: z.string(),
-    // mencocokkan
-    pairs: z.array(matchPairSchema.partial()),
+    // mencocokkan — longgar di level field (boleh kosong); kelengkapan dicek di superRefine.
+    pairs: z.array(z.object({ left: z.string(), right: z.string() })),
   })
   .superRefine((val, ctx) => {
     switch (val.question_type) {

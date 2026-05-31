@@ -109,9 +109,13 @@ export function QuestionForm({
     onDone();
   }
 
+  function onInvalid() {
+    toast.error("Periksa kembali isian soal yang ditandai merah.");
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} className="space-y-5">
         <FormField
           control={form.control}
           name="question_text"
