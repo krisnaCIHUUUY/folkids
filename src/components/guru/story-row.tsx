@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { BookOpen, FileStack, Pencil, Trash2, MapPin } from "lucide-react";
+import { BookOpen, FileStack, ListChecks, Pencil, Trash2, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import { deleteStory } from "@/lib/actions/stories";
 import { PublishToggle } from "@/components/guru/publish-toggle";
@@ -95,6 +95,12 @@ export function StoryRow({ data }: { data: StoryRowData }) {
           className="clay-sm inline-flex items-center gap-1.5 bg-clay-rose px-3 py-2 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
         >
           <FileStack className="size-4" /> Halaman
+        </Link>
+        <Link
+          href={`/cms/${data.id}/kuis`}
+          className="clay-sm inline-flex items-center gap-1.5 bg-clay-mint px-3 py-2 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
+        >
+          <ListChecks className="size-4" /> Kuis
         </Link>
         <Link
           href={`/cms/${data.id}/edit`}

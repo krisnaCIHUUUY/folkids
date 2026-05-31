@@ -400,6 +400,10 @@ export type Database = {
       generate_class_code: { Args: never; Returns: string }
       join_class_by_code: { Args: { p_code: string }; Returns: Json }
       regenerate_class_code: { Args: { p_class_id: number }; Returns: string }
+      reorder_quiz_question: {
+        Args: { p_direction: string; p_question_id: number }
+        Returns: undefined
+      }
       reorder_story_page: {
         Args: { p_direction: string; p_page_id: number }
         Returns: undefined
