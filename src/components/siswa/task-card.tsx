@@ -1,32 +1,34 @@
-import { Clock, PlayCircle, AlertCircle } from "lucide-react";
-import type { DashboardTask, TaskStatus } from "@/lib/mock/siswa-dashboard";
+import Link from "next/link";
+import { PlayCircle, ListChecks } from "lucide-react";
 
-const STATUS_CONFIG: Record<
-  TaskStatus,
-  { border: string; pill: string; label: string; icon: typeof Clock }
-> = {
-  unstarted: {
-    border: "border-l-clay-blue",
-    pill: "bg-clay-sky text-clay-ink",
-    label: "Belum dimulai",
-    icon: Clock,
-  },
-  "in-progress": {
-    border: "border-l-clay-sun",
-    pill: "bg-clay-sun text-clay-ink",
-    label: "Sedang dikerjakan",
-    icon: PlayCircle,
-  },
-  overdue: {
-    border: "border-l-clay-coral",
-    pill: "bg-clay-coral text-white",
-    label: "Terlambat",
-    icon: AlertCircle,
-  },
+export type StudentTask = {
+  id: string;
+  kind: "baca" | "kuis";
+  storyTitle: string;
+  href: string;
 };
 
-export function TaskCard({ task }: { task: DashboardTask }) {
-  const cfg = STATUS_CONFIG[task.status];
+const KIND_CONFIG = {
+  baca: {
+    border: "border-l-clay-sun",
+    pill: "bg-clay-sun text-clay-ink",
+    label: "Lanjutkan membaca",
+    icon: PlayCircle,
+    action: "Lanjutkan",
+    heading: "Lanjutkan Membaca",
+  },
+  kuis: {
+    border: "border-l-clay-blue",
+    pill: "bg-clay-sky text-clay-ink",
+    label: "Belum dikerjakan",
+    icon: ListChecks,
+    action: "Kerjakan",
+    heading: "Kerjakan Kuis",
+  },
+} as const;
+
+export function TaskCard({ task }: { task: StudentTask }) {
+  const cfg = KIND_CONFIG[task.kind];
   const Icon = cfg.icon;
 
   return (
@@ -43,22 +45,19 @@ export function TaskCard({ task }: { task: DashboardTask }) {
       </div>
       <div>
         <h3 className="font-serif text-lg font-bold leading-snug text-clay-ink">
-          {task.title}
+          {cfg.heading}
         </h3>
         <p className="mt-1 text-sm font-semibold text-clay-ink/65">
-          Cerita: {task.story}
+          Cerita: {task.storyTitle}
         </p>
       </div>
-      <div className="mt-auto flex items-center justify-between gap-3 pt-2">
-        <span className="font-mono text-xs font-bold text-clay-ink/55">
-          {task.dueLabel}
-        </span>
-        <button
-          type="button"
+      <div className="mt-auto flex items-center justify-end pt-2">
+        <Link
+          href={task.href}
           className="clay-sm bg-clay-rose px-4 py-2 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
         >
-          Kerjakan
-        </button>
+          {cfg.action}
+        </Link>
       </div>
     </article>
   );

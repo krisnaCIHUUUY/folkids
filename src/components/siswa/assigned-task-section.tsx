@@ -1,8 +1,7 @@
 import { ClipboardList } from "lucide-react";
-import type { DashboardTask } from "@/lib/mock/siswa-dashboard";
-import { TaskCard } from "@/components/siswa/task-card";
+import { TaskCard, type StudentTask } from "@/components/siswa/task-card";
 
-export function AssignedTaskSection({ tasks }: { tasks: DashboardTask[] }) {
+export function AssignedTaskSection({ tasks }: { tasks: StudentTask[] }) {
   return (
     <section className="mt-10">
       <div className="flex items-center gap-3">
@@ -10,15 +9,21 @@ export function AssignedTaskSection({ tasks }: { tasks: DashboardTask[] }) {
           <ClipboardList className="size-5" />
         </span>
         <h2 className="font-serif text-2xl font-bold tracking-tight text-clay-ink">
-          Tugas dari Guru
+          Tugas untukmu
         </h2>
       </div>
 
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
-        {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
-      </div>
+      {tasks.length === 0 ? (
+        <div className="clay mt-5 bg-white p-8 text-center font-semibold text-clay-ink/60">
+          Tidak ada tugas saat ini. Jelajahi perpustakaan untuk membaca cerita baru!
+        </div>
+      ) : (
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

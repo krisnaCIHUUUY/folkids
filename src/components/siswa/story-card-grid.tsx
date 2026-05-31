@@ -1,8 +1,7 @@
 import { BookOpen } from "lucide-react";
-import type { DashboardStory } from "@/lib/mock/siswa-dashboard";
-import { StoryCard } from "@/components/siswa/story-card";
+import { LibraryCard, type LibraryStory } from "@/components/siswa/library-card";
 
-export function StoryCardGrid({ stories }: { stories: DashboardStory[] }) {
+export function StoryCardGrid({ stories }: { stories: LibraryStory[] }) {
   return (
     <section className="mt-10">
       <div className="flex items-center gap-3">
@@ -14,11 +13,17 @@ export function StoryCardGrid({ stories }: { stories: DashboardStory[] }) {
         </h2>
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stories.map((story) => (
-          <StoryCard key={story.id} story={story} />
-        ))}
-      </div>
+      {stories.length === 0 ? (
+        <div className="clay mt-5 bg-white p-8 text-center font-semibold text-clay-ink/60">
+          Belum ada cerita. Tunggu gurumu mempublikasikan cerita baru, ya!
+        </div>
+      ) : (
+        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stories.map((story) => (
+            <LibraryCard key={story.id} story={story} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
