@@ -64,7 +64,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
 - [x] ✅ CRUD soal 4 tipe + urutkan — `/cms/[id]/kuis/[quizId]`
 - [x] ✅ Atur bobot skor & batas waktu pengerjaan
 - [x] ✅ Lihat hasil agregat per kuis (di dashboard)
-- [ ] 🟡 Halaman rekap detail per siswa / per kelas
+- [x] ✅ Halaman rekap detail per siswa / per kelas (matriks nilai + drill rincian per soal) — `/asesmen`, `src/components/guru/rekap-asesmen.tsx`
 
 ---
 
