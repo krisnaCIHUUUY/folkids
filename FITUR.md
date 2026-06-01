@@ -49,7 +49,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
 - [x] ✅ Ringkasan: jumlah cerita, kuis, kelas — `src/app/(guru)/dashboard`
 - [x] ✅ Pantau siswa: penyelesaian, rata-rata nilai, status aktif/perlu perhatian
 - [x] ✅ Hasil asesmen: pengumpulan, rata-rata/tertinggi/terendah per kuis
-- [ ] 🟡 Grafik tren progres literasi per siswa/kelas (masih bar ringkas, bukan chart)
+- [x] ✅ Grafik tren progres literasi per siswa/kelas (mingguan ×8, 3 metrik, drill kelas→siswa) — `src/components/guru/literacy-trend-section.tsx`
 
 ### 5. Manajemen Konten Cerita (CMS)
 - [x] ✅ CRUD cerita + publish/unpublish — `src/app/(guru)/cms`
