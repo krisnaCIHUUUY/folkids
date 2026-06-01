@@ -57,13 +57,6 @@ export function ContentSummaryCard({
             <Plus className="size-4" />
             Unggah Cerita
           </Link>
-          <button
-            type="button"
-            className="clay-sm inline-flex items-center gap-2 bg-white px-5 py-2.5 text-sm font-black text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
-          >
-            <Plus className="size-4" />
-            Buat Kuis
-          </button>
         </div>
       </div>
     </section>
