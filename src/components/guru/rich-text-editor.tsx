@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent, type Editor } from "@tiptap/react";
+import { useEditor, useEditorState, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Bold, Italic, Heading2, List, ListOrdered } from "lucide-react";
 
@@ -34,39 +34,52 @@ function ToolbarButton({
 }
 
 function Toolbar({ editor }: { editor: Editor }) {
+  // useEditorState me-subscribe ke setiap transaksi (termasuk perubahan seleksi),
+  // sehingga highlight tombol selalu mencerminkan posisi kursor/seleksi terkini.
+  const active = useEditorState({
+    editor,
+    selector: ({ editor }) => ({
+      bold: editor.isActive("bold"),
+      italic: editor.isActive("italic"),
+      heading: editor.isActive("heading", { level: 2 }),
+      bullet: editor.isActive("bulletList"),
+      ordered: editor.isActive("orderedList"),
+    }),
+  });
+
   return (
     <div className="mb-2 flex flex-wrap gap-1.5">
       <ToolbarButton
         label="Tebal"
-        active={editor.isActive("bold")}
+        active={active.bold}
         onClick={() => editor.chain().focus().toggleBold().run()}
       >
         <Bold className="size-4" strokeWidth={2.5} />
       </ToolbarButton>
       <ToolbarButton
         label="Miring"
-        active={editor.isActive("italic")}
+        active={active.italic}
         onClick={() => editor.chain().focus().toggleItalic().run()}
       >
         <Italic className="size-4" strokeWidth={2.5} />
       </ToolbarButton>
       <ToolbarButton
         label="Judul"
-        active={editor.isActive("heading", { level: 2 })}
+        active={active.heading}
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
       >
         <Heading2 className="size-4" strokeWidth={2.5} />
       </ToolbarButton>
       <ToolbarButton
         label="Daftar berpoin"
-        active={editor.isActive("bulletList")}
+        active={active.bullet}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
       >
         <List className="size-4" strokeWidth={2.5} />
       </ToolbarButton>
       <ToolbarButton
         label="Daftar bernomor"
-        active={editor.isActive("orderedList")}
+        active={active.ordered}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListOrdered className="size-4" strokeWidth={2.5} />
