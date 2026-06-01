@@ -14,6 +14,12 @@ import {
   ContentSection,
   type DashboardContent,
 } from "@/components/guru/content-section";
+import {
+  LiteracyTrendSection,
+  type TrendMember,
+  type TrendAttempt,
+  type TrendReading,
+} from "@/components/guru/literacy-trend-section";
 
 const DIFFICULTY_LABEL: Record<string, string> = {
   mudah: "Mudah",
@@ -48,13 +54,15 @@ export default async function DashboardPage() {
       .select("id, name, grade_level, code, class_students(count)")
       .order("created_at", { ascending: false }),
     // Siswa di kelas guru (RLS: hanya keanggotaan kelas milik guru).
-    supabase.from("class_students").select("student_id, users(name)"),
+    supabase.from("class_students").select("student_id, class_id, users(name)"),
     // Attempt kuis siswa di kelas guru (RLS membatasi ke siswa kelasnya).
     supabase
       .from("quiz_attempts")
-      .select("quiz_id, student_id, total_score, max_score"),
+      .select("quiz_id, student_id, total_score, max_score, completed_at"),
     // Progres baca siswa di kelas guru.
-    supabase.from("reading_progress").select("student_id, is_completed"),
+    supabase
+      .from("reading_progress")
+      .select("student_id, is_completed, completed_at"),
   ]);
 
   const kelasList = (kelasRes.data ?? []).map((c) => ({
@@ -192,6 +200,21 @@ export default async function DashboardPage() {
     };
   });
 
+  // ===== Tren progres literasi (8 minggu) =====
+  const trendClasses = kelasList.map((c) => ({ id: c.id, name: c.name }));
+  const trendMembers: TrendMember[] = (siswaRes.data ?? []).map((r) => {
+    const u = (Array.isArray(r.users) ? r.users[0] : r.users) as { name: string } | null;
+    return { classId: r.class_id, studentId: r.student_id, name: u?.name ?? "Siswa" };
+  });
+  const trendAttempts: TrendAttempt[] = attempts.map((a) => ({
+    studentId: a.student_id,
+    completedAt: a.completed_at,
+    pct: pct(a.total_score, a.max_score),
+  }));
+  const trendReadings: TrendReading[] = (readingRes.data ?? [])
+    .filter((r) => r.completed_at)
+    .map((r) => ({ studentId: r.student_id, completedAt: r.completed_at }));
+
   const metrics: GuruMetrics = {
     ceritaDiunggah: storyContents.length,
     kuisDibuat: quizContents.length,
@@ -202,6 +225,12 @@ export default async function DashboardPage() {
     <div className="pt-2">
       <ContentSummaryCard name={name} metrics={metrics} />
       <ClassSection classes={kelasList} />
+      <LiteracyTrendSection
+        classes={trendClasses}
+        members={trendMembers}
+        attempts={trendAttempts}
+        readings={trendReadings}
+      />
       <StudentMonitoringSection students={studentList} />
       <QuizResultsSection results={quizResultList} />
       <ContentSection contents={contents} />
