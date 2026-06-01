@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { deletePage, movePage } from "@/lib/actions/stories";
+import { stripHtml } from "@/lib/rich-text";
 import { PageForm } from "@/components/guru/page-form";
 import {
   Dialog,
@@ -120,7 +121,7 @@ export function StoryPagesManager({
 
               <div className="min-w-0 flex-1">
                 <p className="line-clamp-2 text-sm font-semibold text-clay-ink/80">
-                  {page.content}
+                  {stripHtml(page.content)}
                 </p>
                 {page.audio_url && (
                   <span className="mt-1 inline-flex items-center gap-1.5 font-mono text-xs font-bold text-clay-mint">

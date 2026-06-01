@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, Sparkles, ListChecks, CheckCircle2 } from "lucide-react";
 import { upsertReadingProgress } from "@/lib/actions/reading";
+import { isHtml, sanitizeRichText } from "@/lib/rich-text";
 
 export type ReaderPage = {
   id: number;
@@ -92,9 +93,16 @@ export function StoryReader({
           </audio>
         )}
 
-        <p className="whitespace-pre-line font-serif text-lg leading-relaxed text-clay-ink md:text-xl">
-          {page.content}
-        </p>
+        {isHtml(page.content) ? (
+          <div
+            className="rich-content font-serif text-lg leading-relaxed text-clay-ink md:text-xl"
+            dangerouslySetInnerHTML={{ __html: sanitizeRichText(page.content) }}
+          />
+        ) : (
+          <p className="whitespace-pre-line font-serif text-lg leading-relaxed text-clay-ink md:text-xl">
+            {page.content}
+          </p>
+        )}
 
         {page.character_values && (
           <div className="clay-sm mt-6 flex items-start gap-3 bg-clay-sun/20 p-4">

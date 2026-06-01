@@ -56,7 +56,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
 - [x] ✅ Manajemen halaman cerita (CRUD + urutkan)
 - [x] ✅ Upload media (ilustrasi & audio) ke Supabase Storage — `src/components/guru/media-uploader.tsx`
 - [x] ✅ Tagging: daerah asal, tema karakter, tingkat kesulitan
-- [ ] 🟡 Editor teks kaya (bold/italic/heading) — saat ini textarea biasa
+- [x] ✅ Editor teks kaya WYSIWYG (bold/italic/heading/list) konten halaman — `src/components/guru/rich-text-editor.tsx` (TipTap, render disanitasi DOMPurify)
 - [ ] ⬜ Upload video pendukung
 
 ### 6. Manajemen Asesmen
