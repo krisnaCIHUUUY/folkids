@@ -1,7 +1,8 @@
 import { BookOpen } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
-import { LibraryCard, type LibraryStory } from "@/components/siswa/library-card";
+import type { LibraryStory } from "@/components/siswa/library-card";
+import { LibraryBrowser } from "@/components/siswa/library-browser";
 
 export default async function PerpustakaanPage() {
   const user = await getCurrentUser();
@@ -77,11 +78,7 @@ export default async function PerpustakaanPage() {
           </p>
         </div>
       ) : (
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {list.map((story) => (
-            <LibraryCard key={story.id} story={story} />
-          ))}
-        </div>
+        <LibraryBrowser stories={list} />
       )}
     </div>
   );
