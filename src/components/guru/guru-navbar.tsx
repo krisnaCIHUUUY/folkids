@@ -40,6 +40,12 @@ export function GuruNavbar({ user }: { user: CurrentUser }) {
           >
             Cerita
           </Link>
+          <Link
+            href="/asesmen"
+            className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
+          >
+            Asesmen
+          </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-3">

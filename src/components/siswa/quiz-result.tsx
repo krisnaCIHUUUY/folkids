@@ -64,10 +64,14 @@ export function QuizResult({
   totalScore,
   maxScore,
   items,
+  scoreLabel = "Skormu",
+  answerLabel = "Jawabanmu:",
 }: {
   totalScore: number;
   maxScore: number;
   items: ResultItem[];
+  scoreLabel?: string;
+  answerLabel?: string;
 }) {
   const percent = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
   const correctCount = items.filter(isCorrect).length;
@@ -80,7 +84,7 @@ export function QuizResult({
           <Trophy className="size-8" />
         </span>
         <p className="font-mono text-xs font-black uppercase tracking-wider text-clay-ink/55">
-          Skormu
+          {scoreLabel}
         </p>
         <p className="font-serif text-5xl font-black text-clay-ink">{percent}%</p>
         <p className="font-semibold text-clay-ink/70">
@@ -110,7 +114,7 @@ export function QuizResult({
                     {item.question_text}
                   </p>
                   <p className="mt-2 text-sm font-semibold text-clay-ink/70">
-                    Jawabanmu:{" "}
+                    {answerLabel}{" "}
                     <span className={correct ? "text-clay-ink" : "text-clay-coral"}>
                       {answerText(item)}
                     </span>
