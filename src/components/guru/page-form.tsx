@@ -18,8 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { MediaUploader } from "@/components/guru/media-uploader";
+import { RichTextEditor } from "@/components/guru/rich-text-editor";
 
 export function PageForm({
   storyId,
@@ -68,7 +68,7 @@ export function PageForm({
                 Konten Halaman
               </FormLabel>
               <FormControl>
-                <Textarea rows={5} placeholder="Teks naratif halaman ini" {...field} />
+                <RichTextEditor value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage className="text-clay-coral" />
             </FormItem>
