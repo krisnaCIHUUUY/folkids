@@ -393,6 +393,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_dashboard_stats: { Args: never; Returns: Json }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
