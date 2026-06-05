@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -31,6 +31,14 @@ const submitClass =
 
 export default function LoginPage() {
   const [role, setRole] = useState<AuthRole>("siswa");
+
+  // Pesan sukses setelah reset password (dibaca dari URL agar halaman tetap statis).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("reset") === "success") {
+      toast.success("Password berhasil diperbarui. Silakan masuk dengan password baru.");
+    }
+  }, []);
 
   return (
     <AuthShell title="Masuk" subtitle="Selamat datang kembali di Wayang Folkids!">
@@ -103,7 +111,7 @@ function GuruAdminLoginForm({ role }: { role: Exclude<AuthRole, "siswa"> }) {
               <FormMessage className="text-clay-coral" />
               <div className="text-right">
                 <Link
-                  href="#"
+                  href="/lupa-password"
                   className="text-xs font-bold text-clay-rose hover:underline"
                 >
                   Lupa Password?
