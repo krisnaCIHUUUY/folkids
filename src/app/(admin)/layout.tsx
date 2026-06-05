@@ -1,5 +1,5 @@
 import { requireRole } from "@/lib/auth";
-import { PortalShell } from "@/components/layout/portal-shell";
+import { AdminSidebar } from "@/components/admin/admin-sidebar";
 
 export default async function AdminLayout({
   children,
@@ -7,5 +7,13 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const user = await requireRole(["admin"]);
-  return <PortalShell user={user}>{children}</PortalShell>;
+
+  return (
+    <div className="min-h-screen bg-clay-cream font-sans text-clay-ink md:flex">
+      <AdminSidebar user={user} />
+      <main className="min-w-0 flex-1 px-4 pb-16 pt-4 md:px-8 md:pt-8">
+        {children}
+      </main>
+    </div>
+  );
 }
