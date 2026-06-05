@@ -20,13 +20,33 @@ export type ActionError = { error: string };
 
 async function requireAdmin() {
   const user = await getCurrentUser();
-  if (!user || user.role !== "admin") return null;
+  if (!user || !user.isActive || user.role !== "admin") return null;
   return user;
 }
 
 function revalidateUsers() {
   revalidatePath("/pengguna");
   revalidatePath("/admin");
+}
+
+// Pastikan target bukan akun admin lain. Akun sendiri (mis. lewat /akun) tetap
+// boleh; pengguna admin lain tidak dapat dikelola dari sini.
+async function assertManageableTarget(
+  adminId: string,
+  targetId: string,
+): Promise<ActionError | null> {
+  if (targetId === adminId) return null;
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("users")
+    .select("role")
+    .eq("id", targetId)
+    .maybeSingle();
+  if (!data) return { error: "Pengguna tidak ditemukan." };
+  if (data.role === "admin") {
+    return { error: "Akun admin lain tidak dapat dikelola di sini." };
+  }
+  return null;
 }
 
 // Buat akun guru atau siswa via service-role (tanpa logout admin / email konfirmasi).
@@ -93,6 +113,9 @@ export async function updateUserProfile(
   const admin = await requireAdmin();
   if (!admin) return { error: "Tidak diizinkan" };
 
+  const blocked = await assertManageableTarget(admin.id, id);
+  if (blocked) return blocked;
+
   const parsed = editUserSchema.safeParse(values);
   if (!parsed.success) return { error: "Input tidak valid" };
 
@@ -123,6 +146,9 @@ export async function setUserActive(
     return { error: "Kamu tidak bisa menonaktifkan akunmu sendiri." };
   }
 
+  const blocked = await assertManageableTarget(admin.id, id);
+  if (blocked) return blocked;
+
   const supabase = await createClient();
   const { error } = await supabase
     .from("users")
@@ -145,6 +171,9 @@ export async function resetUserPassword(
 ): Promise<ActionError | { ok: true }> {
   const admin = await requireAdmin();
   if (!admin) return { error: "Tidak diizinkan" };
+
+  const blocked = await assertManageableTarget(admin.id, id);
+  if (blocked) return blocked;
 
   const parsed = resetPasswordSchema.safeParse(values);
   if (!parsed.success) return { error: "Input tidak valid" };
