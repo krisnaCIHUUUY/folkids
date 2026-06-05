@@ -15,6 +15,25 @@ const ROLE_LABEL: Record<string, string> = {
   admin: "Admin",
 };
 
+const ZERO_STATS: AdminStatsData = {
+  totalUsers: 0,
+  siswa: 0,
+  guru: 0,
+  admin: 0,
+  aktif: 0,
+  nonaktif: 0,
+  cerita: 0,
+  ceritaPublished: 0,
+  ceritaDraft: 0,
+  kuis: 0,
+  kelas: 0,
+  attempts: 0,
+  attemptsLulus: 0,
+  rataSkor: 0,
+  readingTotal: 0,
+  readingSelesai: 0,
+};
+
 // Waktu relatif ringkas dalam Bahasa Indonesia.
 function timeAgo(iso: string): string {
   const then = new Date(iso).getTime();
@@ -37,71 +56,57 @@ function timeAgo(iso: string): string {
 
 type RawEvent = { kind: ActivityKind; text: string; at: number; iso: string };
 
+// Embed PostgREST relasi many-to-one bisa berupa objek atau array; ambil fieldnya.
+function rel(value: unknown, key: "name" | "title"): string | undefined {
+  if (!value) return undefined;
+  const obj = Array.isArray(value) ? value[0] : value;
+  return (obj as Record<string, string> | undefined)?.[key];
+}
+
+const FEED_LIMIT = 15;
+
 export default async function AdminDashboardPage() {
   const user = await getCurrentUser();
   const name = user?.name ?? "Admin";
 
   const supabase = await createClient();
-  const [usersRes, ceritaRes, kuisRes, kelasRes, attemptsRes, readingRes] =
+
+  // Statistik diagregasi di DB (satu round-trip, menghormati RLS).
+  // Feed dibatasi 15 baris terbaru per sumber, lalu digabung di aplikasi.
+  const [statsRes, usersFeedRes, ceritaFeedRes, attemptsFeedRes, readingFeedRes] =
     await Promise.all([
-      supabase.from("users").select("id, name, role, is_active, created_at"),
-      supabase.from("stories").select("id, title, is_published, created_at"),
-      supabase.from("quizzes").select("id, title, created_at"),
-      supabase.from("classes").select("id"),
+      supabase.rpc("admin_dashboard_stats"),
+      supabase
+        .from("users")
+        .select("name, role, created_at")
+        .order("created_at", { ascending: false })
+        .limit(FEED_LIMIT),
+      supabase
+        .from("stories")
+        .select("title, created_at")
+        .order("created_at", { ascending: false })
+        .limit(FEED_LIMIT),
       supabase
         .from("quiz_attempts")
-        .select("student_id, quiz_id, total_score, max_score, completed_at"),
+        .select("total_score, max_score, completed_at, users(name), quizzes(title)")
+        .not("completed_at", "is", null)
+        .order("completed_at", { ascending: false })
+        .limit(FEED_LIMIT),
       supabase
         .from("reading_progress")
-        .select("student_id, story_id, is_completed, completed_at"),
+        .select("completed_at, users(name), stories(title)")
+        .eq("is_completed", true)
+        .not("completed_at", "is", null)
+        .order("completed_at", { ascending: false })
+        .limit(FEED_LIMIT),
     ]);
 
-  const users = usersRes.data ?? [];
-  const cerita = ceritaRes.data ?? [];
-  const kuis = kuisRes.data ?? [];
-  const kelas = kelasRes.data ?? [];
-  const attempts = attemptsRes.data ?? [];
-  const readings = readingRes.data ?? [];
+  const stats = (statsRes.data as AdminStatsData | null) ?? ZERO_STATS;
 
-  // --- Agregat statistik ---
-  const skorVals = attempts
-    .filter((a) => a.max_score > 0)
-    .map((a) => (a.total_score / a.max_score) * 100);
-  const rataSkor = skorVals.length
-    ? Math.round(skorVals.reduce((s, v) => s + v, 0) / skorVals.length)
-    : 0;
-
-  const attemptsLulus = attempts.filter(
-    (a) => a.max_score > 0 && a.total_score / a.max_score >= 0.6,
-  ).length;
-
-  const stats: AdminStatsData = {
-    totalUsers: users.length,
-    siswa: users.filter((u) => u.role === "siswa").length,
-    guru: users.filter((u) => u.role === "guru").length,
-    admin: users.filter((u) => u.role === "admin").length,
-    aktif: users.filter((u) => u.is_active).length,
-    nonaktif: users.filter((u) => !u.is_active).length,
-    cerita: cerita.length,
-    ceritaPublished: cerita.filter((c) => c.is_published).length,
-    ceritaDraft: cerita.filter((c) => !c.is_published).length,
-    kuis: kuis.length,
-    kelas: kelas.length,
-    attempts: attempts.length,
-    attemptsLulus,
-    rataSkor,
-    readingTotal: readings.length,
-    readingSelesai: readings.filter((r) => r.is_completed).length,
-  };
-
-  // --- Feed aktivitas (diturunkan dari timestamp) ---
-  const userName = new Map(users.map((u) => [u.id, u.name]));
-  const storyTitle = new Map(cerita.map((c) => [c.id, c.title]));
-  const quizTitle = new Map(kuis.map((q) => [q.id, q.title]));
-
+  // --- Feed aktivitas (gabungan sumber terbaru, terurut) ---
   const events: RawEvent[] = [];
 
-  for (const u of users) {
+  for (const u of usersFeedRes.data ?? []) {
     if (u.created_at) {
       events.push({
         kind: "user",
@@ -111,7 +116,7 @@ export default async function AdminDashboardPage() {
       });
     }
   }
-  for (const c of cerita) {
+  for (const c of ceritaFeedRes.data ?? []) {
     if (c.created_at) {
       events.push({
         kind: "cerita",
@@ -121,35 +126,33 @@ export default async function AdminDashboardPage() {
       });
     }
   }
-  for (const a of attempts) {
-    if (a.completed_at) {
-      const siswa = userName.get(a.student_id) ?? "Siswa";
-      const judul = quizTitle.get(a.quiz_id) ?? "kuis";
-      const pct = a.max_score > 0 ? Math.round((a.total_score / a.max_score) * 100) : 0;
-      events.push({
-        kind: "kuis",
-        text: `${siswa} menyelesaikan "${judul}" — ${pct}%`,
-        at: new Date(a.completed_at).getTime(),
-        iso: a.completed_at,
-      });
-    }
+  for (const a of attemptsFeedRes.data ?? []) {
+    if (!a.completed_at) continue;
+    const siswa = rel(a.users, "name") ?? "Siswa";
+    const judul = rel(a.quizzes, "title") ?? "kuis";
+    const pct = a.max_score > 0 ? Math.round((a.total_score / a.max_score) * 100) : 0;
+    events.push({
+      kind: "kuis",
+      text: `${siswa} menyelesaikan "${judul}" — ${pct}%`,
+      at: new Date(a.completed_at).getTime(),
+      iso: a.completed_at,
+    });
   }
-  for (const r of readings) {
-    if (r.is_completed && r.completed_at) {
-      const siswa = userName.get(r.student_id) ?? "Siswa";
-      const judul = storyTitle.get(r.story_id) ?? "cerita";
-      events.push({
-        kind: "baca",
-        text: `${siswa} menuntaskan "${judul}"`,
-        at: new Date(r.completed_at).getTime(),
-        iso: r.completed_at,
-      });
-    }
+  for (const r of readingFeedRes.data ?? []) {
+    if (!r.completed_at) continue;
+    const siswa = rel(r.users, "name") ?? "Siswa";
+    const judul = rel(r.stories, "title") ?? "cerita";
+    events.push({
+      kind: "baca",
+      text: `${siswa} menuntaskan "${judul}"`,
+      at: new Date(r.completed_at).getTime(),
+      iso: r.completed_at,
+    });
   }
 
   const activities: ActivityItem[] = events
     .sort((a, b) => b.at - a.at)
-    .slice(0, 15)
+    .slice(0, FEED_LIMIT)
     .map((e) => ({ kind: e.kind, text: e.text, time: timeAgo(e.iso) }));
 
   return (
