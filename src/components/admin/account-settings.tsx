@@ -5,9 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { updateUserProfile, resetUserPassword } from "@/lib/actions/admin-users";
-import { editUserSchema, type EditUserValues } from "@/lib/validations/admin-user";
 import {
+  editUserSchema,
   resetPasswordSchema,
+  type EditUserValues,
   type ResetPasswordValues,
 } from "@/lib/validations/admin-user";
 import { ClayInput } from "@/components/auth/clay-input";
