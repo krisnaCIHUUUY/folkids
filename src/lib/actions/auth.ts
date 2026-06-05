@@ -11,11 +11,15 @@ import {
   loginSiswaSchema,
   registerGuruSchema,
   registerSiswaSchema,
+  forgotPasswordSchema,
+  newPasswordSchema,
   siswaEmail,
   type LoginGuruAdminValues,
   type LoginSiswaValues,
   type RegisterGuruValues,
   type RegisterSiswaValues,
+  type ForgotPasswordValues,
+  type NewPasswordValues,
 } from "@/lib/validations/auth";
 
 export type AuthActionResult = { error: string };
@@ -210,6 +214,68 @@ export async function registerGuru(
   }
 
   redirect(roleHome("guru"));
+}
+
+// Minta tautan reset password via email (guru/admin). Selalu mengembalikan
+// sukses generik untuk mencegah enumerasi email; error hanya dicatat di server.
+export async function requestPasswordReset(
+  values: ForgotPasswordValues,
+): Promise<{ ok: true } | AuthActionResult> {
+  const parsed = forgotPasswordSchema.safeParse(values);
+  if (!parsed.success) {
+    return { error: "Email tidak valid" };
+  }
+
+  const origin = (await headers()).get("origin") ?? "";
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+    redirectTo: `${origin}/api/auth/callback?next=/reset-password`,
+  });
+
+  if (error) {
+    console.error("[requestPasswordReset]", error.status, error.code, error.message);
+  }
+
+  // Jangan bocorkan apakah email terdaftar.
+  return { ok: true };
+}
+
+// Setel password baru. Berjalan untuk sesi valid (recovery dari tautan email
+// atau sesi login biasa). Sukses → sign out + kembali ke login.
+export async function updatePassword(
+  values: NewPasswordValues,
+): Promise<AuthActionResult | void> {
+  const parsed = newPasswordSchema.safeParse(values);
+  if (!parsed.success) {
+    return { error: "Input tidak valid" };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      error: "Sesi pemulihan tidak ditemukan atau kedaluwarsa. Minta tautan baru.",
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: parsed.data.password,
+  });
+
+  if (error) {
+    console.error("[updatePassword]", error.status, error.code, error.message);
+    if (error.code === "same_password") {
+      return { error: "Password baru tidak boleh sama dengan yang lama." };
+    }
+    return { error: "Gagal memperbarui password. Coba lagi." };
+  }
+
+  await supabase.auth.signOut();
+  redirect("/login?reset=success");
 }
 
 export async function logout(): Promise<void> {

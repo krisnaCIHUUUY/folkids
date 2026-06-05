@@ -7,6 +7,24 @@ export const loginGuruAdminSchema = z.object({
 });
 export type LoginGuruAdminValues = z.infer<typeof loginGuruAdminSchema>;
 
+// Lupa password — minta tautan reset via email (guru/admin).
+export const forgotPasswordSchema = z.object({
+  email: z.string().min(1, "Email wajib diisi").email("Format email tidak valid"),
+});
+export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+
+// Setel password baru setelah klik tautan reset.
+export const newPasswordSchema = z
+  .object({
+    password: z.string().min(6, "Password minimal 6 karakter"),
+    confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password tidak cocok",
+    path: ["confirmPassword"],
+  });
+export type NewPasswordValues = z.infer<typeof newPasswordSchema>;
+
 // Username siswa: huruf kecil/angka/._- , 3–30 karakter (valid sebagai bagian lokal email sintetis).
 const usernameField = z
   .string()

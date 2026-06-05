@@ -24,7 +24,12 @@ export function matchesPrefix(pathname: string, prefixes: string[]): boolean {
 
 // Apakah path bisa diakses tanpa login.
 export function isPublicPath(pathname: string): boolean {
-  if (pathname === "/" || pathname === "/login" || pathname === "/register") {
+  if (
+    pathname === "/" ||
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/lupa-password"
+  ) {
     return true;
   }
   return pathname.startsWith("/api/auth");
