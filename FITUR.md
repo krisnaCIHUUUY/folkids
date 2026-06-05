@@ -71,13 +71,13 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
 ## §3.3 Portal Admin
 
 ### 7. Manajemen Pengguna
-- [ ] ⬜ Tambah/edit/nonaktifkan akun guru & siswa
-- [ ] ⬜ Reset password pengguna
+- [x] ✅ Tambah/edit/nonaktifkan akun guru & siswa — `src/app/(admin)/pengguna`, `src/lib/actions/admin-users.ts`
+- [x] ✅ Reset password pengguna (admin set password langsung) — `src/components/admin/reset-password-button.tsx`
 - [ ] ⬜ Atur kelas & kelompok belajar (sisi admin)
 
 ### 8. Dashboard Admin
-- [ ] ⬜ Statistik keseluruhan (total pengguna/cerita/kuis)
-- [ ] ⬜ Monitoring aktivitas sistem
+- [x] ✅ Statistik keseluruhan (pengguna per role + aktif/nonaktif, cerita/kuis/kelas, engagement) — `src/app/(admin)/admin`, `src/components/admin/admin-stats.tsx`
+- [x] ✅ Monitoring aktivitas sistem (feed terbaru diturunkan dari timestamp) — `src/components/admin/activity-feed.tsx`
 
 ---
 
