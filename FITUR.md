@@ -38,7 +38,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 - [x] ✅ Kuis 4 tipe: pilihan ganda, benar/salah, isian, mencocokkan — `src/app/(siswa)/kuis/[id]`
 - [x] ✅ Skor & feedback instan + rincian benar/salah per soal — `/kuis/[id]/hasil`
 - [x] ✅ Scoring server-authoritative (sekali kerja) — `supabase/migrations/00000000000015_quiz_attempt_submit.sql`
-- [ ] ⬜ Leaderboard kelas
+- [x] ✅ Leaderboard kelas (Poin Literasi: game + kuis + bonus baca) — siswa `/papan-peringkat` & guru `/kelas/[id]`, RPC `class_leaderboard` (SECURITY DEFINER) — `supabase/migrations/00000000000018_class_leaderboard.sql`, `src/components/leaderboard/`
 - [x] ✅ Game literasi (selain kuis): Tangkap Kata, Susun Kata (drag-and-drop), Ketik Cepat — `src/app/(siswa)/game`, `src/components/siswa/games/`
 - [x] ✅ Poin & jumlah main tersimpan ke DB (`game_plays`) → metrik beranda nyata — `src/lib/actions/games.ts`, `supabase/migrations/00000000000017_game_plays.sql`
 
@@ -97,8 +97,8 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 ## Backlog (belum ada tabel/skema)
 
 - [x] ✅ Game literasi & poin — 3 game + `totalPoin`/`gameDimainkan` beranda kini nyata (lihat §3.1 #3)
+- [x] ✅ Leaderboard kelas — Poin Literasi gabungan (lihat §3.1 #3)
 - [ ] ⬜ Badge/lencana siswa (masih mock)
-- [ ] ⬜ Leaderboard kelas
 - [ ] ⬜ Penugasan guru (assignment) dengan tenggat — kini "Tugas untukmu" diturunkan dari aktivitas
 - [ ] ⬜ Animasi wayang interaktif
 - [ ] ⬜ Notifikasi (lonceng navbar masih placeholder)

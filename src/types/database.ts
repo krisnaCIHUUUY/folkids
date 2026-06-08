@@ -435,6 +435,18 @@ export type Database = {
     }
     Functions: {
       admin_dashboard_stats: { Args: never; Returns: Json }
+      class_leaderboard: {
+        Args: { p_class_id: number }
+        Returns: {
+          game_points: number
+          name: string
+          quiz_points: number
+          rank: number
+          reading_points: number
+          student_id: string
+          total_points: number
+        }[]
+      }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
