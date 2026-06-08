@@ -1,4 +1,4 @@
-import { Trophy, Gamepad2, ListChecks, BookOpen, Coins } from "lucide-react";
+import { Gamepad2, ListChecks, BookOpen, Coins } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type LeaderboardRow = {
@@ -85,24 +85,5 @@ export function LeaderboardTable({
         );
       })}
     </ol>
-  );
-}
-
-// Header kecil yang dapat dipakai ulang di atas tabel.
-export function LeaderboardHeading({ subtitle }: { subtitle?: string }) {
-  return (
-    <div className="flex items-center gap-3">
-      <span className="clay-sm grid size-10 place-items-center bg-clay-sun text-clay-ink">
-        <Trophy className="size-5" />
-      </span>
-      <div>
-        <h2 className="font-serif text-2xl font-bold tracking-tight text-clay-ink">
-          Papan Peringkat
-        </h2>
-        {subtitle && (
-          <p className="text-sm font-semibold text-clay-ink/60">{subtitle}</p>
-        )}
-      </div>
-    </div>
   );
 }

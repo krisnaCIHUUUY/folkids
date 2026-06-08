@@ -15,6 +15,7 @@ export function ClassPicker({
   const router = useRouter();
   return (
     <select
+      aria-label="Pilih kelas"
       value={selectedId}
       onChange={(e) => router.push(`/papan-peringkat?kelas=${e.target.value}`)}
       className="clay-sm mt-4 bg-white px-4 py-2.5 font-bold text-clay-ink outline-none focus:ring-2 focus:ring-clay-rose/50"

@@ -28,16 +28,17 @@ export default async function KelasDetailPage({
 
   if (!kelas) notFound();
 
-  const { data: rosterRows } = await supabase
-    .from("class_students")
-    .select("student_id, enrolled_at, users(name, email)")
-    .eq("class_id", classId)
-    .order("enrolled_at", { ascending: true });
-
-  const { data: lbRows } = await supabase.rpc("class_leaderboard", {
-    p_class_id: classId,
-  });
-  const leaderboard = (lbRows ?? []) as LeaderboardRow[];
+  // Roster & leaderboard independen → jalankan paralel.
+  const [rosterRes, lbRes] = await Promise.all([
+    supabase
+      .from("class_students")
+      .select("student_id, enrolled_at, users(name, email)")
+      .eq("class_id", classId)
+      .order("enrolled_at", { ascending: true }),
+    supabase.rpc("class_leaderboard", { p_class_id: classId }),
+  ]);
+  const rosterRows = rosterRes.data;
+  const leaderboard = (lbRes.data ?? []) as LeaderboardRow[];
 
   const students: RosterStudent[] = (rosterRows ?? []).map((r) => {
     // Supabase mengetik relasi embedded sebagai array; ambil elemen pertama.
