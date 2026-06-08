@@ -1,10 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Pencil, Users } from "lucide-react";
+import { ArrowLeft, Pencil, Users, Trophy } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { ClassCodeCard } from "@/components/guru/class-code-card";
 import { ClassRoster, type RosterStudent } from "@/components/guru/class-roster";
 import { DeleteClassButton } from "@/components/guru/delete-class-button";
+import {
+  LeaderboardTable,
+  type LeaderboardRow,
+} from "@/components/leaderboard/leaderboard-table";
 
 export default async function KelasDetailPage({
   params,
@@ -29,6 +33,11 @@ export default async function KelasDetailPage({
     .select("student_id, enrolled_at, users(name, email)")
     .eq("class_id", classId)
     .order("enrolled_at", { ascending: true });
+
+  const { data: lbRows } = await supabase.rpc("class_leaderboard", {
+    p_class_id: classId,
+  });
+  const leaderboard = (lbRows ?? []) as LeaderboardRow[];
 
   const students: RosterStudent[] = (rosterRows ?? []).map((r) => {
     // Supabase mengetik relasi embedded sebagai array; ambil elemen pertama.
@@ -89,6 +98,21 @@ export default async function KelasDetailPage({
           </h2>
         </div>
         <ClassRoster classId={kelas.id} students={students} />
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-center gap-2.5">
+          <span className="clay-sm grid size-9 place-items-center bg-clay-sun text-clay-ink">
+            <Trophy className="size-4" />
+          </span>
+          <h2 className="font-serif text-xl font-bold text-clay-ink">
+            Papan Peringkat
+          </h2>
+        </div>
+        <p className="mt-1 text-sm font-semibold text-clay-ink/55">
+          Poin Literasi = poin game + skor kuis + bonus cerita selesai.
+        </p>
+        <LeaderboardTable rows={leaderboard} />
       </section>
     </div>
   );
