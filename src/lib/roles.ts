@@ -14,7 +14,7 @@ export function roleHome(role: UserRole | null | undefined): string {
 }
 
 // Prefix route yang diproteksi per role.
-export const SISWA_PREFIXES = ["/beranda", "/perpustakaan", "/cerita", "/kuis", "/gabung-kelas"];
+export const SISWA_PREFIXES = ["/beranda", "/perpustakaan", "/cerita", "/kuis", "/game", "/gabung-kelas"];
 export const GURU_ADMIN_PREFIXES = ["/dashboard", "/cms", "/asesmen", "/kelas"];
 export const ADMIN_PREFIXES = ["/pengguna", "/admin", "/akun"];
 

@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { metrics, games, badges } from "@/lib/mock/siswa-dashboard";
+import { badges, type DashboardMetrics } from "@/lib/mock/siswa-dashboard";
+import type { GameKey } from "@/lib/games/config";
 import { ProgressSummaryCard } from "@/components/siswa/progress-summary-card";
 import { AssignedTaskSection } from "@/components/siswa/assigned-task-section";
 import type { StudentTask } from "@/components/siswa/task-card";
@@ -18,7 +19,7 @@ export default async function BerandaPage() {
 
   const supabase = await createClient();
   // RLS otomatis membatasi siswa ke konten published & milik sendiri.
-  const [storiesRes, pagesRes, progressRes, quizzesRes, attemptsRes] =
+  const [storiesRes, pagesRes, progressRes, quizzesRes, attemptsRes, gamePlaysRes] =
     await Promise.all([
       supabase
         .from("stories")
@@ -31,6 +32,7 @@ export default async function BerandaPage() {
         .eq("student_id", user!.id),
       supabase.from("quizzes").select("id, title, story_id"),
       supabase.from("quiz_attempts").select("quiz_id").eq("student_id", user!.id),
+      supabase.from("game_plays").select("game, points").eq("student_id", user!.id),
     ]);
 
   const stories = storiesRes.data ?? [];
@@ -93,12 +95,21 @@ export default async function BerandaPage() {
 
   const tasks = [...bacaTasks, ...kuisTasks].slice(0, TASK_LIMIT);
 
+  // Metrik nyata dari data siswa (menggantikan angka mock).
+  const gamePlays = gamePlaysRes.data ?? [];
+  const playedGames = [...new Set(gamePlays.map((g) => g.game))] as GameKey[];
+  const metrics: DashboardMetrics = {
+    ceritaDibaca: (progressRes.data ?? []).filter((p) => p.is_completed).length,
+    gameDimainkan: gamePlays.length,
+    totalPoin: gamePlays.reduce((sum, g) => sum + (g.points ?? 0), 0),
+  };
+
   return (
     <>
       <ProgressSummaryCard name={firstName} metrics={metrics} />
       <AssignedTaskSection tasks={tasks} />
       <StoryCardGrid stories={storyGrid} />
-      <GameCardRow games={games} />
+      <GameCardRow played={playedGames} />
       <BadgeCollection badges={badges} />
     </>
   );

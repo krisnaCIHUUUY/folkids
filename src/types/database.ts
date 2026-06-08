@@ -85,6 +85,47 @@ export type Database = {
           },
         ]
       }
+      game_plays: {
+        Row: {
+          created_at: string
+          detail: Json | null
+          duration_seconds: number | null
+          game: Database["public"]["Enums"]["game_type"]
+          id: number
+          points: number
+          score: number
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: Json | null
+          duration_seconds?: number | null
+          game: Database["public"]["Enums"]["game_type"]
+          id?: never
+          points?: number
+          score?: number
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          detail?: Json | null
+          duration_seconds?: number | null
+          game?: Database["public"]["Enums"]["game_type"]
+          id?: never
+          points?: number
+          score?: number
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_plays_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       quiz_attempts: {
         Row: {
           answers: Json
@@ -399,6 +440,12 @@ export type Database = {
         Returns: Database["public"]["Enums"]["user_role"]
       }
       generate_class_code: { Args: never; Returns: string }
+      is_class_member: { Args: { p_class_id: number }; Returns: boolean }
+      is_class_teacher: { Args: { p_class_id: number }; Returns: boolean }
+      is_student_in_my_class: {
+        Args: { p_student_id: string }
+        Returns: boolean
+      }
       join_class_by_code: { Args: { p_code: string }; Returns: Json }
       regenerate_class_code: { Args: { p_class_id: number }; Returns: string }
       reorder_quiz_question: {
@@ -416,6 +463,7 @@ export type Database = {
     }
     Enums: {
       difficulty: "mudah" | "sedang" | "sulit"
+      game_type: "tangkap_kata" | "susun_kata" | "ketik_cepat"
       question_type: "pilihan_ganda" | "benar_salah" | "isian" | "mencocokkan"
       user_role: "admin" | "guru" | "siswa"
     }
@@ -546,6 +594,7 @@ export const Constants = {
   public: {
     Enums: {
       difficulty: ["mudah", "sedang", "sulit"],
+      game_type: ["tangkap_kata", "susun_kata", "ketik_cepat"],
       question_type: ["pilihan_ganda", "benar_salah", "isian", "mencocokkan"],
       user_role: ["admin", "guru", "siswa"],
     },
