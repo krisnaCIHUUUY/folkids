@@ -3,9 +3,11 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Sparkles, ListChecks, CheckCircle2 } from "lucide-react";
 import { upsertReadingProgress } from "@/lib/actions/reading";
-import { isHtml, sanitizeRichText } from "@/lib/rich-text";
+import { ReadAloudText } from "@/components/siswa/read-aloud";
+import type { Json } from "@/types/database";
 
 export type ReaderPage = {
   id: number;
@@ -14,7 +16,31 @@ export type ReaderPage = {
   illustration_url: string | null;
   audio_url: string | null;
   character_values: string | null;
+  animation_data: Json | null;
 };
+
+// State awal animasi entrance halaman. Default terasa seperti wayang masuk
+// panggung; bila animation_data terisi (forward-compat, belum ada editor guru)
+// nilai-nilai berikut dipakai sebagai override.
+type AnimState = { x: number; y: number; rotate: number; scale: number };
+const DEFAULT_ANIM: AnimState = { x: 28, y: 0, rotate: 0, scale: 0.98 };
+
+function num(v: unknown, fallback: number): number {
+  return typeof v === "number" && Number.isFinite(v) ? v : fallback;
+}
+
+function parseAnimation(data: Json | null): AnimState {
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
+    return DEFAULT_ANIM;
+  }
+  const d = data as Record<string, unknown>;
+  return {
+    x: num(d.x, DEFAULT_ANIM.x),
+    y: num(d.y, DEFAULT_ANIM.y),
+    rotate: num(d.rotate, DEFAULT_ANIM.rotate),
+    scale: num(d.scale, DEFAULT_ANIM.scale),
+  };
+}
 
 export type ReaderQuiz = { id: number; title: string; done: boolean };
 
@@ -35,6 +61,7 @@ export function StoryReader({
   );
   const [index, setIndex] = useState(startIndex === -1 ? 0 : startIndex);
   const [, startTransition] = useTransition();
+  const reduceMotion = useReducedMotion();
 
   const page = pages[index];
   const total = pages.length;
@@ -75,49 +102,63 @@ export function StoryReader({
         />
       </div>
 
-      <article className="clay mt-5 bg-white p-5 md:p-8">
-        {page.illustration_url && (
-          <div className="clay-inset relative mb-6 aspect-video w-full overflow-hidden bg-clay-cream">
-            <Image
-              src={page.illustration_url}
-              alt={`Ilustrasi halaman ${page.page_number}`}
-              fill
-              className="object-cover"
-            />
-          </div>
-        )}
+      <AnimatePresence mode="wait">
+        {(() => {
+          const anim = parseAnimation(page.animation_data);
+          return (
+            <motion.article
+              key={page.id}
+              className="clay mt-5 bg-white p-5 md:p-8"
+              initial={
+                reduceMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, x: anim.x, y: anim.y, rotate: anim.rotate, scale: anim.scale }
+              }
+              animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -24 }}
+              transition={{ duration: reduceMotion ? 0.15 : 0.4, ease: "easeOut" }}
+            >
+              {page.illustration_url && (
+                <motion.div
+                  className="clay-inset relative mb-6 aspect-video w-full overflow-hidden bg-clay-cream"
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.94 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.12, ease: "easeOut" }}
+                >
+                  <Image
+                    src={page.illustration_url}
+                    alt={`Ilustrasi halaman ${page.page_number}`}
+                    fill
+                    className="object-cover"
+                  />
+                </motion.div>
+              )}
 
-        {page.audio_url && (
-          <audio controls src={page.audio_url} className="mb-6 w-full">
-            Browser-mu tidak mendukung pemutar audio.
-          </audio>
-        )}
+              {page.audio_url && (
+                <audio controls src={page.audio_url} className="mb-6 w-full">
+                  Browser-mu tidak mendukung pemutar audio.
+                </audio>
+              )}
 
-        {isHtml(page.content) ? (
-          <div
-            className="rich-content font-serif text-lg leading-relaxed text-clay-ink md:text-xl"
-            dangerouslySetInnerHTML={{ __html: sanitizeRichText(page.content) }}
-          />
-        ) : (
-          <p className="whitespace-pre-line font-serif text-lg leading-relaxed text-clay-ink md:text-xl">
-            {page.content}
-          </p>
-        )}
+              <ReadAloudText key={page.id} content={page.content} />
 
-        {page.character_values && (
-          <div className="clay-sm mt-6 flex items-start gap-3 bg-clay-sun/20 p-4">
-            <span className="clay-sm grid size-9 shrink-0 place-items-center bg-clay-sun text-clay-ink">
-              <Sparkles className="size-5" />
-            </span>
-            <div>
-              <p className="font-mono text-xs font-black uppercase tracking-wider text-clay-ink/60">
-                Nilai Karakter
-              </p>
-              <p className="mt-1 font-semibold text-clay-ink">{page.character_values}</p>
-            </div>
-          </div>
-        )}
-      </article>
+              {page.character_values && (
+                <div className="clay-sm mt-6 flex items-start gap-3 bg-clay-sun/20 p-4">
+                  <span className="clay-sm grid size-9 shrink-0 place-items-center bg-clay-sun text-clay-ink">
+                    <Sparkles className="size-5" />
+                  </span>
+                  <div>
+                    <p className="font-mono text-xs font-black uppercase tracking-wider text-clay-ink/60">
+                      Nilai Karakter
+                    </p>
+                    <p className="mt-1 font-semibold text-clay-ink">{page.character_values}</p>
+                  </div>
+                </div>
+              )}
+            </motion.article>
+          );
+        })()}
+      </AnimatePresence>
 
       {/* Navigasi */}
       <div className="mt-5 flex items-center justify-between gap-3">

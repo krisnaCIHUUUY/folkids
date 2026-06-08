@@ -1,7 +1,7 @@
 # Status Fitur — Wayang Folkids
 
 Daftar fitur proyek berdasarkan [`Folkids_prd.md`](./Folkids_prd.md) beserta status
-pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
+pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 
 **Legenda:** ✅ selesai · 🟡 sebagian · ⬜ belum dikerjakan
 
@@ -31,8 +31,8 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
 - [x] ✅ Baca per-halaman + navigasi + progres tersimpan — `src/components/siswa/story-reader.tsx`
 - [x] ✅ Audio narasi per halaman (pemutar `<audio>` bila ada `audio_url`)
 - [x] ✅ Panel nilai karakter per halaman
-- [ ] ⬜ Text-to-speech otomatis + highlight teks
-- [ ] ⬜ Animasi wayang (Framer Motion)
+- [x] ✅ Text-to-speech ("Bacakan") + highlight kata mengikuti bacaan (Web Speech API, suara id-ID) — `src/components/siswa/read-aloud.tsx`
+- [x] ✅ Animasi transisi halaman (Framer Motion, hormati `prefers-reduced-motion`) — `src/components/siswa/story-reader.tsx`
 
 ### 3. Game & Kuis Literasi
 - [x] ✅ Kuis 4 tipe: pilihan ganda, benar/salah, isian, mencocokkan — `src/app/(siswa)/kuis/[id]`
@@ -87,7 +87,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 31 Mei 2026).
 |------|-------------|--------|
 | 1 — Foundation | Setup, Supabase, schema, RLS, CRUD users & classes | ✅ Selesai |
 | 2 — CMS & Konten | CMS cerita + media upload + story reader | ✅ Selesai |
-| 3 — Interaktif & Asesmen | Audio narasi, animasi, kuis & scoring | 🟡 Sebagian (audio + kuis ✅; animasi/TTS ⬜) |
+| 3 — Interaktif & Asesmen | Audio narasi, animasi, kuis & scoring | ✅ Selesai (audio, TTS+highlight, animasi transisi, kuis & scoring) |
 | 4 — Dashboard & Analytics | Dashboard guru & admin | 🟡 Sebagian (guru ✅; admin ⬜) |
 | 5 — Polish & Launch | Refinement, testing, deploy, domain | ⬜ Belum |
 
