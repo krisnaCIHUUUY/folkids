@@ -74,7 +74,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 ### 7. Manajemen Pengguna
 - [x] ✅ Tambah/edit/nonaktifkan akun guru & siswa — `src/app/(admin)/pengguna`, `src/lib/actions/admin-users.ts`
 - [x] ✅ Reset password pengguna (admin set password langsung) — `src/components/admin/reset-password-button.tsx`
-- [ ] ⬜ Atur kelas & kelompok belajar (sisi admin)
+
 
 ### 8. Dashboard Admin
 - [x] ✅ Statistik keseluruhan (pengguna per role + aktif/nonaktif, cerita/kuis/kelas, engagement) — `src/app/(admin)/admin`, `src/components/admin/admin-stats.tsx`
@@ -99,6 +99,6 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 - [x] ✅ Game literasi & poin — 3 game + `totalPoin`/`gameDimainkan` beranda kini nyata (lihat §3.1 #3)
 - [x] ✅ Leaderboard kelas — Poin Literasi gabungan (lihat §3.1 #3)
 - [ ] ⬜ Badge/lencana siswa (masih mock)
-- [ ] ⬜ Penugasan guru (assignment) dengan tenggat — kini "Tugas untukmu" diturunkan dari aktivitas
+- [x] ✅ Penugasan guru (assignment) dengan tenggat — guru beri tugas baca/kuis per kelas (`/tugas`), siswa lihat di "Tugas untukmu" dgn status & tenggat — `supabase/migrations/00000000000019_assignments.sql`, `src/lib/actions/assignments.ts`, `src/components/guru/assignment-form.tsx`
 - [ ] ⬜ Animasi wayang interaktif
-- [ ] ⬜ Notifikasi (lonceng navbar masih placeholder)
+- [x] ✅ Notifikasi — lonceng nyata (siswa & guru): tugas baru, kuis dinilai, pengumuman; tandai dibaca — `src/components/notifications/notification-bell.tsx`, `src/lib/notifications.ts`, RPC fan-out (SECURITY DEFINER)

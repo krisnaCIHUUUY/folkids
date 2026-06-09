@@ -2,12 +2,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
-import { NotificationBell } from "@/components/guru/notification-bell";
-import { notifications } from "@/lib/mock/guru-dashboard";
+import { NotificationBell } from "@/components/notifications/notification-bell";
+import { getMyNotifications } from "@/lib/notifications";
 import type { CurrentUser } from "@/lib/auth";
 
-export function GuruNavbar({ user }: { user: CurrentUser }) {
+export async function GuruNavbar({ user }: { user: CurrentUser }) {
   const initial = user.name.charAt(0).toUpperCase();
+  const notifications = await getMyNotifications();
 
   return (
     <header className="sticky top-0 z-50 bg-clay-cream/85 backdrop-blur-md">
@@ -46,6 +47,12 @@ export function GuruNavbar({ user }: { user: CurrentUser }) {
           >
             Asesmen
           </Link>
+          <Link
+            href="/tugas"
+            className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
+          >
+            Tugas
+          </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-3">
@@ -57,7 +64,7 @@ export function GuruNavbar({ user }: { user: CurrentUser }) {
             <Search className="size-5" />
           </button>
 
-          <NotificationBell notifications={notifications} />
+          <NotificationBell items={notifications} />
 
           <div className="hidden text-right md:block">
             <p className="text-sm font-black leading-tight">{user.name}</p>

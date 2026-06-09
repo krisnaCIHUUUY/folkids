@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { X } from "lucide-react";
 
 export function AuthShell({
   title,
@@ -12,7 +13,15 @@ export function AuthShell({
   footer?: React.ReactNode;
 }) {
   return (
-    <div className="clay w-full max-w-md bg-white p-7 md:p-8">
+    <div className="clay relative w-full max-w-md bg-white p-7 md:p-8">
+      {/* Tombol tutup → kembali ke landing page */}
+      <Link
+        href="/"
+        aria-label="Kembali ke beranda"
+        className="clay-sm absolute right-4 top-4 grid size-9 place-items-center bg-clay-cream text-clay-ink/70 transition hover:[transform:translateY(-2px)] hover:text-clay-ink active:[transform:translateY(1px)]"
+      >
+        <X className="size-5" />
+      </Link>
       <div className="flex flex-col items-center text-center">
         <Link href="/" className="flex items-center gap-3">
           <span className="clay-sm grid size-12 place-items-center bg-clay-sun text-2xl">

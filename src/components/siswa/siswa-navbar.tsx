@@ -1,11 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Bell, Users, BookOpen, Home, Gamepad2, Trophy } from "lucide-react";
+import { Search, Users, BookOpen, Home, Gamepad2, Trophy } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
+import { NotificationBell } from "@/components/notifications/notification-bell";
+import { getMyNotifications } from "@/lib/notifications";
 import type { CurrentUser } from "@/lib/auth";
 
-export function SiswaNavbar({ user }: { user: CurrentUser }) {
+export async function SiswaNavbar({ user }: { user: CurrentUser }) {
   const initial = user.name.charAt(0).toUpperCase();
+  const notifications = await getMyNotifications();
 
   return (
     <header className="sticky top-0 z-50 bg-clay-cream/85 backdrop-blur-md">
@@ -59,14 +62,7 @@ export function SiswaNavbar({ user }: { user: CurrentUser }) {
           />
         </div>
 
-        <button
-          type="button"
-          aria-label="Notifikasi"
-          className="clay-sm relative grid size-11 shrink-0 place-items-center bg-white text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
-        >
-          <Bell className="size-5" />
-          <span className="absolute right-2.5 top-2.5 size-2.5 rounded-full bg-clay-coral ring-2 ring-white" />
-        </button>
+        <NotificationBell items={notifications} />
 
         <div className="flex shrink-0 items-center gap-3">
           <div className="hidden text-right md:block">

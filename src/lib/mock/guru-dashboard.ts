@@ -7,13 +7,6 @@ export type GuruMetrics = {
   kelasAktif: number;
 };
 
-export type GuruNotification = {
-  id: string;
-  text: string;
-  time: string;
-  unread: boolean;
-};
-
 export type ClassAccent = "sky" | "blue" | "lavender";
 
 export type ClassSummary = {
@@ -70,27 +63,6 @@ export const metrics: GuruMetrics = {
   kuisDibuat: 24,
   kelasAktif: 3,
 };
-
-export const notifications: GuruNotification[] = [
-  {
-    id: "n1",
-    text: "Andi menyelesaikan kuis “Timun Mas” dengan nilai 90.",
-    time: "5 menit lalu",
-    unread: true,
-  },
-  {
-    id: "n2",
-    text: "5 siswa Kelas 4A belum mengerjakan tugas “Malin Kundang”.",
-    time: "1 jam lalu",
-    unread: true,
-  },
-  {
-    id: "n3",
-    text: "Cerita “Sangkuriang” telah disetujui dan dipublikasikan.",
-    time: "Kemarin",
-    unread: false,
-  },
-];
 
 export const classes: ClassSummary[] = [
   {

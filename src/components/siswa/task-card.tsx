@@ -1,35 +1,45 @@
 import Link from "next/link";
-import { PlayCircle, ListChecks } from "lucide-react";
+import { PlayCircle, ListChecks, CheckCircle2, CalendarClock } from "lucide-react";
 
 export type StudentTask = {
   id: string;
   kind: "baca" | "kuis";
-  storyTitle: string;
+  title: string;
+  contentTitle: string;
   href: string;
+  dueAt: string | null;
+  done: boolean;
 };
 
 const KIND_CONFIG = {
   baca: {
     border: "border-l-clay-sun",
     pill: "bg-clay-sun text-clay-ink",
-    label: "Lanjutkan membaca",
+    label: "Membaca",
     icon: PlayCircle,
-    action: "Lanjutkan",
-    heading: "Lanjutkan Membaca",
+    action: "Baca",
   },
   kuis: {
     border: "border-l-clay-blue",
     pill: "bg-clay-sky text-clay-ink",
-    label: "Belum dikerjakan",
+    label: "Kuis",
     icon: ListChecks,
     action: "Kerjakan",
-    heading: "Kerjakan Kuis",
   },
 } as const;
+
+function dueInfo(iso: string): { label: string; overdue: boolean } {
+  const due = new Date(iso);
+  return {
+    label: due.toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
+    overdue: due.getTime() < Date.now(),
+  };
+}
 
 export function TaskCard({ task }: { task: StudentTask }) {
   const cfg = KIND_CONFIG[task.kind];
   const Icon = cfg.icon;
+  const due = task.dueAt ? dueInfo(task.dueAt) : null;
 
   return (
     <article
@@ -42,21 +52,42 @@ export function TaskCard({ task }: { task: StudentTask }) {
           <Icon className="size-3.5" />
           {cfg.label}
         </span>
+        {task.done ? (
+          <span className="inline-flex items-center gap-1 font-mono text-[11px] font-bold uppercase tracking-wider text-clay-mint">
+            <CheckCircle2 className="size-3.5" /> Selesai
+          </span>
+        ) : (
+          due && (
+            <span
+              className={`inline-flex items-center gap-1 font-mono text-[11px] font-bold ${
+                due.overdue ? "text-clay-coral" : "text-clay-ink/55"
+              }`}
+            >
+              <CalendarClock className="size-3.5" />
+              {due.overdue ? "Lewat " : ""}
+              {due.label}
+            </span>
+          )
+        )}
       </div>
       <div>
         <h3 className="font-serif text-lg font-bold leading-snug text-clay-ink">
-          {cfg.heading}
+          {task.title}
         </h3>
         <p className="mt-1 text-sm font-semibold text-clay-ink/65">
-          Cerita: {task.storyTitle}
+          {task.kind === "baca" ? "Cerita" : "Kuis"}: {task.contentTitle}
         </p>
       </div>
       <div className="mt-auto flex items-center justify-end pt-2">
         <Link
           href={task.href}
-          className="clay-sm bg-clay-rose px-4 py-2 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
+          className={`clay-sm px-4 py-2 text-sm font-black transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)] ${
+            task.done
+              ? "bg-clay-cream text-clay-ink/70"
+              : "bg-clay-rose text-white"
+          }`}
         >
-          {cfg.action}
+          {task.done ? "Lihat" : cfg.action}
         </Link>
       </div>
     </article>
