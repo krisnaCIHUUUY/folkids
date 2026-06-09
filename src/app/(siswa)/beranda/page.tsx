@@ -19,24 +19,33 @@ export default async function BerandaPage() {
 
   const supabase = await createClient();
   // RLS otomatis membatasi siswa ke konten published & milik sendiri.
-  const [storiesRes, pagesRes, progressRes, quizzesRes, attemptsRes, gamePlaysRes] =
-    await Promise.all([
-      supabase
-        .from("stories")
-        .select("id, title, region_origin, difficulty, cover_image_url")
-        .order("created_at", { ascending: false }),
-      supabase.from("story_pages").select("story_id"),
-      supabase
-        .from("reading_progress")
-        .select("story_id, last_page_read, is_completed")
-        .eq("student_id", user!.id),
-      supabase.from("quizzes").select("id, title, story_id"),
-      supabase.from("quiz_attempts").select("quiz_id").eq("student_id", user!.id),
-      supabase.from("game_plays").select("game, points").eq("student_id", user!.id),
-    ]);
+  const [
+    storiesRes,
+    pagesRes,
+    progressRes,
+    attemptsRes,
+    gamePlaysRes,
+    assignmentsRes,
+  ] = await Promise.all([
+    supabase
+      .from("stories")
+      .select("id, title, region_origin, difficulty, cover_image_url")
+      .order("created_at", { ascending: false }),
+    supabase.from("story_pages").select("story_id"),
+    supabase
+      .from("reading_progress")
+      .select("story_id, last_page_read, is_completed")
+      .eq("student_id", user!.id),
+    supabase.from("quiz_attempts").select("quiz_id").eq("student_id", user!.id),
+    supabase.from("game_plays").select("game, points").eq("student_id", user!.id),
+    // RLS membatasi assignments ke kelas tempat siswa tergabung.
+    supabase
+      .from("assignments")
+      .select("id, kind, title, due_at, story_id, quiz_id, stories(title), quizzes(title)")
+      .order("due_at", { ascending: true, nullsFirst: false }),
+  ]);
 
   const stories = storiesRes.data ?? [];
-  const storyTitle = new Map(stories.map((s) => [s.id, s.title]));
 
   const pageCount = new Map<number, number>();
   for (const p of pagesRes.data ?? []) {
@@ -70,30 +79,36 @@ export default async function BerandaPage() {
     };
   });
 
-  // "Tugas untukmu" (diturunkan): lanjut baca cerita yang belum selesai +
-  // kerjakan kuis dari cerita yang sudah selesai dibaca tapi belum dikerjakan.
-  const bacaTasks: StudentTask[] = (progressRes.data ?? [])
-    .filter((p) => !p.is_completed && p.last_page_read > 0 && storyTitle.has(p.story_id))
-    .map((p) => ({
-      id: `baca-${p.story_id}`,
-      kind: "baca" as const,
-      storyTitle: storyTitle.get(p.story_id)!,
-      href: `/cerita/${p.story_id}`,
-    }));
-
+  // "Tugas untukmu": tugas nyata dari guru untuk kelas siswa. Status selesai
+  // dihitung dari progres baca (cerita selesai) / percobaan kuis (sudah dikerjakan).
   const completedStories = new Set(
     (progressRes.data ?? []).filter((p) => p.is_completed).map((p) => p.story_id),
   );
-  const kuisTasks: StudentTask[] = (quizzesRes.data ?? [])
-    .filter((q) => completedStories.has(q.story_id) && !attemptedQuizzes.has(q.id))
-    .map((q) => ({
-      id: `kuis-${q.id}`,
-      kind: "kuis" as const,
-      storyTitle: storyTitle.get(q.story_id) ?? q.title,
-      href: `/kuis/${q.id}`,
-    }));
 
-  const tasks = [...bacaTasks, ...kuisTasks].slice(0, TASK_LIMIT);
+  const embeddedTitle = (rel: { title: string } | { title: string }[] | null) =>
+    !rel ? "" : Array.isArray(rel) ? (rel[0]?.title ?? "") : rel.title;
+
+  const tasks: StudentTask[] = (assignmentsRes.data ?? [])
+    .map((a) => {
+      const done =
+        a.kind === "baca"
+          ? a.story_id != null && completedStories.has(a.story_id)
+          : a.quiz_id != null && attemptedQuizzes.has(a.quiz_id);
+      return {
+        id: `tugas-${a.id}`,
+        kind: a.kind,
+        title: a.title,
+        contentTitle:
+          a.kind === "baca" ? embeddedTitle(a.stories) : embeddedTitle(a.quizzes),
+        href:
+          a.kind === "baca" ? `/cerita/${a.story_id}` : `/kuis/${a.quiz_id}`,
+        dueAt: a.due_at,
+        done,
+      };
+    })
+    // Belum selesai dulu, lalu yang sudah selesai.
+    .sort((x, y) => Number(x.done) - Number(y.done))
+    .slice(0, TASK_LIMIT);
 
   // Metrik nyata dari data siswa (menggantikan angka mock).
   const gamePlays = gamePlaysRes.data ?? [];

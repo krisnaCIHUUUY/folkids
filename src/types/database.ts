@@ -14,6 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
+      assignments: {
+        Row: {
+          class_id: number
+          created_at: string
+          created_by: string
+          due_at: string | null
+          id: number
+          instructions: string | null
+          kind: Database["public"]["Enums"]["assignment_kind"]
+          quiz_id: number | null
+          story_id: number | null
+          title: string
+        }
+        Insert: {
+          class_id: number
+          created_at?: string
+          created_by: string
+          due_at?: string | null
+          id?: never
+          instructions?: string | null
+          kind: Database["public"]["Enums"]["assignment_kind"]
+          quiz_id?: number | null
+          story_id?: number | null
+          title: string
+        }
+        Update: {
+          class_id?: number
+          created_at?: string
+          created_by?: string
+          due_at?: string | null
+          id?: never
+          instructions?: string | null
+          kind?: Database["public"]["Enums"]["assignment_kind"]
+          quiz_id?: number | null
+          story_id?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assignments_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignments_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "assignments_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       class_students: {
         Row: {
           class_id: number
@@ -120,6 +188,47 @@ export type Database = {
           {
             foreignKeyName: "game_plays_student_id_fkey"
             columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: number
+          link: string | null
+          read_at: string | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: never
+          link?: string | null
+          read_at?: string | null
+          title: string
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: never
+          link?: string | null
+          read_at?: string | null
+          title?: string
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
@@ -447,6 +556,18 @@ export type Database = {
           total_points: number
         }[]
       }
+      create_assignment: {
+        Args: {
+          p_class_id: number
+          p_due_at: string
+          p_instructions: string
+          p_kind: Database["public"]["Enums"]["assignment_kind"]
+          p_quiz_id: number
+          p_story_id: number
+          p_title: string
+        }
+        Returns: number
+      }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
@@ -468,14 +589,20 @@ export type Database = {
         Args: { p_direction: string; p_page_id: number }
         Returns: undefined
       }
+      send_announcement: {
+        Args: { p_body: string; p_class_id: number; p_title: string }
+        Returns: number
+      }
       submit_quiz_attempt: {
         Args: { p_answers: Json; p_quiz_id: number }
         Returns: Json
       }
     }
     Enums: {
+      assignment_kind: "baca" | "kuis"
       difficulty: "mudah" | "sedang" | "sulit"
       game_type: "tangkap_kata" | "susun_kata" | "ketik_cepat"
+      notification_type: "tugas_baru" | "kuis_dinilai" | "pengumuman"
       question_type: "pilihan_ganda" | "benar_salah" | "isian" | "mencocokkan"
       user_role: "admin" | "guru" | "siswa"
     }
@@ -605,8 +732,10 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      assignment_kind: ["baca", "kuis"],
       difficulty: ["mudah", "sedang", "sulit"],
       game_type: ["tangkap_kata", "susun_kata", "ketik_cepat"],
+      notification_type: ["tugas_baru", "kuis_dinilai", "pengumuman"],
       question_type: ["pilihan_ganda", "benar_salah", "isian", "mencocokkan"],
       user_role: ["admin", "guru", "siswa"],
     },
