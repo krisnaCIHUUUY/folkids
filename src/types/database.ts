@@ -502,6 +502,7 @@ export type Database = {
           illustration_url: string | null
           page_number: number
           story_id: number
+          video_url: string | null
         }
         Insert: {
           animation_data?: Json | null
@@ -513,6 +514,7 @@ export type Database = {
           illustration_url?: string | null
           page_number: number
           story_id: number
+          video_url?: string | null
         }
         Update: {
           animation_data?: Json | null
@@ -524,6 +526,7 @@ export type Database = {
           illustration_url?: string | null
           page_number?: number
           story_id?: number
+          video_url?: string | null
         }
         Relationships: [
           {

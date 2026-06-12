@@ -15,6 +15,7 @@ export type ReaderPage = {
   content: string;
   illustration_url: string | null;
   audio_url: string | null;
+  video_url: string | null;
   character_values: string | null;
   animation_data: Json | null;
 };
@@ -138,6 +139,16 @@ export function StoryReader({
                 <audio controls src={page.audio_url} className="mb-6 w-full">
                   Browser-mu tidak mendukung pemutar audio.
                 </audio>
+              )}
+
+              {page.video_url && (
+                <video
+                  controls
+                  src={page.video_url}
+                  className="clay-inset mb-6 aspect-video w-full bg-black"
+                >
+                  Browser-mu tidak mendukung pemutar video.
+                </video>
               )}
 
               <ReadAloudText key={page.id} content={page.content} />

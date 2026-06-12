@@ -32,7 +32,7 @@ export default async function CeritaPage({
   const [pagesRes, quizzesRes, progressRes, attemptsRes] = await Promise.all([
     supabase
       .from("story_pages")
-      .select("id, page_number, content, illustration_url, audio_url, character_values, animation_data")
+      .select("id, page_number, content, illustration_url, audio_url, video_url, character_values, animation_data")
       .eq("story_id", storyId)
       .order("page_number", { ascending: true }),
     supabase.from("quizzes").select("id, title").eq("story_id", storyId),

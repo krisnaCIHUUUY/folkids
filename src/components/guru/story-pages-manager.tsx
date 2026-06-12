@@ -29,6 +29,7 @@ export type PageData = {
   content: string;
   illustration_url: string | null;
   audio_url: string | null;
+  video_url: string | null;
   character_values: string | null;
 };
 
@@ -191,6 +192,7 @@ export function StoryPagesManager({
                     content: editing.content,
                     illustration_url: editing.illustration_url ?? "",
                     audio_url: editing.audio_url ?? "",
+                    video_url: editing.video_url ?? "",
                     character_values: editing.character_values ?? "",
                   }
                 : undefined

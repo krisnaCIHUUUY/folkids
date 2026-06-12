@@ -39,6 +39,7 @@ export function PageForm({
       content: defaultValues?.content ?? "",
       illustration_url: defaultValues?.illustration_url ?? "",
       audio_url: defaultValues?.audio_url ?? "",
+      video_url: defaultValues?.video_url ?? "",
       character_values: defaultValues?.character_values ?? "",
     },
   });
@@ -102,6 +103,24 @@ export function PageForm({
                 <MediaUploader
                   kind="audio"
                   label="Audio Narasi"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage className="text-clay-coral" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="video_url"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <MediaUploader
+                  kind="video"
+                  label="Video Pendukung (opsional)"
                   value={field.value ?? ""}
                   onChange={field.onChange}
                 />
