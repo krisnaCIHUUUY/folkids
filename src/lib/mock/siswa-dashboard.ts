@@ -41,14 +41,6 @@ export type DashboardGame = {
   status: GameStatus;
 };
 
-export type DashboardBadge = {
-  id: string;
-  name: string;
-  description: string;
-  emoji: string;
-  unlocked: boolean;
-};
-
 export const metrics: DashboardMetrics = {
   ceritaDibaca: 12,
   gameDimainkan: 8,
@@ -153,33 +145,3 @@ export const games: DashboardGame[] = [
   },
 ];
 
-export const badges: DashboardBadge[] = [
-  {
-    id: "b1",
-    name: "Pembaca Pemula",
-    description: "Selesaikan 5 cerita",
-    emoji: "📖",
-    unlocked: true,
-  },
-  {
-    id: "b2",
-    name: "Sahabat Wayang",
-    description: "Mainkan 5 game",
-    emoji: "🎭",
-    unlocked: true,
-  },
-  {
-    id: "b3",
-    name: "Juara Kuis",
-    description: "Dapatkan skor sempurna 3x",
-    emoji: "🏆",
-    unlocked: false,
-  },
-  {
-    id: "b4",
-    name: "Penjelajah Nusantara",
-    description: "Baca cerita dari 10 daerah",
-    emoji: "🗺️",
-    unlocked: false,
-  },
-];

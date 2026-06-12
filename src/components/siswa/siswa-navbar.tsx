@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Users, BookOpen, Home, Gamepad2, Trophy } from "lucide-react";
+import { Search, Users, BookOpen, Home, Gamepad2, Trophy, Award } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { getMyNotifications } from "@/lib/notifications";
@@ -45,6 +45,12 @@ export async function SiswaNavbar({ user }: { user: CurrentUser }) {
           className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
         >
           <Trophy className="size-4" /> Peringkat
+        </Link>
+        <Link
+          href="/lencana"
+          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
+        >
+          <Award className="size-4" /> Lencana
         </Link>
         <Link
           href="/gabung-kelas"

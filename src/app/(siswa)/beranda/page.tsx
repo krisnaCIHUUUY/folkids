@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { badges, type DashboardMetrics } from "@/lib/mock/siswa-dashboard";
+import { type DashboardMetrics } from "@/lib/mock/siswa-dashboard";
+import { getMyBadges } from "@/lib/badges";
 import type { GameKey } from "@/lib/games/config";
 import { ProgressSummaryCard } from "@/components/siswa/progress-summary-card";
 import { AssignedTaskSection } from "@/components/siswa/assigned-task-section";
@@ -26,6 +27,7 @@ export default async function BerandaPage() {
     attemptsRes,
     gamePlaysRes,
     assignmentsRes,
+    myBadges,
   ] = await Promise.all([
     supabase
       .from("stories")
@@ -43,6 +45,8 @@ export default async function BerandaPage() {
       .from("assignments")
       .select("id, kind, title, due_at, story_id, quiz_id, stories(title), quizzes(title)")
       .order("due_at", { ascending: true, nullsFirst: false }),
+    // Katalog lencana + status perolehan siswa (RLS membatasi ke milik sendiri).
+    getMyBadges(),
   ]);
 
   const stories = storiesRes.data ?? [];
@@ -125,7 +129,7 @@ export default async function BerandaPage() {
       <AssignedTaskSection tasks={tasks} />
       <StoryCardGrid stories={storyGrid} />
       <GameCardRow played={playedGames} />
-      <BadgeCollection badges={badges} />
+      <BadgeCollection badges={myBadges} />
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
   ClipboardList,
   ListChecks,
   Megaphone,
+  Award,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ const TYPE_ICON: Record<NotificationType, LucideIcon> = {
   tugas_baru: ClipboardList,
   kuis_dinilai: ListChecks,
   pengumuman: Megaphone,
+  badge_baru: Award,
 };
 
 // Format waktu relatif sederhana berbahasa Indonesia.
