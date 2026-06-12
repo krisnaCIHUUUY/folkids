@@ -1,8 +1,8 @@
 import { Trophy, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { DashboardBadge } from "@/lib/mock/siswa-dashboard";
+import type { BadgeItem } from "@/lib/badges";
 
-function BadgeItem({ badge }: { badge: DashboardBadge }) {
+function BadgeCard({ badge }: { badge: BadgeItem }) {
   const { unlocked } = badge;
 
   return (
@@ -37,7 +37,7 @@ function BadgeItem({ badge }: { badge: DashboardBadge }) {
   );
 }
 
-export function BadgeCollection({ badges }: { badges: DashboardBadge[] }) {
+export function BadgeCollection({ badges }: { badges: BadgeItem[] }) {
   return (
     <section className="mt-10">
       <div className="flex items-center gap-3">
@@ -51,7 +51,7 @@ export function BadgeCollection({ badges }: { badges: DashboardBadge[] }) {
 
       <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
         {badges.map((badge) => (
-          <BadgeItem key={badge.id} badge={badge} />
+          <BadgeCard key={badge.id} badge={badge} />
         ))}
       </div>
     </section>

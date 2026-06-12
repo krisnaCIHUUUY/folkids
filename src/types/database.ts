@@ -82,6 +82,36 @@ export type Database = {
           },
         ]
       }
+      badges: {
+        Row: {
+          category: Database["public"]["Enums"]["badge_category"]
+          code: string
+          description: string
+          emoji: string
+          id: number
+          name: string
+          sort_order: number
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["badge_category"]
+          code: string
+          description: string
+          emoji: string
+          id?: never
+          name: string
+          sort_order?: number
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["badge_category"]
+          code?: string
+          description?: string
+          emoji?: string
+          id?: never
+          name?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       class_students: {
         Row: {
           class_id: number
@@ -505,6 +535,42 @@ export type Database = {
           },
         ]
       }
+      student_badges: {
+        Row: {
+          badge_id: number
+          earned_at: string
+          id: number
+          student_id: string
+        }
+        Insert: {
+          badge_id: number
+          earned_at?: string
+          id?: never
+          student_id: string
+        }
+        Update: {
+          badge_id?: number
+          earned_at?: string
+          id?: never
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_badges_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           avatar_url: string | null
@@ -572,6 +638,7 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
       }
+      evaluate_badges: { Args: { p_student: string }; Returns: undefined }
       generate_class_code: { Args: never; Returns: string }
       is_class_member: { Args: { p_class_id: number }; Returns: boolean }
       is_class_teacher: { Args: { p_class_id: number }; Returns: boolean }
@@ -600,9 +667,14 @@ export type Database = {
     }
     Enums: {
       assignment_kind: "baca" | "kuis"
+      badge_category: "membaca" | "kuis" | "game"
       difficulty: "mudah" | "sedang" | "sulit"
       game_type: "tangkap_kata" | "susun_kata" | "ketik_cepat"
-      notification_type: "tugas_baru" | "kuis_dinilai" | "pengumuman"
+      notification_type:
+        | "tugas_baru"
+        | "kuis_dinilai"
+        | "pengumuman"
+        | "badge_baru"
       question_type: "pilihan_ganda" | "benar_salah" | "isian" | "mencocokkan"
       user_role: "admin" | "guru" | "siswa"
     }
@@ -733,9 +805,15 @@ export const Constants = {
   public: {
     Enums: {
       assignment_kind: ["baca", "kuis"],
+      badge_category: ["membaca", "kuis", "game"],
       difficulty: ["mudah", "sedang", "sulit"],
       game_type: ["tangkap_kata", "susun_kata", "ketik_cepat"],
-      notification_type: ["tugas_baru", "kuis_dinilai", "pengumuman"],
+      notification_type: [
+        "tugas_baru",
+        "kuis_dinilai",
+        "pengumuman",
+        "badge_baru",
+      ],
       question_type: ["pilihan_ganda", "benar_salah", "isian", "mencocokkan"],
       user_role: ["admin", "guru", "siswa"],
     },

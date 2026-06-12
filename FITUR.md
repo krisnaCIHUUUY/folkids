@@ -89,7 +89,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 | 1 — Foundation | Setup, Supabase, schema, RLS, CRUD users & classes | ✅ Selesai |
 | 2 — CMS & Konten | CMS cerita + media upload + story reader | ✅ Selesai |
 | 3 — Interaktif & Asesmen | Audio narasi, animasi, kuis & scoring | ✅ Selesai (audio, TTS+highlight, animasi transisi, kuis & scoring) |
-| 4 — Dashboard & Analytics | Dashboard guru & admin | 🟡 Sebagian (guru ✅; admin ⬜) |
+| 4 — Dashboard & Analytics | Dashboard guru & admin | ✅ Selesai (guru ✅; admin ✅ — statistik + monitoring aktivitas data nyata) |
 | 5 — Polish & Launch | Refinement, testing, deploy, domain | ⬜ Belum |
 
 ---
@@ -98,7 +98,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 
 - [x] ✅ Game literasi & poin — 3 game + `totalPoin`/`gameDimainkan` beranda kini nyata (lihat §3.1 #3)
 - [x] ✅ Leaderboard kelas — Poin Literasi gabungan (lihat §3.1 #3)
-- [ ] ⬜ Badge/lencana siswa (masih mock)
+- [x] ✅ Badge/lencana siswa — 9 lencana (membaca/kuis/game) di-award OTOMATIS via trigger DB + notifikasi 'badge_baru'; tampil di beranda & halaman khusus `/lencana` — `supabase/migrations/00000000000022_badges.sql`, `src/lib/badges.ts`, `src/app/(siswa)/lencana/page.tsx`
 - [x] ✅ Penugasan guru (assignment) dengan tenggat — guru beri tugas baca/kuis per kelas (`/tugas`), siswa lihat di "Tugas untukmu" dgn status & tenggat — `supabase/migrations/00000000000019_assignments.sql`, `src/lib/actions/assignments.ts`, `src/components/guru/assignment-form.tsx`
 - [ ] ⬜ Animasi wayang interaktif
 - [x] ✅ Notifikasi — lonceng nyata (siswa & guru): tugas baru, kuis dinilai, pengumuman; tandai dibaca — `src/components/notifications/notification-bell.tsx`, `src/lib/notifications.ts`, RPC fan-out (SECURITY DEFINER)
