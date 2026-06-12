@@ -19,6 +19,7 @@ export const BADGE_CATEGORY_LABEL: Record<BadgeCategory, string> = {
   membaca: "Membaca",
   kuis: "Kuis",
   game: "Game",
+  milestone: "Pencapaian",
 };
 
 // Ambil seluruh katalog lencana + status perolehan milik user yang login.

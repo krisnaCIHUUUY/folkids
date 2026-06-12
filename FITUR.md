@@ -98,7 +98,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 
 - [x] ✅ Game literasi & poin — 3 game + `totalPoin`/`gameDimainkan` beranda kini nyata (lihat §3.1 #3)
 - [x] ✅ Leaderboard kelas — Poin Literasi gabungan (lihat §3.1 #3)
-- [x] ✅ Badge/lencana siswa — 9 lencana (membaca/kuis/game) di-award OTOMATIS via trigger DB + notifikasi 'badge_baru'; tampil di beranda & halaman khusus `/lencana` — `supabase/migrations/00000000000022_badges.sql`, `src/lib/badges.ts`, `src/app/(siswa)/lencana/page.tsx`
+- [x] ✅ Badge/lencana siswa — 10 lencana (membaca/kuis/game + milestone "Bintang Literasi") di-award OTOMATIS via trigger DB + notifikasi 'badge_baru'; tampil di beranda & halaman khusus `/lencana` — `supabase/migrations/00000000000022_badges.sql`, `supabase/migrations/00000000000024_badge_bintang_literasi.sql`, `src/lib/badges.ts`, `src/app/(siswa)/lencana/page.tsx`
 - [x] ✅ Penugasan guru (assignment) dengan tenggat — guru beri tugas baca/kuis per kelas (`/tugas`), siswa lihat di "Tugas untukmu" dgn status & tenggat — `supabase/migrations/00000000000019_assignments.sql`, `src/lib/actions/assignments.ts`, `src/components/guru/assignment-form.tsx`
 - [ ] ⬜ Animasi wayang interaktif
 - [x] ✅ Notifikasi — lonceng nyata (siswa & guru): tugas baru, kuis dinilai, pengumuman; tandai dibaca — `src/components/notifications/notification-bell.tsx`, `src/lib/notifications.ts`, RPC fan-out (SECURITY DEFINER)

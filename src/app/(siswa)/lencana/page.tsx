@@ -7,7 +7,7 @@ import {
   type BadgeItem,
 } from "@/lib/badges";
 
-const CATEGORY_ORDER: BadgeCategory[] = ["membaca", "kuis", "game"];
+const CATEGORY_ORDER: BadgeCategory[] = ["membaca", "kuis", "game", "milestone"];
 
 function BadgeTile({ badge }: { badge: BadgeItem }) {
   const { unlocked } = badge;
