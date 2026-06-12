@@ -667,7 +667,7 @@ export type Database = {
     }
     Enums: {
       assignment_kind: "baca" | "kuis"
-      badge_category: "membaca" | "kuis" | "game"
+      badge_category: "membaca" | "kuis" | "game" | "milestone"
       difficulty: "mudah" | "sedang" | "sulit"
       game_type: "tangkap_kata" | "susun_kata" | "ketik_cepat"
       notification_type:
@@ -805,7 +805,7 @@ export const Constants = {
   public: {
     Enums: {
       assignment_kind: ["baca", "kuis"],
-      badge_category: ["membaca", "kuis", "game"],
+      badge_category: ["membaca", "kuis", "game", "milestone"],
       difficulty: ["mudah", "sedang", "sulit"],
       game_type: ["tangkap_kata", "susun_kata", "ketik_cepat"],
       notification_type: [
