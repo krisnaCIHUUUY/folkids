@@ -6,92 +6,80 @@ import { NotificationBell } from "@/components/notifications/notification-bell";
 import { getMyNotifications } from "@/lib/notifications";
 import type { CurrentUser } from "@/lib/auth";
 
+const NAV_LINKS = [
+  { href: "/beranda", label: "Beranda", icon: Home },
+  { href: "/perpustakaan", label: "Perpustakaan", icon: BookOpen },
+  { href: "/game", label: "Game", icon: Gamepad2 },
+  { href: "/papan-peringkat", label: "Peringkat", icon: Trophy },
+  { href: "/lencana", label: "Lencana", icon: Award },
+  { href: "/gabung-kelas", label: "Gabung Kelas", icon: Users },
+] as const;
+
 export async function SiswaNavbar({ user }: { user: CurrentUser }) {
   const initial = user.name.charAt(0).toUpperCase();
   const notifications = await getMyNotifications();
 
   return (
     <header className="sticky top-0 z-50 bg-clay-cream/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 md:px-6">
-        <Link href="/beranda" className="flex shrink-0 items-center gap-3">
-          <span className="clay-sm grid size-11 place-items-center bg-clay-sun text-xl">
-            🎭
-          </span>
-          <span className="hidden text-xl font-black tracking-tight sm:inline">
-            Wayang<span className="text-clay-rose">Folkids</span>
-          </span>
-        </Link>
+      <div className="mx-auto max-w-7xl px-4 py-3 md:px-6">
+        {/* Baris atas: identitas, pencarian, dan aksi akun */}
+        <div className="flex items-center gap-3 md:gap-4">
+          <Link href="/beranda" className="flex shrink-0 items-center gap-3">
+            <span className="clay-sm grid size-11 place-items-center bg-clay-sun text-xl">
+              🎭
+            </span>
+            <span className="hidden text-xl font-black tracking-tight sm:inline">
+              Wayang<span className="text-clay-rose">Folkids</span>
+            </span>
+          </Link>
 
-        <Link
-          href="/beranda"
-          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
-        >
-          <Home className="size-4" /> Beranda
-        </Link>
-        <Link
-          href="/perpustakaan"
-          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
-        >
-          <BookOpen className="size-4" /> Perpustakaan
-        </Link>
-        <Link
-          href="/game"
-          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
-        >
-          <Gamepad2 className="size-4" /> Game
-        </Link>
-        <Link
-          href="/papan-peringkat"
-          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
-        >
-          <Trophy className="size-4" /> Peringkat
-        </Link>
-        <Link
-          href="/lencana"
-          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
-        >
-          <Award className="size-4" /> Lencana
-        </Link>
-        <Link
-          href="/gabung-kelas"
-          className="hidden shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink md:inline-flex"
-        >
-          <Users className="size-4" /> Gabung Kelas
-        </Link>
-
-        <div className="relative mx-auto w-full max-w-md">
-          <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-clay-ink/40" />
-          <input
-            type="search"
-            placeholder="Cari cerita atau game…"
-            className="clay-inset w-full bg-white py-2.5 pl-12 pr-4 font-mono text-sm font-medium text-clay-ink outline-none placeholder:text-clay-ink/40 focus:ring-2 focus:ring-clay-rose/50"
-          />
-        </div>
-
-        <NotificationBell items={notifications} />
-
-        <div className="flex shrink-0 items-center gap-3">
-          <div className="hidden text-right md:block">
-            <p className="text-sm font-black leading-tight">{user.name}</p>
-            <p className="font-mono text-xs font-bold uppercase tracking-wider text-clay-ink/55">
-              Siswa
-            </p>
+          <div className="relative mx-auto w-full max-w-md">
+            <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-clay-ink/40" />
+            <input
+              type="search"
+              placeholder="Cari cerita atau game…"
+              className="clay-inset w-full bg-white py-2.5 pl-12 pr-4 font-mono text-sm font-medium text-clay-ink outline-none placeholder:text-clay-ink/40 focus:ring-2 focus:ring-clay-rose/50"
+            />
           </div>
-          <span className="clay-sm grid size-11 shrink-0 place-items-center overflow-hidden bg-clay-lavender text-lg font-black text-clay-ink">
-            {user.avatarUrl ? (
-              <Image
-                src={user.avatarUrl}
-                alt={user.name}
-                width={44}
-                height={44}
-                className="size-full object-cover"
-              />
-            ) : (
-              initial
-            )}
-          </span>
-          <LogoutButton />
+
+          <NotificationBell items={notifications} />
+
+          <div className="flex shrink-0 items-center gap-3">
+            <div className="hidden text-right md:block">
+              <p className="text-sm font-black leading-tight">{user.name}</p>
+              <p className="font-mono text-xs font-bold uppercase tracking-wider text-clay-ink/55">
+                Siswa
+              </p>
+            </div>
+            <span className="clay-sm grid size-11 shrink-0 place-items-center overflow-hidden bg-clay-lavender text-lg font-black text-clay-ink">
+              {user.avatarUrl ? (
+                <Image
+                  src={user.avatarUrl}
+                  alt={user.name}
+                  width={44}
+                  height={44}
+                  className="size-full object-cover"
+                />
+              ) : (
+                initial
+              )}
+            </span>
+            <LogoutButton />
+          </div>
         </div>
+
+        {/* Baris navigasi: dapat di-scroll horizontal di layar kecil */}
+        <nav className="-mx-4 mt-2 flex items-center gap-1 overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden">
+          {NAV_LINKS.map(({ href, label, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
+            >
+              <Icon className="size-4" /> {label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
