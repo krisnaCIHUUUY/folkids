@@ -58,7 +58,7 @@ pengerjaannya. Diturunkan dari kode aktual di branch `main` (per 8 Juni 2026).
 - [x] ✅ Upload media (ilustrasi & audio) ke Supabase Storage — `src/components/guru/media-uploader.tsx`
 - [x] ✅ Tagging: daerah asal, tema karakter, tingkat kesulitan
 - [x] ✅ Editor teks kaya WYSIWYG (bold/italic/heading/list) konten halaman — `src/components/guru/rich-text-editor.tsx` (TipTap, render disanitasi DOMPurify)
-- [ ] ⬜ Upload video pendukung
+- [x] ✅ Upload video pendukung per halaman (MP4/WebM ≤100MB ke bucket `story-media`, diputar di story reader) — `supabase/migrations/00000000000025_story_page_video.sql`, `src/components/guru/media-uploader.tsx`, `src/lib/storage.ts`
 
 ### 6. Manajemen Asesmen
 - [x] ✅ CRUD kuis per cerita — `src/app/(guru)/cms/[id]/kuis`

@@ -163,6 +163,7 @@ export async function createPage(
     content: parsed.data.content,
     illustration_url: emptyToNull(parsed.data.illustration_url),
     audio_url: emptyToNull(parsed.data.audio_url),
+    video_url: emptyToNull(parsed.data.video_url),
     character_values: emptyToNull(parsed.data.character_values),
   });
 
@@ -193,6 +194,7 @@ export async function updatePage(
       content: parsed.data.content,
       illustration_url: emptyToNull(parsed.data.illustration_url),
       audio_url: emptyToNull(parsed.data.audio_url),
+      video_url: emptyToNull(parsed.data.video_url),
       character_values: emptyToNull(parsed.data.character_values),
     })
     .eq("id", pageId);

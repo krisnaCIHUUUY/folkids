@@ -25,7 +25,7 @@ export default async function KelolaHalamanPage({
 
   const { data: pages } = await supabase
     .from("story_pages")
-    .select("id, page_number, content, illustration_url, audio_url, character_values")
+    .select("id, page_number, content, illustration_url, audio_url, video_url, character_values")
     .eq("story_id", storyId)
     .order("page_number", { ascending: true });
 

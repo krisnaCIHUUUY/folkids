@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Upload, X, Loader2, Music } from "lucide-react";
+import { Upload, X, Loader2, Music, Video } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -11,7 +11,14 @@ import {
   storyMediaPath,
 } from "@/lib/storage";
 
-type MediaKind = "image" | "audio";
+type MediaKind = "image" | "audio" | "video";
+
+// Atribut accept input file per jenis media.
+const ACCEPT: Record<MediaKind, string> = {
+  image: "image/*",
+  audio: "audio/*",
+  video: "video/mp4,video/webm",
+};
 
 export function MediaUploader({
   value,
@@ -76,6 +83,8 @@ export function MediaUploader({
             <span className="clay-sm relative size-16 shrink-0 overflow-hidden bg-white">
               <Image src={value} alt={label} fill className="object-cover" />
             </span>
+          ) : kind === "video" ? (
+            <video controls src={value} className="h-24 w-full max-w-xs rounded bg-black" />
           ) : (
             <audio controls src={value} className="h-10 w-full max-w-xs" />
           )}
@@ -98,7 +107,7 @@ export function MediaUploader({
       <input
         ref={inputRef}
         type="file"
-        accept={kind === "image" ? "image/*" : "audio/*"}
+        accept={ACCEPT[kind]}
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];
@@ -116,6 +125,8 @@ export function MediaUploader({
           <Loader2 className="size-4 animate-spin" />
         ) : kind === "image" ? (
           <Upload className="size-4" />
+        ) : kind === "video" ? (
+          <Video className="size-4" />
         ) : (
           <Music className="size-4" />
         )}
