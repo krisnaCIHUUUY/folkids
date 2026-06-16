@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { LandingMobileMenu } from "@/components/landing/landing-mobile-menu";
 import {
   BookOpen,
   Sparkles,
@@ -70,11 +69,11 @@ function BatikDots() {
 function SiteNav() {
   return (
     <header className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:py-8">
-      <Link href="/" className="flex items-center gap-3">
-        <span className="clay-sm grid size-12 place-items-center bg-clay-sun text-2xl">
+      <Link href="/" className="flex shrink-0 items-center gap-2 sm:gap-3">
+        <span className="clay-sm grid size-10 place-items-center bg-clay-sun text-xl sm:size-12 sm:text-2xl">
           🎭
         </span>
-        <span className="text-2xl font-black tracking-tight">
+        <span className="hidden text-2xl font-black tracking-tight sm:inline">
           Wayang<span className="text-clay-rose">Folkids</span>
         </span>
       </Link>
@@ -86,21 +85,20 @@ function SiteNav() {
         <a href="#daftar" className="hover:text-clay-rose">Untuk Guru</a>
       </nav>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <Link
           href="/login"
-          className="clay-sm hidden bg-white px-5 py-2.5 text-sm font-bold hover:[transform:translateY(-2px)] md:inline-flex"
+          className="clay-sm inline-flex bg-white px-3 py-2 text-sm font-bold hover:[transform:translateY(-2px)] sm:px-5 sm:py-2.5"
         >
           Masuk
         </Link>
         <Link
           href="/register"
-          className="clay-sm inline-flex items-center gap-2 bg-clay-rose px-4 py-2.5 text-sm font-bold text-white hover:[transform:translateY(-2px)] sm:px-5"
+          className="clay-sm inline-flex items-center gap-2 bg-clay-rose px-3 py-2 text-sm font-bold text-white hover:[transform:translateY(-2px)] sm:px-5 sm:py-2.5"
         >
           Daftar
           <Sparkles className="size-4" />
         </Link>
-        <LandingMobileMenu />
       </div>
     </header>
   );
