@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LandingMobileMenu } from "@/components/landing/landing-mobile-menu";
 import {
   BookOpen,
   Sparkles,
@@ -68,7 +69,7 @@ function BatikDots() {
 
 function SiteNav() {
   return (
-    <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:py-8">
+    <header className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:py-8">
       <Link href="/" className="flex items-center gap-3">
         <span className="clay-sm grid size-12 place-items-center bg-clay-sun text-2xl">
           🎭
@@ -94,11 +95,12 @@ function SiteNav() {
         </Link>
         <Link
           href="/register"
-          className="clay-sm inline-flex items-center gap-2 bg-clay-rose px-5 py-2.5 text-sm font-bold text-white hover:[transform:translateY(-2px)]"
+          className="clay-sm inline-flex items-center gap-2 bg-clay-rose px-4 py-2.5 text-sm font-bold text-white hover:[transform:translateY(-2px)] sm:px-5"
         >
-          Daftar Gratis
+          Daftar
           <Sparkles className="size-4" />
         </Link>
+        <LandingMobileMenu />
       </div>
     </header>
   );

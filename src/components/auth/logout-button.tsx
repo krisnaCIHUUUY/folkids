@@ -12,10 +12,11 @@ export function LogoutButton() {
       type="button"
       disabled={pending}
       onClick={() => startTransition(() => logout())}
-      className="clay-sm inline-flex items-center gap-2 bg-white px-4 py-2 text-sm font-bold text-clay-ink transition hover:[transform:translateY(-2px)] disabled:opacity-60"
+      className="clay-sm inline-flex items-center gap-2 bg-white px-3 py-2 text-sm font-bold text-clay-ink transition hover:[transform:translateY(-2px)] disabled:opacity-60 sm:px-4"
+      aria-label="Keluar"
     >
       <LogOut className="size-4" />
-      {pending ? "Keluar…" : "Keluar"}
+      <span className="hidden sm:inline">{pending ? "Keluar…" : "Keluar"}</span>
     </button>
   );
 }

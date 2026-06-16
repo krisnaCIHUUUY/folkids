@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Search } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
+import { GuruMobileMenu } from "@/components/guru/guru-mobile-menu";
 import { getMyNotifications } from "@/lib/notifications";
 import type { CurrentUser } from "@/lib/auth";
 
@@ -13,6 +14,8 @@ export async function GuruNavbar({ user }: { user: CurrentUser }) {
   return (
     <header className="sticky top-0 z-50 bg-clay-cream/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-4 md:px-6">
+        <GuruMobileMenu />
+
         <Link href="/dashboard" className="flex shrink-0 items-center gap-3">
           <span className="clay-sm grid size-11 place-items-center bg-clay-sun text-xl">
             🎭
@@ -59,7 +62,7 @@ export async function GuruNavbar({ user }: { user: CurrentUser }) {
           <button
             type="button"
             aria-label="Cari"
-            className="clay-sm grid size-11 place-items-center bg-white text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
+            className="clay-sm hidden size-11 place-items-center bg-white text-clay-ink transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)] sm:grid"
           >
             <Search className="size-5" />
           </button>
