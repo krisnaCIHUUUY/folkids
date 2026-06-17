@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   BookOpen,
   Sparkles,
@@ -12,7 +13,6 @@ import {
   CheckCircle2,
   Flame,
   GraduationCap,
-  PartyPopper,
   Map,
 } from "lucide-react";
 
@@ -26,7 +26,6 @@ export default function LandingPage() {
       <CatalogPreview />
       <ProgressDemo />
       <Testimonials />
-      <EnrollCTA />
       <FooterNote />
     </main>
   );
@@ -82,7 +81,7 @@ function SiteNav() {
         <a href="#cerita" className="hover:text-clay-rose">Perpustakaan</a>
         <a href="#progres" className="hover:text-clay-rose">Progres</a>
         <a href="#cerita-mereka" className="hover:text-clay-rose">Cerita Mereka</a>
-        <a href="#daftar" className="hover:text-clay-rose">Untuk Guru</a>
+        <Link href="/register" className="hover:text-clay-rose">Untuk Guru</Link>
       </nav>
 
       <div className="flex items-center gap-2 sm:gap-3">
@@ -195,10 +194,32 @@ function HeroCard() {
       </div>
 
       <div className="clay relative z-10 bg-white p-6">
-        <div className="clay-inset relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-clay-peach via-clay-pink to-clay-lavender">
-          <div className="absolute inset-0 grid place-items-center text-[10rem] leading-none">
-            <span className="animate-wiggle">🪅</span>
-          </div>
+        <div className="clay-inset relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-clay-grape via-clay-ink to-clay-ink">
+          {/* Halo sorot panggung di belakang wayang */}
+          <div
+            aria-hidden
+            className="absolute left-1/2 top-1/2 size-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-clay-sun/35 blur-3xl"
+          />
+          <div
+            aria-hidden
+            className="absolute left-1/2 top-1/3 size-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-clay-rose/30 blur-2xl"
+          />
+
+          {/* Percikan bintang */}
+          <Sparkles className="absolute left-5 top-6 size-5 text-clay-sun/90" />
+          <Sparkles className="absolute right-6 top-10 size-4 text-clay-pink/80" />
+          <Sparkles className="absolute right-8 bottom-28 size-5 text-clay-sun/70" />
+
+          {/* Ilustrasi wayang */}
+          <Image
+            src="/ChatGPT_Image_8_Mei_2026__12.12.42-removebg-preview.png"
+            alt="Tokoh wayang Folkids"
+            fill
+            priority
+            sizes="(max-width: 768px) 90vw, 28rem"
+            className="animate-float object-contain p-6 drop-shadow-[0_18px_30px_rgba(0,0,0,0.45)]"
+          />
+
           <div className="absolute bottom-4 left-4 right-4">
             <div className="clay-sm flex items-center gap-3 bg-white/90 px-4 py-3 backdrop-blur">
               <Headphones className="size-5 text-clay-grape" />
@@ -595,112 +616,6 @@ function TestimonialCard({ t }: { t: Testimonial }) {
         <Heart className="ml-auto size-5 fill-clay-rose text-clay-rose" />
       </figcaption>
     </figure>
-  );
-}
-
-/* ---------- CTA ---------- */
-
-function EnrollCTA() {
-  return (
-    <section id="daftar" className="relative z-10 mx-auto max-w-7xl px-6 py-16 md:py-24">
-      <div className="clay relative overflow-hidden bg-gradient-to-br from-clay-rose via-clay-coral to-clay-grape p-10 text-white md:p-16">
-        <div aria-hidden className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-12 -right-8 size-56 rounded-full bg-clay-sun/40 blur-2xl" />
-          <div className="absolute -bottom-16 -left-10 size-64 rounded-full bg-clay-sky/30 blur-3xl" />
-        </div>
-
-        <div className="relative grid items-center gap-10 md:grid-cols-[1.4fr_1fr]">
-          <div>
-            <span className="clay-sm inline-flex items-center gap-2 bg-white/95 px-4 py-2 text-xs font-black uppercase tracking-wider text-clay-ink">
-              <PartyPopper className="size-4" /> Gratis untuk Sekolah Mitra
-            </span>
-            <h2 className="mt-5 text-4xl font-black leading-tight tracking-tight md:text-5xl">
-              Siap bikin kelas literasi jadi favorit anak-anak?
-            </h2>
-            <p className="mt-4 max-w-xl text-white/90">
-              Daftarkan kelas atau sekolahmu hari ini. Tim kami bantu setup
-              dalam 1×24 jam — termasuk import siswa & rekomendasi cerita
-              awal.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/register"
-                className="clay inline-flex items-center gap-3 bg-white px-7 py-4 text-base font-black text-clay-ink hover:[transform:translateY(-3px)]"
-              >
-                <Rocket className="size-5 text-clay-rose" /> Daftar Sekolah
-              </Link>
-              <Link
-                href="/perpustakaan"
-                className="clay inline-flex items-center gap-3 bg-clay-ink/30 px-7 py-4 text-base font-black text-white backdrop-blur hover:[transform:translateY(-3px)]"
-              >
-                Coba Cerita Gratis
-              </Link>
-            </div>
-
-            <ul className="mt-8 grid gap-3 text-sm font-semibold text-white/90 sm:grid-cols-2">
-              {[
-                "Tanpa kartu kredit",
-                "Pendampingan onboarding",
-                "Konten kurasi guru",
-                "Aman & RLS by default",
-              ].map((x) => (
-                <li key={x} className="flex items-center gap-2">
-                  <CheckCircle2 className="size-4" /> {x}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="relative">
-            <div
-              className="clay absolute -top-6 left-0 z-10 bg-clay-sun px-4 py-3 text-sm font-black text-clay-ink"
-              style={{ ["--rot" as string]: "-6deg" } as React.CSSProperties}
-            >
-              Diskon 100% utk 50 sekolah pertama
-            </div>
-            <div className="clay bg-white p-6 text-clay-ink">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-clay-ink/60">
-                    Paket Sekolah
-                  </div>
-                  <div className="mt-1 flex items-baseline gap-1">
-                    <span className="text-4xl font-black">Rp0</span>
-                    <span className="text-sm font-bold text-clay-ink/60">
-                      /kelas/bln
-                    </span>
-                  </div>
-                </div>
-                <span className="clay-sm bg-clay-mint px-3 py-1.5 text-xs font-black">
-                  Pilihan
-                </span>
-              </div>
-
-              <ul className="mt-5 space-y-2.5 text-sm font-semibold">
-                {[
-                  "Hingga 40 siswa/kelas",
-                  "Akses penuh perpustakaan",
-                  "Dasbor guru + ekspor data",
-                  "Storage media tanpa batas",
-                ].map((x) => (
-                  <li key={x} className="flex items-center gap-2">
-                    <CheckCircle2 className="size-4 text-clay-rose" /> {x}
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/register"
-                className="clay-sm mt-6 flex items-center justify-center gap-2 bg-clay-rose py-3 text-sm font-black text-white hover:[transform:translateY(-2px)]"
-              >
-                Klaim Sekarang <Sparkles className="size-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 }
 
