@@ -60,18 +60,18 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --primary: #2b5cb8;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f0fb;
+  --secondary-foreground: #1e4285;
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --muted-foreground: #6b7280;
+  --accent: #e8f0fb;
+  --accent-foreground: #1e4285;
+  --destructive: #e53e3e;
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: #2b5cb8;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -135,18 +135,18 @@
 }
 
 @theme {
-  --color-clay-cream: #fff7ec;
-  --color-clay-peach: #ffd6b8;
-  --color-clay-pink: #ffb3c6;
-  --color-clay-rose: #ff7a9c;
-  --color-clay-coral: #ff6b6b;
-  --color-clay-sun: #ffd93d;
-  --color-clay-mint: #9bf6c5;
-  --color-clay-sky: #a0d8ff;
-  --color-clay-blue: #5b8def;
-  --color-clay-lavender: #c8b6ff;
-  --color-clay-grape: #8b5cf6;
-  --color-clay-ink: #2b1b4a;
+  --color-clay-cream: #f5f6f8;
+  --color-clay-peach: #fdf0d0;
+  --color-clay-pink: #fdf0d0;
+  --color-clay-rose: #2b5cb8;
+  --color-clay-coral: #dd8500;
+  --color-clay-sun: #f5b21e;
+  --color-clay-mint: #22a06b;
+  --color-clay-sky: #e8f0fb;
+  --color-clay-blue: #2b5cb8;
+  --color-clay-lavender: #e8f0fb;
+  --color-clay-grape: #1e4285;
+  --color-clay-ink: #2d3748;
 }
 
 @utility clay {
@@ -154,8 +154,8 @@
   box-shadow:
     inset 6px 6px 0 rgba(255, 255, 255, 0.55),
     inset -6px -6px 0 rgba(0, 0, 0, 0.08),
-    8px 10px 0 rgba(43, 27, 74, 0.08),
-    0 18px 32px -12px rgba(43, 27, 74, 0.18);
+    8px 10px 0 rgba(45, 55, 72, 0.08),
+    0 18px 32px -12px rgba(45, 55, 72, 0.18);
 }
 
 @utility clay-sm {
@@ -163,14 +163,14 @@
   box-shadow:
     inset 4px 4px 0 rgba(255, 255, 255, 0.5),
     inset -4px -4px 0 rgba(0, 0, 0, 0.08),
-    4px 6px 0 rgba(43, 27, 74, 0.08),
-    0 10px 20px -10px rgba(43, 27, 74, 0.18);
+    4px 6px 0 rgba(45, 55, 72, 0.08),
+    0 10px 20px -10px rgba(45, 55, 72, 0.18);
 }
 
 @utility clay-inset {
   border-radius: 1.5rem;
   box-shadow:
-    inset 6px 6px 12px rgba(43, 27, 74, 0.12),
+    inset 6px 6px 12px rgba(45, 55, 72, 0.12),
     inset -4px -4px 10px rgba(255, 255, 255, 0.6);
 }
 
@@ -184,8 +184,8 @@
   box-shadow:
     inset 6px 6px 0 rgba(255, 255, 255, 0.55),
     inset -6px -6px 0 rgba(0, 0, 0, 0.08),
-    10px 14px 0 rgba(43, 27, 74, 0.1),
-    0 22px 40px -14px rgba(43, 27, 74, 0.22);
+    10px 14px 0 rgba(45, 55, 72, 0.1),
+    0 22px 40px -14px rgba(45, 55, 72, 0.22);
 }
 
 @keyframes float-slow {

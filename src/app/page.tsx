@@ -54,8 +54,8 @@ function BatikDots() {
     >
       <defs>
         <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-          <circle cx="6" cy="6" r="2.4" fill="#8b5cf6" />
-          <circle cx="20" cy="20" r="1.4" fill="#ff7a9c" />
+          <circle cx="6" cy="6" r="2.4" fill="#1e4285" />
+          <circle cx="20" cy="20" r="1.4" fill="#2b5cb8" />
         </pattern>
       </defs>
       <rect width="1200" height="200" fill="url(#dots)" />
