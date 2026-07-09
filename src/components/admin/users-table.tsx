@@ -146,8 +146,8 @@ export function UsersTable({
                       <span
                         className={`clay-sm inline-block px-2.5 py-1 font-mono text-[11px] font-black ${
                           u.isActive
-                            ? "bg-clay-mint text-clay-ink"
-                            : "bg-clay-coral text-white"
+                            ? "bg-clay-mint/25 text-clay-ink"
+                            : "bg-clay-coral/20 text-clay-ink"
                         }`}
                       >
                         {u.isActive ? "Aktif" : "Nonaktif"}

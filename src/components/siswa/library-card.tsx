@@ -38,7 +38,7 @@ export function LibraryCard({ story }: { story: LibraryStory }) {
           </span>
         )}
         {story.completed && (
-          <span className="clay-sm absolute right-2.5 top-2.5 bg-clay-mint px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-wider text-white">
+          <span className="clay-sm absolute right-2.5 top-2.5 bg-clay-sun px-2.5 py-1 font-mono text-[10px] font-black uppercase tracking-wider text-clay-ink">
             Selesai
           </span>
         )}

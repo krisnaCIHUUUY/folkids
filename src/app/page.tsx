@@ -109,7 +109,7 @@ function Hero() {
   return (
     <section className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 pb-20 pt-10 md:grid-cols-2 md:pb-28 md:pt-16">
       <div>
-        <span className="clay-sm inline-flex items-center gap-2 bg-clay-mint px-4 py-2 text-xs font-black uppercase tracking-wider">
+        <span className="clay-sm inline-flex items-center gap-2 bg-clay-sun px-4 py-2 text-xs font-black uppercase tracking-wider">
           <Flame className="size-4" /> Petualangan Literasi Anak SD
         </span>
         <h1 className="mt-6 text-5xl font-black leading-[1.05] tracking-tight md:text-7xl">
@@ -266,7 +266,7 @@ function FeatureStrip() {
     { icon: Headphones, label: "Narasi audio", bg: "bg-clay-sky" },
     { icon: Palette, label: "Animasi wayang", bg: "bg-clay-sun" },
     { icon: Trophy, label: "Lencana & XP", bg: "bg-clay-mint" },
-    { icon: GraduationCap, label: "Mode guru", bg: "bg-clay-lavender" },
+    { icon: GraduationCap, label: "Mode guru", bg: "bg-clay-blue text-white" },
   ];
   return (
     <section className="relative z-10 mx-auto max-w-7xl px-6 pb-16">
@@ -306,7 +306,7 @@ const STORIES: Story[] = [
     difficulty: "Mudah",
     minutes: 12,
     bg: "bg-clay-pink",
-    accent: "bg-clay-rose",
+    accent: "bg-clay-blue",
   },
   {
     emoji: "🦌",
@@ -315,8 +315,8 @@ const STORIES: Story[] = [
     theme: "Kecerdikan",
     difficulty: "Mudah",
     minutes: 8,
-    bg: "bg-clay-mint",
-    accent: "bg-clay-blue",
+    bg: "bg-clay-sky",
+    accent: "bg-clay-mint",
   },
   {
     emoji: "👑",
@@ -335,7 +335,7 @@ const STORIES: Story[] = [
     theme: "Bakti pada Orang Tua",
     difficulty: "Sedang",
     minutes: 14,
-    bg: "bg-clay-sky",
+    bg: "bg-clay-mint/25",
     accent: "bg-clay-grape",
   },
   {
@@ -345,8 +345,8 @@ const STORIES: Story[] = [
     theme: "Tekad & Konsekuensi",
     difficulty: "Sulit",
     minutes: 18,
-    bg: "bg-clay-lavender",
-    accent: "bg-clay-rose",
+    bg: "bg-clay-coral/15",
+    accent: "bg-clay-blue",
   },
   {
     emoji: "🐅",
@@ -356,7 +356,7 @@ const STORIES: Story[] = [
     difficulty: "Sulit",
     minutes: 22,
     bg: "bg-clay-peach",
-    accent: "bg-clay-blue",
+    accent: "bg-clay-grape",
   },
 ];
 
@@ -472,10 +472,10 @@ function ProgressDemo() {
 
 function ProgressCard() {
   const bars = [
-    { label: "Membaca", value: 82, color: "from-clay-rose to-clay-coral" },
+    { label: "Membaca", value: 82, color: "from-clay-sun to-clay-coral" },
     { label: "Mendengar", value: 64, color: "from-clay-blue to-clay-grape" },
-    { label: "Memahami", value: 91, color: "from-clay-sun to-clay-coral" },
-    { label: "Kosakata", value: 48, color: "from-clay-mint to-clay-blue" },
+    { label: "Memahami", value: 91, color: "from-clay-mint to-clay-blue" },
+    { label: "Kosakata", value: 48, color: "from-clay-coral to-clay-sun" },
   ];
 
   return (

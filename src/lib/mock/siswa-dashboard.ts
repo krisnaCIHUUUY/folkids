@@ -79,7 +79,7 @@ export const stories: DashboardStory[] = [
     characterTags: ["Timun Mas", "Buto Ijo"],
     variant: "default",
     progress: 0,
-    cover: "from-clay-mint to-clay-sky",
+    cover: "from-clay-mint to-clay-blue",
   },
   {
     id: "s2",
@@ -88,7 +88,7 @@ export const stories: DashboardStory[] = [
     characterTags: ["Malin", "Ibu"],
     variant: "in-progress",
     progress: 60,
-    cover: "from-clay-peach to-clay-rose",
+    cover: "from-clay-blue to-clay-grape",
   },
   {
     id: "s3",
@@ -97,7 +97,7 @@ export const stories: DashboardStory[] = [
     characterTags: ["Sangkuriang", "Dayang Sumbi"],
     variant: "assigned",
     progress: 0,
-    cover: "from-clay-lavender to-clay-grape",
+    cover: "from-clay-sun to-clay-mint",
   },
   {
     id: "s4",

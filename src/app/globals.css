@@ -139,7 +139,8 @@
   --color-clay-peach: #fdf0d0;
   --color-clay-pink: #fdf0d0;
   --color-clay-rose: #2b5cb8;
-  --color-clay-coral: #dd8500;
+  /* coral dipakai repo-wide sebagai warna error/destruktif — petakan ke merah */
+  --color-clay-coral: #e53e3e;
   --color-clay-sun: #f5b21e;
   --color-clay-mint: #22a06b;
   --color-clay-sky: #e8f0fb;
