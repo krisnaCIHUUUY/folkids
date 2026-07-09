@@ -133,7 +133,7 @@ function Controls({
         <button
           type="button"
           onClick={onPlay}
-          className="clay-sm inline-flex items-center gap-1.5 bg-clay-sky px-4 py-2.5 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
+          className="clay-sm inline-flex items-center gap-1.5 bg-clay-blue px-4 py-2.5 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
         >
           <Volume2 className="size-4" /> Bacakan
         </button>

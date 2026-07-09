@@ -2,10 +2,12 @@ import { Users, ClipboardList, Clock, UserPlus } from "lucide-react";
 import type { ClassSummary, ClassAccent } from "@/lib/mock/guru-dashboard";
 import { CopyableCode } from "@/components/guru/copyable-code";
 
+// clay-sky/clay-lavender kini hampir putih (#e8f0fb) — tidak terlihat sebagai
+// border aksen di kartu putih, jadi dipetakan ke token yang kontras & berbeda.
 const ACCENT_BORDER: Record<ClassAccent, string> = {
-  sky: "border-l-clay-sky",
+  sky: "border-l-clay-sun",
   blue: "border-l-clay-blue",
-  lavender: "border-l-clay-lavender",
+  lavender: "border-l-clay-mint",
 };
 
 export function ClassCard({ data }: { data: ClassSummary }) {
@@ -18,7 +20,7 @@ export function ClassCard({ data }: { data: ClassSummary }) {
           {data.name}
         </h3>
         <div className="clay-inset flex flex-col items-center gap-2 bg-clay-cream p-5 text-center">
-          <span className="clay-sm grid size-12 place-items-center bg-clay-lavender text-white">
+          <span className="clay-sm grid size-12 place-items-center bg-clay-blue text-white">
             <UserPlus className="size-6" />
           </span>
           <p className="text-sm font-bold text-clay-ink">Belum ada siswa</p>

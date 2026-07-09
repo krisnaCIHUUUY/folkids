@@ -22,14 +22,16 @@ export type AdminStatsData = {
   readingSelesai: number;
 };
 
-// Warna palet claymorphism (CSS var dari @theme).
+// Warna palet tema (CSS var dari @theme / :root).
+// Catatan: clay-sky/clay-lavender kini hampir putih (#e8f0fb) sehingga tidak
+// terlihat sebagai irisan donat di kartu putih — pakai token yang kontras.
 const C = {
-  sky: "var(--color-clay-sky)",
   blue: "var(--color-clay-blue)",
+  grape: "var(--color-clay-grape)",
   coral: "var(--color-clay-coral)",
   mint: "var(--color-clay-mint)",
   sun: "var(--color-clay-sun)",
-  lavender: "var(--color-clay-lavender)",
+  abu: "var(--muted-foreground)",
 };
 
 export function AdminStats({ data }: { data: AdminStatsData }) {
@@ -51,8 +53,8 @@ export function AdminStats({ data }: { data: AdminStatsData }) {
           centerValue={data.totalUsers.toLocaleString("id-ID")}
           centerLabel="Total"
           segments={[
-            { label: "Siswa", value: data.siswa, color: C.sky },
-            { label: "Guru", value: data.guru, color: C.blue },
+            { label: "Siswa", value: data.siswa, color: C.blue },
+            { label: "Guru", value: data.guru, color: C.mint },
             { label: "Admin", value: data.admin, color: C.coral },
           ]}
         />
@@ -74,7 +76,7 @@ export function AdminStats({ data }: { data: AdminStatsData }) {
           segments={[
             { label: "Cerita", value: data.cerita, color: C.coral },
             { label: "Kuis", value: data.kuis, color: C.mint },
-            { label: "Kelas", value: data.kelas, color: C.sky },
+            { label: "Kelas", value: data.kelas, color: C.grape },
           ]}
         />
 
@@ -104,7 +106,7 @@ export function AdminStats({ data }: { data: AdminStatsData }) {
           centerLabel="Sesi Baca"
           segments={[
             { label: "Selesai", value: data.readingSelesai, color: C.blue },
-            { label: "Belum selesai", value: readingBelum, color: C.lavender },
+            { label: "Belum selesai", value: readingBelum, color: C.abu },
           ]}
         />
 
@@ -114,7 +116,7 @@ export function AdminStats({ data }: { data: AdminStatsData }) {
           total={100}
           segments={[
             { label: "Skor tercapai", value: data.rataSkor, color: C.sun },
-            { label: "Sisa", value: Math.max(0, 100 - data.rataSkor), color: C.lavender },
+            { label: "Sisa", value: Math.max(0, 100 - data.rataSkor), color: C.abu },
           ]}
         />
       </div>
