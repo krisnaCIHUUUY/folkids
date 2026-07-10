@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -134,6 +135,25 @@
   }
 }
 
+body {
+  font-family:
+    "Geist",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
+    "Noto Color Emoji";
+}
+
 @theme {
   --color-clay-cream: #f5f6f8;
   --color-clay-peach: #fdf0d0;
@@ -190,25 +210,49 @@
 }
 
 @keyframes float-slow {
-  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
-  50% { transform: translateY(-14px) rotate(var(--rot, 0deg)); }
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translateY(-14px) rotate(var(--rot, 0deg));
+  }
 }
 @keyframes wiggle {
-  0%, 100% { transform: rotate(-3deg); }
-  50% { transform: rotate(3deg); }
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
 }
 @keyframes shine {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
-.animate-float { animation: float-slow 6s ease-in-out infinite; }
-.animate-wiggle { animation: wiggle 2.4s ease-in-out infinite; }
+.animate-float {
+  animation: float-slow 6s ease-in-out infinite;
+}
+.animate-wiggle {
+  animation: wiggle 2.4s ease-in-out infinite;
+}
 
 /* Konten cerita berformat (editor TipTap & tampilan baca) */
-.rich-content > :first-child { margin-top: 0; }
-.rich-content > :last-child { margin-bottom: 0; }
-.rich-content p { margin: 0.65em 0; }
+.rich-content > :first-child {
+  margin-top: 0;
+}
+.rich-content > :last-child {
+  margin-bottom: 0;
+}
+.rich-content p {
+  margin: 0.65em 0;
+}
 .rich-content h2 {
   font-family: var(--font-serif, ui-serif, Georgia, serif);
   font-weight: 800;
@@ -217,13 +261,23 @@
   margin: 0.8em 0 0.4em;
   color: var(--color-clay-ink);
 }
-.rich-content strong { font-weight: 800; }
-.rich-content em { font-style: italic; }
+.rich-content strong {
+  font-weight: 800;
+}
+.rich-content em {
+  font-style: italic;
+}
 .rich-content ul,
 .rich-content ol {
   margin: 0.65em 0;
   padding-left: 1.5em;
 }
-.rich-content ul { list-style: disc; }
-.rich-content ol { list-style: decimal; }
-.rich-content li { margin: 0.25em 0; }
+.rich-content ul {
+  list-style: disc;
+}
+.rich-content ol {
+  list-style: decimal;
+}
+.rich-content li {
+  margin: 0.25em 0;
+}
