@@ -69,12 +69,14 @@ function SiteNav() {
   return (
     <header className="relative z-50 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:py-8">
       <Link href="/" className="flex shrink-0 items-center gap-2 sm:gap-3">
-        <span className="clay-sm grid size-10 place-items-center bg-clay-sun text-xl sm:size-12 sm:text-2xl">
-          🎭
-        </span>
-        <span className="hidden text-2xl font-black tracking-tight sm:inline">
-          Wayang<span className="text-clay-rose">Folkids</span>
-        </span>
+        <Image
+          src="/logo-folkids.svg"
+          alt="Logo Folkids"
+          width={172}
+          height={48}
+          priority
+          className="h-10 w-auto sm:h-12"
+        />
       </Link>
 
       <nav className="hidden items-center gap-8 text-sm font-bold md:flex">
@@ -626,7 +628,13 @@ function FooterNote() {
     <footer className="relative z-10 mx-auto max-w-7xl px-6 pb-12">
       <div className="flex flex-col items-center justify-between gap-4 border-t border-clay-ink/10 pt-8 text-sm text-clay-ink/60 md:flex-row">
         <div className="flex items-center gap-2 font-bold">
-          <span>🎭</span> WayangFolkids · 2026
+          <Image
+            src="/logo-folkids-icon.svg"
+            alt=""
+            width={24}
+            height={24}
+          />
+          WayangFolkids · 2026
         </div>
         <div className="flex items-center gap-6 font-semibold">
           <a href="#" className="hover:text-clay-rose">Kebijakan Privasi</a>
