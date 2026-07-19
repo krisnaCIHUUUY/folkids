@@ -15,6 +15,7 @@ import {
   GraduationCap,
   Map,
 } from "lucide-react";
+import { StoryPreviewButton } from "@/components/landing/story-preview-button";
 
 export default function LandingPage() {
   return (
@@ -297,6 +298,7 @@ type Story = {
   minutes: number;
   bg: string;
   accent: string;
+  video: string;
 };
 
 const STORIES: Story[] = [
@@ -309,26 +311,29 @@ const STORIES: Story[] = [
     minutes: 12,
     bg: "bg-clay-pink",
     accent: "bg-clay-blue",
+    video: "/video/2.mp4",
   },
   {
-    emoji: "🦌",
-    title: "Sang Kancil & Buaya",
-    region: "Nusantara",
-    theme: "Kecerdikan",
+    emoji: "🌈",
+    title: "Legenda Telaga Warna",
+    region: "Dieng, Jawa Tengah",
+    theme: "Rasa Syukur",
     difficulty: "Mudah",
     minutes: 8,
     bg: "bg-clay-sky",
     accent: "bg-clay-mint",
+    video: "/video/3.mp4",
   },
   {
-    emoji: "👑",
-    title: "Bawang Merah Bawang Putih",
-    region: "Riau",
-    theme: "Kejujuran",
+    emoji: "🐍",
+    title: "Legenda Rawa Pening",
+    region: "Jawa Tengah",
+    theme: "Ketulusan & Empati",
     difficulty: "Sedang",
-    minutes: 15,
+    minutes: 12,
     bg: "bg-clay-sun",
     accent: "bg-clay-coral",
+    video: "/video/5.mp4",
   },
   {
     emoji: "🪁",
@@ -339,6 +344,7 @@ const STORIES: Story[] = [
     minutes: 14,
     bg: "bg-clay-mint/25",
     accent: "bg-clay-grape",
+    video: "/video/1.mp4",
   },
   {
     emoji: "🦚",
@@ -349,16 +355,7 @@ const STORIES: Story[] = [
     minutes: 18,
     bg: "bg-clay-coral/15",
     accent: "bg-clay-blue",
-  },
-  {
-    emoji: "🐅",
-    title: "Wayang: Arjuna Mencari Cinta",
-    region: "Jawa Klasik",
-    theme: "Kepemimpinan",
-    difficulty: "Sulit",
-    minutes: 22,
-    bg: "bg-clay-peach",
-    accent: "bg-clay-grape",
+    video: "/video/4.mp4",
   },
 ];
 
@@ -414,9 +411,11 @@ function StoryCard({ story }: { story: Story }) {
 
       <div className="mt-5 flex items-start justify-between gap-3">
         <h3 className="text-lg font-black leading-tight">{story.title}</h3>
-        <span className={`clay-sm grid size-9 shrink-0 place-items-center text-white ${story.accent}`}>
-          <Play className="size-4 fill-white" />
-        </span>
+        <StoryPreviewButton
+          title={story.title}
+          video={story.video}
+          accent={story.accent}
+        />
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold text-clay-ink/70">
