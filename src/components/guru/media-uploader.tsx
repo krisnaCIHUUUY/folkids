@@ -84,7 +84,12 @@ export function MediaUploader({
               <Image src={value} alt={label} fill className="object-cover" />
             </span>
           ) : kind === "video" ? (
-            <video controls src={value} className="h-24 w-full max-w-xs rounded bg-black" />
+            <video
+              controls
+              playsInline
+              src={value}
+              className="h-24 w-full max-w-xs rounded bg-black"
+            />
           ) : (
             <audio controls src={value} className="h-10 w-full max-w-xs" />
           )}

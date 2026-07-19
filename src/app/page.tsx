@@ -15,6 +15,8 @@ import {
   GraduationCap,
   Map,
 } from "lucide-react";
+import { StoryPreviewButton } from "@/components/landing/story-preview-button";
+import { LANDING_VIDEO_BUCKET, publicStorageUrl } from "@/lib/storage";
 
 export default function LandingPage() {
   return (
@@ -297,7 +299,17 @@ type Story = {
   minutes: number;
   bg: string;
   accent: string;
+  videoId: number;
 };
+
+// Video cuplikan & poster di-host di Supabase Storage (bucket publik
+// "landing-video", cache CDN 1 tahun) supaya bandwidth streaming tidak
+// membebani hosting aplikasi (Vercel). Satu ordinal memetakan pasangan
+// {n}.mp4 + poster/{n}.jpg di bucket.
+const landingVideo = (n: number) => ({
+  video: publicStorageUrl(LANDING_VIDEO_BUCKET, `${n}.mp4`),
+  poster: publicStorageUrl(LANDING_VIDEO_BUCKET, `poster/${n}.jpg`),
+});
 
 const STORIES: Story[] = [
   {
@@ -309,26 +321,29 @@ const STORIES: Story[] = [
     minutes: 12,
     bg: "bg-clay-pink",
     accent: "bg-clay-blue",
+    videoId: 2,
   },
   {
-    emoji: "🦌",
-    title: "Sang Kancil & Buaya",
-    region: "Nusantara",
-    theme: "Kecerdikan",
+    emoji: "🌈",
+    title: "Legenda Telaga Warna",
+    region: "Dieng, Jawa Tengah",
+    theme: "Rasa Syukur",
     difficulty: "Mudah",
     minutes: 8,
     bg: "bg-clay-sky",
     accent: "bg-clay-mint",
+    videoId: 3,
   },
   {
-    emoji: "👑",
-    title: "Bawang Merah Bawang Putih",
-    region: "Riau",
-    theme: "Kejujuran",
+    emoji: "🐍",
+    title: "Legenda Rawa Pening",
+    region: "Jawa Tengah",
+    theme: "Ketulusan & Empati",
     difficulty: "Sedang",
-    minutes: 15,
+    minutes: 12,
     bg: "bg-clay-sun",
     accent: "bg-clay-coral",
+    videoId: 5,
   },
   {
     emoji: "🪁",
@@ -339,6 +354,7 @@ const STORIES: Story[] = [
     minutes: 14,
     bg: "bg-clay-mint/25",
     accent: "bg-clay-grape",
+    videoId: 1,
   },
   {
     emoji: "🦚",
@@ -349,16 +365,7 @@ const STORIES: Story[] = [
     minutes: 18,
     bg: "bg-clay-coral/15",
     accent: "bg-clay-blue",
-  },
-  {
-    emoji: "🐅",
-    title: "Wayang: Arjuna Mencari Cinta",
-    region: "Jawa Klasik",
-    theme: "Kepemimpinan",
-    difficulty: "Sulit",
-    minutes: 22,
-    bg: "bg-clay-peach",
-    accent: "bg-clay-grape",
+    videoId: 4,
   },
 ];
 
@@ -414,9 +421,11 @@ function StoryCard({ story }: { story: Story }) {
 
       <div className="mt-5 flex items-start justify-between gap-3">
         <h3 className="text-lg font-black leading-tight">{story.title}</h3>
-        <span className={`clay-sm grid size-9 shrink-0 place-items-center text-white ${story.accent}`}>
-          <Play className="size-4 fill-white" />
-        </span>
+        <StoryPreviewButton
+          title={story.title}
+          accent={story.accent}
+          {...landingVideo(story.videoId)}
+        />
       </div>
 
       <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold text-clay-ink/70">
@@ -565,7 +574,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "Aku suka pas Sang Kancil-nya gerak-gerak! Aku udah dapat 8 lencana, mau kumpulin sampai 50.",
+      "Aku suka pas Timun Mas-nya lari dari Buto Ijo! Aku udah dapat 8 lencana, mau kumpulin sampai 50.",
     name: "Bima, 8 tahun",
     role: "Siswa kelas 3",
     emoji: "🧒",
