@@ -8,12 +8,14 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico, sitemap.xml, robots.txt
-     * - file extensions umum (image, font, video, dll)
+     * Match semua path KECUALI:
+     * - _next/static & _next/image (aset internal Next)
+     * - path apa pun yang berakhiran ekstensi file (favicon.ico, sitemap.xml,
+     *   gambar, font, video, dst) — aset statis tidak butuh refresh session,
+     *   dan daftar ekstensi manual terbukti rawan terlewat (bug redirect
+     *   /video/*.mp4 ke /login). Semua route halaman/API tidak bertitik,
+     *   dan gerbang auth sebenarnya tetap di layout (requireRole) + RLS.
      */
-    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|mp4|webm)$).*)",
+    "/((?!_next/static|_next/image|.*\\.[A-Za-z0-9]+$).*)",
   ],
 };

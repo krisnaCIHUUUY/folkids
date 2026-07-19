@@ -1,8 +1,11 @@
 "use client";
 
 // Tombol putar pada kartu cerita landing page: membuka modal cuplikan video.
-// Video otomatis berhenti saat modal ditutup karena Base UI meng-unmount
-// konten dialog ketika tertutup (keepMounted default false).
+// Lazy load dua lapis untuk menghemat bandwidth:
+// 1. Elemen <video> baru di-mount saat modal dibuka (Base UI meng-unmount
+//    konten dialog ketika tertutup, keepMounted default false).
+// 2. preload="none" + poster: saat modal terbuka hanya gambar poster (~100KB)
+//    yang diunduh; byte video baru mengalir setelah pengguna menekan Play.
 import { Play } from "lucide-react";
 import {
   Dialog,
@@ -11,14 +14,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { VideoPlayer } from "@/components/ui/video-player";
 
 export function StoryPreviewButton({
   title,
   video,
+  poster,
   accent,
 }: {
   title: string;
   video: string;
+  poster: string;
   accent: string;
 }) {
   return (
@@ -35,14 +41,7 @@ export function StoryPreviewButton({
             Cuplikan: {title}
           </DialogTitle>
         </DialogHeader>
-        <video
-          controls
-          autoPlay
-          src={video}
-          className="clay-inset aspect-video w-full bg-black"
-        >
-          Browser-mu tidak mendukung pemutar video.
-        </video>
+        <VideoPlayer preload="none" poster={poster} src={video} />
       </DialogContent>
     </Dialog>
   );

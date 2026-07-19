@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Sparkles, ListChecks, CheckCircle2 } from "lucide-react";
 import { upsertReadingProgress } from "@/lib/actions/reading";
 import { ReadAloudText } from "@/components/siswa/read-aloud";
+import { VideoPlayer } from "@/components/ui/video-player";
 import type { Json } from "@/types/database";
 
 export type ReaderPage = {
@@ -142,13 +143,7 @@ export function StoryReader({
               )}
 
               {page.video_url && (
-                <video
-                  controls
-                  src={page.video_url}
-                  className="clay-inset mb-6 aspect-video w-full bg-black"
-                >
-                  Browser-mu tidak mendukung pemutar video.
-                </video>
+                <VideoPlayer src={page.video_url} className="mb-6" />
               )}
 
               <ReadAloudText key={page.id} content={page.content} />

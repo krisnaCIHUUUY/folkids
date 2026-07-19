@@ -16,6 +16,7 @@ import {
   Map,
 } from "lucide-react";
 import { StoryPreviewButton } from "@/components/landing/story-preview-button";
+import { LANDING_VIDEO_BUCKET, publicStorageUrl } from "@/lib/storage";
 
 export default function LandingPage() {
   return (
@@ -298,8 +299,17 @@ type Story = {
   minutes: number;
   bg: string;
   accent: string;
-  video: string;
+  videoId: number;
 };
+
+// Video cuplikan & poster di-host di Supabase Storage (bucket publik
+// "landing-video", cache CDN 1 tahun) supaya bandwidth streaming tidak
+// membebani hosting aplikasi (Vercel). Satu ordinal memetakan pasangan
+// {n}.mp4 + poster/{n}.jpg di bucket.
+const landingVideo = (n: number) => ({
+  video: publicStorageUrl(LANDING_VIDEO_BUCKET, `${n}.mp4`),
+  poster: publicStorageUrl(LANDING_VIDEO_BUCKET, `poster/${n}.jpg`),
+});
 
 const STORIES: Story[] = [
   {
@@ -311,7 +321,7 @@ const STORIES: Story[] = [
     minutes: 12,
     bg: "bg-clay-pink",
     accent: "bg-clay-blue",
-    video: "/video/2.mp4",
+    videoId: 2,
   },
   {
     emoji: "🌈",
@@ -322,7 +332,7 @@ const STORIES: Story[] = [
     minutes: 8,
     bg: "bg-clay-sky",
     accent: "bg-clay-mint",
-    video: "/video/3.mp4",
+    videoId: 3,
   },
   {
     emoji: "🐍",
@@ -333,7 +343,7 @@ const STORIES: Story[] = [
     minutes: 12,
     bg: "bg-clay-sun",
     accent: "bg-clay-coral",
-    video: "/video/5.mp4",
+    videoId: 5,
   },
   {
     emoji: "🪁",
@@ -344,7 +354,7 @@ const STORIES: Story[] = [
     minutes: 14,
     bg: "bg-clay-mint/25",
     accent: "bg-clay-grape",
-    video: "/video/1.mp4",
+    videoId: 1,
   },
   {
     emoji: "🦚",
@@ -355,7 +365,7 @@ const STORIES: Story[] = [
     minutes: 18,
     bg: "bg-clay-coral/15",
     accent: "bg-clay-blue",
-    video: "/video/4.mp4",
+    videoId: 4,
   },
 ];
 
@@ -413,8 +423,8 @@ function StoryCard({ story }: { story: Story }) {
         <h3 className="text-lg font-black leading-tight">{story.title}</h3>
         <StoryPreviewButton
           title={story.title}
-          video={story.video}
           accent={story.accent}
+          {...landingVideo(story.videoId)}
         />
       </div>
 
@@ -564,7 +574,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "Aku suka pas Sang Kancil-nya gerak-gerak! Aku udah dapat 8 lencana, mau kumpulin sampai 50.",
+      "Aku suka pas Timun Mas-nya lari dari Buto Ijo! Aku udah dapat 8 lencana, mau kumpulin sampai 50.",
     name: "Bima, 8 tahun",
     role: "Siswa kelas 3",
     emoji: "🧒",

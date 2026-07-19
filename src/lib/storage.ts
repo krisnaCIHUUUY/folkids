@@ -2,6 +2,21 @@
 // Upload aktual dilakukan komponen via browser client (lihat media-uploader.tsx).
 
 export const STORY_MEDIA_BUCKET = "story-media";
+export const LANDING_VIDEO_BUCKET = "landing-video";
+
+// URL publik objek Storage tanpa perlu client Supabase — untuk konteks statis
+// (mis. landing page yang di-prerender saat build). Melempar error bila env
+// belum diset supaya build gagal jelas, bukan menghasilkan URL "undefined/..."
+// yang lolos senyap ke produksi.
+export function publicStorageUrl(bucket: string, path: string): string {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!base) {
+    throw new Error(
+      "NEXT_PUBLIC_SUPABASE_URL belum diset — URL publik Supabase Storage tidak bisa dibangun",
+    );
+  }
+  return `${base.replace(/\/+$/, "")}/storage/v1/object/public/${bucket}/${path}`;
+}
 
 type MediaKind = "image" | "audio" | "video";
 
