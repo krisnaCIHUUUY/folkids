@@ -86,21 +86,19 @@ export function StoryReader({
     save(pages[next].page_number, next === total - 1);
   }
 
-  if (total === 0) {
-    return (
-      <div className="clay-inset mt-6 bg-white p-8 text-center font-semibold text-clay-ink/60">
-        Cerita ini belum memiliki halaman.
-      </div>
-    );
-  }
-
   return (
     <div className="mt-6">
       {modulePdfUrl && (
         <PdfViewer url={modulePdfUrl} title={storyTitle} />
       )}
 
-      {/* Progress halaman */}
+      {total === 0 ? (
+        <div className="clay-inset mt-6 bg-white p-8 text-center font-semibold text-clay-ink/60">
+          Cerita ini belum memiliki halaman.
+        </div>
+      ) : (
+        <>
+          {/* Progress halaman */}
       <div className="flex items-center justify-between font-mono text-xs font-bold text-clay-ink/55">
         <span>
           Halaman {index + 1} dari {total}
@@ -232,6 +230,8 @@ export function StoryReader({
             ))}
           </div>
         </div>
+      )}
+        </>
       )}
     </div>
   );

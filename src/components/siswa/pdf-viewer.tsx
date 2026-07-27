@@ -7,6 +7,9 @@ export function PdfViewer({ url, title }: { url: string; title: string }) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
+  // Use Google Docs Viewer to bypass Supabase Storage iframe restrictions
+  const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+
   return (
     <div className="mt-4">
       {!open ? (
@@ -47,7 +50,7 @@ export function PdfViewer({ url, title }: { url: string; title: string }) {
             </div>
           </div>
           <iframe
-            src={url}
+            src={viewerUrl}
             title={`Modul PDF: ${title}`}
             className="w-full border-0 bg-gray-100"
             style={{ height: expanded ? "calc(100% - 52px)" : "600px" }}
