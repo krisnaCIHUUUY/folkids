@@ -450,6 +450,7 @@ export type Database = {
           difficulty: Database["public"]["Enums"]["difficulty"]
           id: number
           is_published: boolean
+          module_pdf_url: string | null
           region_origin: string | null
           synopsis: string | null
           title: string
@@ -463,6 +464,7 @@ export type Database = {
           difficulty?: Database["public"]["Enums"]["difficulty"]
           id?: never
           is_published?: boolean
+          module_pdf_url?: string | null
           region_origin?: string | null
           synopsis?: string | null
           title: string
@@ -476,6 +478,7 @@ export type Database = {
           difficulty?: Database["public"]["Enums"]["difficulty"]
           id?: never
           is_published?: boolean
+          module_pdf_url?: string | null
           region_origin?: string | null
           synopsis?: string | null
           title?: string

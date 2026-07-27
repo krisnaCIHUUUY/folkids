@@ -12,7 +12,7 @@ export default async function CmsPage() {
   const { data: stories } = await supabase
     .from("stories")
     .select(
-      "id, title, cover_image_url, region_origin, difficulty, is_published, updated_at",
+      "id, title, cover_image_url, region_origin, difficulty, is_published, module_pdf_url, updated_at",
     )
     .eq("created_by", user!.id)
     .order("updated_at", { ascending: false });

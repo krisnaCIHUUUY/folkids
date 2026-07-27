@@ -44,6 +44,7 @@ export function StoryForm({
       character_theme: defaultValues?.character_theme ?? "",
       difficulty: defaultValues?.difficulty ?? "mudah",
       cover_image_url: defaultValues?.cover_image_url ?? "",
+      module_pdf_url: defaultValues?.module_pdf_url ?? "",
     },
   });
 
@@ -175,6 +176,27 @@ export function StoryForm({
                   onChange={field.onChange}
                 />
               </FormControl>
+              <FormMessage className="text-clay-coral" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="module_pdf_url"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <MediaUploader
+                  kind="pdf"
+                  label="Modul PDF (opsional)"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <p className="text-xs font-semibold text-clay-ink/50">
+                Upload modul PDF sebagai bahan pendukung cerita. Siswa bisa membacanya di halaman cerita.
+              </p>
               <FormMessage className="text-clay-coral" />
             </FormItem>
           )}

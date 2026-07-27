@@ -17,21 +17,27 @@ const StoryReader = dynamic(() => import("./story-reader").then((m) => m.StoryRe
 
 export function StoryReaderWrapper({
   storyId,
+  storyTitle,
   pages,
   quizzes,
   initialPageNumber,
+  modulePdfUrl,
 }: {
   storyId: number;
+  storyTitle: string;
   pages: ReaderPage[];
   quizzes: ReaderQuiz[];
   initialPageNumber: number;
+  modulePdfUrl?: string | null;
 }) {
   return (
     <StoryReader
       storyId={storyId}
+      storyTitle={storyTitle}
       pages={pages}
       quizzes={quizzes}
       initialPageNumber={initialPageNumber}
+      modulePdfUrl={modulePdfUrl}
     />
   );
 }

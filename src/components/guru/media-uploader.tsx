@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Upload, X, Loader2, Music, Video } from "lucide-react";
+import { Upload, X, Loader2, Music, Video, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -11,13 +11,14 @@ import {
   storyMediaPath,
 } from "@/lib/storage";
 
-type MediaKind = "image" | "audio" | "video";
+type MediaKind = "image" | "audio" | "video" | "pdf";
 
 // Atribut accept input file per jenis media.
 const ACCEPT: Record<MediaKind, string> = {
   image: "image/*",
   audio: "audio/*",
   video: "video/mp4,video/webm",
+  pdf: "application/pdf",
 };
 
 export function MediaUploader({
@@ -90,14 +91,16 @@ export function MediaUploader({
               src={value}
               className="h-24 w-full max-w-xs rounded bg-black"
             />
+          ) : kind === "pdf" ? (
+            <span className="clay-sm flex size-16 shrink-0 items-center justify-center bg-white">
+              <FileText className="size-7 text-clay-coral" />
+            </span>
           ) : (
             <audio controls src={value} className="h-10 w-full max-w-xs" />
           )}
-          {kind === "image" && (
-            <span className="truncate font-mono text-xs text-clay-ink/60">
-              {value.split("/").pop()}
-            </span>
-          )}
+          <span className="min-w-0 flex-1 truncate font-mono text-xs text-clay-ink/60">
+            {kind === "pdf" ? value.split("/").pop()?.replace(/\.pdf$/i, "") ?? value.split("/").pop() : value.split("/").pop()}
+          </span>
           <button
             type="button"
             aria-label="Hapus media"
@@ -132,6 +135,8 @@ export function MediaUploader({
           <Upload className="size-4" />
         ) : kind === "video" ? (
           <Video className="size-4" />
+        ) : kind === "pdf" ? (
+          <FileText className="size-4" />
         ) : (
           <Music className="size-4" />
         )}

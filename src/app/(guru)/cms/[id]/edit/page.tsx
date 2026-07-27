@@ -17,7 +17,7 @@ export default async function EditCeritaPage({
   const { data: story } = await supabase
     .from("stories")
     .select(
-      "title, synopsis, region_origin, character_theme, difficulty, cover_image_url",
+      "title, synopsis, region_origin, character_theme, difficulty, cover_image_url, module_pdf_url",
     )
     .eq("id", storyId)
     .maybeSingle();
@@ -44,6 +44,7 @@ export default async function EditCeritaPage({
           character_theme: story.character_theme ?? "",
           difficulty: story.difficulty,
           cover_image_url: story.cover_image_url ?? "",
+          module_pdf_url: story.module_pdf_url ?? "",
         }}
       />
     </div>
