@@ -148,7 +148,8 @@ export function KetikCepatGame() {
           autoCapitalize="characters"
           spellCheck={false}
           placeholder="Ketik di sini…"
-          className="clay-inset mt-5 w-full bg-white py-3 text-center font-mono text-xl font-black uppercase tracking-widest text-clay-ink outline-none focus:ring-2 focus:ring-clay-rose/50"
+          aria-label="Ketik kata yang ditampilkan"
+          className="clay-inset mt-5 w-full bg-white py-3 text-center font-mono text-xl font-black uppercase tracking-widest text-clay-ink outline-none focus-visible:ring-2 focus-visible:ring-clay-rose/50"
         />
       </div>
 

@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import dynamic from "next/dynamic";
 
 import {
   storyPageSchema,
@@ -19,7 +20,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MediaUploader } from "@/components/guru/media-uploader";
-import { RichTextEditor } from "@/components/guru/rich-text-editor";
+
+const RichTextEditor = dynamic(
+  () => import("@/components/guru/rich-text-editor").then((m) => m.RichTextEditor),
+  { ssr: false, loading: () => <div className="clay-inset min-h-[200px] bg-white p-4 text-sm text-clay-ink/40">Memuat editor…</div> }
+);
 
 export function PageForm({
   storyId,

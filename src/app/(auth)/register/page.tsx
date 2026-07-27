@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useId } from "react";
 import Link from "next/link";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -236,6 +236,7 @@ function GuruRegisterForm({
   });
 
   const password = useWatch({ control: form.control, name: "password" });
+  const termsId = useId();
 
   async function onSubmit(values: RegisterGuruValues) {
     const result = await registerGuru(values);
@@ -336,10 +337,17 @@ function GuruRegisterForm({
             <FormItem>
               <div className="flex items-start gap-3">
                 <button
+                  id={termsId}
                   type="button"
                   role="checkbox"
                   aria-checked={field.value}
                   onClick={() => field.onChange(!field.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === " " || e.key === "Enter") {
+                      e.preventDefault();
+                      field.onChange(!field.value);
+                    }
+                  }}
                   className={cn(
                     "clay-sm mt-0.5 grid size-7 shrink-0 place-items-center transition",
                     field.value
@@ -350,7 +358,7 @@ function GuruRegisterForm({
                   <Check className="size-4" strokeWidth={3} />
                 </button>
                 <label
-                  onClick={() => field.onChange(!field.value)}
+                  htmlFor={termsId}
                   className="cursor-pointer text-sm font-semibold text-clay-ink/80"
                 >
                   Saya menyetujui{" "}

@@ -3,8 +3,8 @@ import Image from "next/image";
 import { Search, Users, BookOpen, Home, Gamepad2, Trophy, Award } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
-import { getMyNotifications } from "@/lib/notifications";
 import type { CurrentUser } from "@/lib/auth";
+import type { NotificationItem } from "@/components/notifications/notification-bell";
 
 const NAV_LINKS = [
   { href: "/beranda", label: "Beranda", icon: Home },
@@ -15,9 +15,14 @@ const NAV_LINKS = [
   { href: "/gabung-kelas", label: "Gabung Kelas", icon: Users },
 ] as const;
 
-export async function SiswaNavbar({ user }: { user: CurrentUser }) {
+export async function SiswaNavbar({
+  user,
+  notifications,
+}: {
+  user: CurrentUser;
+  notifications: NotificationItem[];
+}) {
   const initial = user.name.charAt(0).toUpperCase();
-  const notifications = await getMyNotifications();
 
   return (
     <header className="sticky top-0 z-50 bg-clay-cream/85 backdrop-blur-md">
@@ -38,7 +43,8 @@ export async function SiswaNavbar({ user }: { user: CurrentUser }) {
             <input
               type="search"
               placeholder="Cari cerita atau game…"
-              className="clay-inset w-full bg-white py-2.5 pl-12 pr-4 font-mono text-sm font-medium text-clay-ink outline-none placeholder:text-clay-ink/40 focus:ring-2 focus:ring-clay-rose/50"
+              aria-label="Cari cerita atau game"
+              className="clay-inset w-full bg-white py-2.5 pl-12 pr-4 font-mono text-sm font-medium text-clay-ink outline-none placeholder:text-clay-ink/40 focus-visible:ring-2 focus-visible:ring-clay-rose/50"
             />
           </div>
 
@@ -69,7 +75,7 @@ export async function SiswaNavbar({ user }: { user: CurrentUser }) {
         </div>
 
         {/* Baris navigasi: dapat di-scroll horizontal di layar kecil */}
-        <nav className="-mx-4 mt-2 flex items-center gap-1 overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden">
+        <nav aria-label="Navigasi siswa" className="-mx-4 mt-2 flex items-center gap-1 overflow-x-auto px-4 [scrollbar-width:none] md:mx-0 md:px-0 [&::-webkit-scrollbar]:hidden">
           {NAV_LINKS.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}

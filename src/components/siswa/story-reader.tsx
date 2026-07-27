@@ -131,6 +131,7 @@ export function StoryReader({
                     src={page.illustration_url}
                     alt={`Ilustrasi halaman ${page.page_number}`}
                     fill
+                    sizes="100vw"
                     className="object-cover"
                   />
                 </motion.div>

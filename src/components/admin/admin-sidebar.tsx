@@ -25,7 +25,7 @@ export function AdminSidebar({ user }: { user: CurrentUser }) {
   const initial = user.name.charAt(0).toUpperCase();
 
   const navLinks = (
-    <nav className="flex flex-col gap-1.5">
+    <nav aria-label="Navigasi admin" className="flex flex-col gap-1.5">
       {NAV.map(({ href, label, icon: Icon }) => {
         const active = isActive(pathname, href);
         return (

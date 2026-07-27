@@ -81,7 +81,7 @@ export function MediaUploader({
         <div className="clay-inset relative flex items-center gap-3 bg-clay-cream p-3">
           {kind === "image" ? (
             <span className="clay-sm relative size-16 shrink-0 overflow-hidden bg-white">
-              <Image src={value} alt={label} fill className="object-cover" />
+              <Image src={value} alt={label} fill sizes="(max-width: 640px) 80vw, 400px" className="object-cover" />
             </span>
           ) : kind === "video" ? (
             <video

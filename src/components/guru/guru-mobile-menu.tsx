@@ -39,7 +39,7 @@ export function GuruMobileMenu() {
             onClick={() => setOpen(false)}
             className="fixed inset-0 z-40 cursor-default bg-clay-ink/10"
           />
-          <nav className="clay fixed inset-x-4 top-[4.75rem] z-50 flex flex-col gap-1 bg-white p-3">
+          <nav aria-label="Navigasi guru" className="clay fixed inset-x-4 top-[4.75rem] z-50 flex flex-col gap-1 bg-white p-3">
             {LINKS.map((l) => (
               <Link
                 key={l.href}

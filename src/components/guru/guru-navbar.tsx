@@ -4,12 +4,17 @@ import { Search } from "lucide-react";
 import { LogoutButton } from "@/components/auth/logout-button";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 import { GuruMobileMenu } from "@/components/guru/guru-mobile-menu";
-import { getMyNotifications } from "@/lib/notifications";
 import type { CurrentUser } from "@/lib/auth";
+import type { NotificationItem } from "@/components/notifications/notification-bell";
 
-export async function GuruNavbar({ user }: { user: CurrentUser }) {
+export async function GuruNavbar({
+  user,
+  notifications,
+}: {
+  user: CurrentUser;
+  notifications: NotificationItem[];
+}) {
   const initial = user.name.charAt(0).toUpperCase();
-  const notifications = await getMyNotifications();
 
   return (
     <header className="sticky top-0 z-50 bg-clay-cream/85 backdrop-blur-md">
@@ -25,7 +30,7 @@ export async function GuruNavbar({ user }: { user: CurrentUser }) {
           </span>
         </Link>
 
-        <nav className="ml-4 hidden items-center gap-1 md:flex">
+        <nav aria-label="Navigasi guru" className="ml-4 hidden items-center gap-1 md:flex">
           <Link
             href="/dashboard"
             className="rounded-xl px-3 py-2 text-sm font-bold text-clay-ink/70 transition hover:bg-white hover:text-clay-ink"
