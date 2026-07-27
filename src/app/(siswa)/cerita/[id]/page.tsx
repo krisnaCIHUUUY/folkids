@@ -20,7 +20,7 @@ export default async function CeritaPage({
 
   const { data: story } = await supabase
     .from("stories")
-    .select("id, title")
+    .select("id, title, module_pdf_url")
     .eq("id", storyId)
     .maybeSingle();
 
@@ -65,9 +65,11 @@ export default async function CeritaPage({
 
       <StoryReaderWrapper
         storyId={storyId}
+        storyTitle={story.title}
         pages={pages}
         quizzes={quizzes}
         initialPageNumber={initialPageNumber}
+        modulePdfUrl={story.module_pdf_url}
       />
     </div>
   );

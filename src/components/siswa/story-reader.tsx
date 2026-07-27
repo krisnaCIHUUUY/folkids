@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight, Sparkles, ListChecks, CheckCircle2 } from "l
 import { upsertReadingProgress } from "@/lib/actions/reading";
 import { ReadAloudText } from "@/components/siswa/read-aloud";
 import { VideoPlayer } from "@/components/ui/video-player";
+import { PdfViewer } from "@/components/siswa/pdf-viewer";
 import type { Json } from "@/types/database";
 
 export type ReaderPage = {
@@ -48,14 +49,18 @@ export type ReaderQuiz = { id: number; title: string; done: boolean };
 
 export function StoryReader({
   storyId,
+  storyTitle,
   pages,
   quizzes,
   initialPageNumber,
+  modulePdfUrl,
 }: {
   storyId: number;
+  storyTitle: string;
   pages: ReaderPage[];
   quizzes: ReaderQuiz[];
   initialPageNumber: number;
+  modulePdfUrl?: string | null;
 }) {
   const startIndex = Math.max(
     0,
@@ -91,6 +96,10 @@ export function StoryReader({
 
   return (
     <div className="mt-6">
+      {modulePdfUrl && (
+        <PdfViewer url={modulePdfUrl} title={storyTitle} />
+      )}
+
       {/* Progress halaman */}
       <div className="flex items-center justify-between font-mono text-xs font-bold text-clay-ink/55">
         <span>

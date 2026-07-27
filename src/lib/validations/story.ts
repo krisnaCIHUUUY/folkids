@@ -8,6 +8,7 @@ export const storySchema = z.object({
   character_theme: z.string().max(100).optional().or(z.literal("")),
   difficulty: z.enum(["mudah", "sedang", "sulit"]),
   cover_image_url: z.string().url("URL cover tidak valid").optional().or(z.literal("")),
+  module_pdf_url: z.string().url("URL PDF tidak valid").optional().or(z.literal("")),
 });
 export type StoryFormValues = z.infer<typeof storySchema>;
 

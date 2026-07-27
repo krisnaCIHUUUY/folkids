@@ -45,6 +45,7 @@ export async function createStory(
       character_theme: emptyToNull(parsed.data.character_theme),
       difficulty: parsed.data.difficulty,
       cover_image_url: emptyToNull(parsed.data.cover_image_url),
+      module_pdf_url: emptyToNull(parsed.data.module_pdf_url),
       created_by: user.id,
     })
     .select("id")
@@ -80,6 +81,7 @@ export async function updateStory(
       character_theme: emptyToNull(parsed.data.character_theme),
       difficulty: parsed.data.difficulty,
       cover_image_url: emptyToNull(parsed.data.cover_image_url),
+      module_pdf_url: emptyToNull(parsed.data.module_pdf_url),
     })
     .eq("id", id);
 

@@ -18,18 +18,20 @@ export function publicStorageUrl(bucket: string, path: string): string {
   return `${base.replace(/\/+$/, "")}/storage/v1/object/public/${bucket}/${path}`;
 }
 
-type MediaKind = "image" | "audio" | "video";
+type MediaKind = "image" | "audio" | "video" | "pdf";
 
 const LIMITS: Record<MediaKind, { maxBytes: number; label: string }> = {
   image: { maxBytes: 10 * 1024 * 1024, label: "10MB" },
   audio: { maxBytes: 50 * 1024 * 1024, label: "50MB" },
   video: { maxBytes: 100 * 1024 * 1024, label: "100MB" },
+  pdf: { maxBytes: 20 * 1024 * 1024, label: "20MB" },
 };
 
 const PREFIX: Record<MediaKind, string> = {
   image: "image/",
   audio: "audio/",
   video: "video/",
+  pdf: "application/",
 };
 
 // Video dibatasi ke format yang didukung browser secara luas.
@@ -40,6 +42,10 @@ export function validateMedia(file: File, kind: MediaKind): string | null {
   if (kind === "video") {
     if (!VIDEO_MIME.includes(file.type)) {
       return "File harus berupa video MP4 atau WebM";
+    }
+  } else if (kind === "pdf") {
+    if (file.type !== "application/pdf") {
+      return "File harus berupa PDF";
     }
   } else if (!file.type.startsWith(PREFIX[kind])) {
     return kind === "image" ? "File harus berupa gambar" : "File harus berupa audio";

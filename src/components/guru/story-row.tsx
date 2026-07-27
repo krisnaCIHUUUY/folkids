@@ -4,7 +4,7 @@ import { useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { BookOpen, FileStack, ListChecks, Pencil, Trash2, MapPin } from "lucide-react";
+import { BookOpen, FileStack, ListChecks, Pencil, Trash2, MapPin, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { deleteStory } from "@/lib/actions/stories";
 import { PublishToggle } from "@/components/guru/publish-toggle";
@@ -32,6 +32,7 @@ export type StoryRowData = {
   region_origin: string | null;
   difficulty: string;
   is_published: boolean;
+  module_pdf_url: string | null;
   updated_at: string;
 };
 
@@ -84,6 +85,11 @@ export function StoryRow({ data }: { data: StoryRowData }) {
             </span>
           )}
           <span>{DIFFICULTY_LABEL[data.difficulty] ?? data.difficulty}</span>
+          {data.module_pdf_url && (
+            <span className="inline-flex items-center gap-1.5 text-clay-coral">
+              <FileText className="size-3.5" /> Ada modul PDF
+            </span>
+          )}
           <span>Diperbarui {updated}</span>
         </div>
       </div>
