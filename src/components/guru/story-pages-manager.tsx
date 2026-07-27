@@ -111,6 +111,7 @@ export function StoryPagesManager({
                     src={page.illustration_url}
                     alt={`Halaman ${page.page_number}`}
                     fill
+                    sizes="64px"
                     className="object-cover"
                   />
                 ) : (

@@ -65,6 +65,7 @@ export function StoryRow({ data }: { data: StoryRowData }) {
             src={data.cover_image_url}
             alt={data.title}
             fill
+            sizes="(max-width: 640px) 100vw, 80px"
             className="object-cover"
           />
         ) : (

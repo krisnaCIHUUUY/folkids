@@ -18,9 +18,12 @@ import {
 import { StoryPreviewButton } from "@/components/landing/story-preview-button";
 import { LANDING_VIDEO_BUCKET, publicStorageUrl } from "@/lib/storage";
 
+// ISR: Landing page is entirely static content — revalidate every hour.
+export const revalidate = 3600;
+
 export default function LandingPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden bg-clay-cream font-sans text-clay-ink">
+    <main id="main-content" className="relative min-h-screen overflow-hidden bg-clay-cream font-sans text-clay-ink">
       <BackdropBlobs />
       <SiteNav />
       <Hero />
@@ -81,7 +84,7 @@ function SiteNav() {
         />
       </Link>
 
-      <nav className="hidden items-center gap-8 text-sm font-bold md:flex">
+      <nav aria-label="Navigasi utama" className="hidden items-center gap-8 text-sm font-bold md:flex">
         <a href="#cerita" className="hover:text-clay-rose">Perpustakaan</a>
         <a href="#progres" className="hover:text-clay-rose">Progres</a>
         <a href="#cerita-mereka" className="hover:text-clay-rose">Cerita Mereka</a>
@@ -420,7 +423,7 @@ function StoryCard({ story }: { story: Story }) {
       </div>
 
       <div className="mt-5 flex items-start justify-between gap-3">
-        <h3 className="text-lg font-black leading-tight">{story.title}</h3>
+        <h2 className="text-lg font-black leading-tight">{story.title}</h2>
         <StoryPreviewButton
           title={story.title}
           accent={story.accent}

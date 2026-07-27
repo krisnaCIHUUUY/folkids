@@ -136,6 +136,7 @@ export function QuizRunner({
             {q.question_type === "isian" && (
               <Input
                 placeholder="Tulis jawabanmu"
+                aria-label="Tulis jawabanmu"
                 value={(answers[q.id] as string) ?? ""}
                 onChange={(e) => setSingle(q.id, e.target.value)}
               />

@@ -3,11 +3,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
-import {
-  StoryReader,
-  type ReaderPage,
-  type ReaderQuiz,
-} from "@/components/siswa/story-reader";
+import { StoryReaderWrapper } from "@/components/siswa/story-reader-wrapper";
+import type { ReaderPage, ReaderQuiz } from "@/components/siswa/story-reader";
 
 export default async function CeritaPage({
   params,
@@ -66,7 +63,7 @@ export default async function CeritaPage({
         {story.title}
       </h1>
 
-      <StoryReader
+      <StoryReaderWrapper
         storyId={storyId}
         pages={pages}
         quizzes={quizzes}

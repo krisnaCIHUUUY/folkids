@@ -25,7 +25,7 @@ export function LibraryCard({ story }: { story: LibraryStory }) {
     <article className="clay-sm group flex flex-col overflow-hidden bg-white p-3 transition hover:[transform:translateY(-4px)]">
       <div className="clay-inset relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-clay-mint to-clay-sky">
         {story.coverUrl ? (
-          <Image src={story.coverUrl} alt={story.title} fill className="object-cover" />
+          <Image src={story.coverUrl} alt={story.title} fill sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw" className="object-cover" />
         ) : (
           <span className="absolute inset-0 grid place-items-center text-4xl opacity-80">
             🎭
