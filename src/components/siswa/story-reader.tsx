@@ -22,9 +22,6 @@ export type ReaderPage = {
   animation_data: Json | null;
 };
 
-// State awal animasi entrance halaman. Default terasa seperti wayang masuk
-// panggung; bila animation_data terisi (forward-compat, belum ada editor guru)
-// nilai-nilai berikut dipakai sebagai override.
 type AnimState = { x: number; y: number; rotate: number; scale: number };
 const DEFAULT_ANIM: AnimState = { x: 28, y: 0, rotate: 0, scale: 0.98 };
 
@@ -46,6 +43,51 @@ function parseAnimation(data: Json | null): AnimState {
 }
 
 export type ReaderQuiz = { id: number; title: string; done: boolean };
+
+function QuizSection({ quizzes }: { quizzes: ReaderQuiz[] }) {
+  if (quizzes.length === 0) {
+    return (
+      <div className="clay mt-6 bg-white p-5">
+        <p className="font-serif text-lg font-bold text-clay-ink">
+          Ayo uji pemahamanmu!
+        </p>
+        <p className="mt-2 text-sm font-semibold text-clay-ink/60">
+          Kuis untuk cerita ini belum tersedia.
+        </p>
+      </div>
+    );
+  }
+  return (
+    <div className="clay mt-6 bg-white p-5">
+      <p className="font-serif text-lg font-bold text-clay-ink">
+        Ayo uji pemahamanmu!
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {quizzes.map((q) => (
+          <Link
+            key={q.id}
+            href={`/kuis/${q.id}`}
+            className={`clay-sm inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-black transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)] ${
+              q.done
+                ? "bg-clay-lavender text-clay-ink"
+                : "bg-clay-mint text-white"
+            }`}
+          >
+            {q.done ? (
+              <>
+                <CheckCircle2 className="size-4" /> {q.title} · Lihat Hasil
+              </>
+            ) : (
+              <>
+                <ListChecks className="size-4" /> {q.title}
+              </>
+            )}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function StoryReader({
   storyId,
@@ -86,6 +128,15 @@ export function StoryReader({
     save(pages[next].page_number, next === total - 1);
   }
 
+  if (modulePdfUrl) {
+    return (
+      <div className="mt-6">
+        <PdfViewer url={modulePdfUrl} title={storyTitle} />
+        <QuizSection quizzes={quizzes} />
+      </div>
+    );
+  }
+
   if (total === 0) {
     return (
       <div className="clay-inset mt-6 bg-white p-8 text-center font-semibold text-clay-ink/60">
@@ -96,10 +147,6 @@ export function StoryReader({
 
   return (
     <div className="mt-6">
-      {modulePdfUrl && (
-        <PdfViewer url={modulePdfUrl} title={storyTitle} />
-      )}
-
       {/* Progress halaman */}
       <div className="flex items-center justify-between font-mono text-xs font-bold text-clay-ink/55">
         <span>
@@ -202,37 +249,7 @@ export function StoryReader({
         )}
       </div>
 
-      {/* Kuis tersedia di halaman terakhir */}
-      {isLast && quizzes.length > 0 && (
-        <div className="clay mt-6 bg-white p-5">
-          <p className="font-serif text-lg font-bold text-clay-ink">
-            Ayo uji pemahamanmu!
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {quizzes.map((q) => (
-              <Link
-                key={q.id}
-                href={`/kuis/${q.id}`}
-                className={`clay-sm inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-black transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)] ${
-                  q.done
-                    ? "bg-clay-lavender text-clay-ink"
-                    : "bg-clay-mint text-white"
-                }`}
-              >
-                {q.done ? (
-                  <>
-                    <CheckCircle2 className="size-4" /> {q.title} · Lihat Hasil
-                  </>
-                ) : (
-                  <>
-                    <ListChecks className="size-4" /> {q.title}
-                  </>
-                )}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
+      {isLast && <QuizSection quizzes={quizzes} />}
     </div>
   );
 }

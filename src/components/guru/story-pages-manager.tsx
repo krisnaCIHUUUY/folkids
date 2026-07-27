@@ -11,6 +11,7 @@ import {
   Trash2,
   ImageIcon,
   Music,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
 import { deletePage, movePage } from "@/lib/actions/stories";
@@ -36,9 +37,11 @@ export type PageData = {
 export function StoryPagesManager({
   storyId,
   pages,
+  modulePdfUrl,
 }: {
   storyId: number;
   pages: PageData[];
+  modulePdfUrl?: string | null;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -87,6 +90,25 @@ export function StoryPagesManager({
       >
         <Plus className="size-4" /> Tambah Halaman
       </button>
+
+      {modulePdfUrl && (
+        <div className="clay-sm mt-4 flex items-center gap-3 bg-clay-sun/10 p-4">
+          <span className="clay-sm grid size-10 shrink-0 place-items-center bg-clay-coral text-white">
+            <FileText className="size-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-bold text-clay-ink">Modul PDF sudah diunggah</p>
+            <a
+              href={modulePdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-0.5 inline-flex items-center gap-1 font-mono text-xs font-bold text-clay-blue hover:underline"
+            >
+              Lihat PDF di tab baru
+            </a>
+          </div>
+        </div>
+      )}
 
       {pages.length === 0 ? (
         <div className="clay-inset mt-5 bg-clay-cream p-8 text-center">

@@ -17,7 +17,7 @@ export default async function KelolaHalamanPage({
 
   const { data: story } = await supabase
     .from("stories")
-    .select("id, title")
+    .select("id, title, module_pdf_url")
     .eq("id", storyId)
     .maybeSingle();
 
@@ -42,7 +42,7 @@ export default async function KelolaHalamanPage({
       </h1>
       <p className="mt-1 font-semibold text-clay-ink/60">{story.title}</p>
 
-      <StoryPagesManager storyId={storyId} pages={pages ?? []} />
+      <StoryPagesManager storyId={storyId} pages={pages ?? []} modulePdfUrl={story.module_pdf_url} />
     </div>
   );
 }
