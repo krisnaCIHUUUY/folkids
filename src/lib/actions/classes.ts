@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { seedDefaultStories } from "@/lib/seed/default-stories";
 import { getCurrentUser } from "@/lib/auth";
 import { classSchema, type ClassFormValues } from "@/lib/validations/class";
 
@@ -41,8 +42,11 @@ export async function createClass(
     return { error: "Gagal membuat kelas. Coba lagi." };
   }
 
+  await seedDefaultStories(supabase, user.id, data.id);
+
   revalidatePath("/kelas");
   revalidatePath("/dashboard");
+  revalidatePath(`/kelas/${data.id}`);
   return { id: data.id };
 }
 

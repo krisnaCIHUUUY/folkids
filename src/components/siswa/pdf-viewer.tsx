@@ -6,7 +6,10 @@ import { Maximize2, Minimize2 } from "lucide-react";
 export function PdfViewer({ url, title }: { url: string; title: string }) {
   const [expanded, setExpanded] = useState(false);
 
-  const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
+  const isRelative = url.startsWith("/");
+  const viewerUrl = isRelative
+    ? url
+    : `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
 
   return (
     <div
