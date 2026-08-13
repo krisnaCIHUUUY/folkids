@@ -17,7 +17,7 @@ export const DEFAULT_STORIES: DefaultStory[] = [
     region_origin: "Indonesia",
     character_theme: "Sastra Anak",
     difficulty: "sedang",
-    module_pdf_url: "https://gghdnrnjlyvmmfosierc.supabase.co/storage/v1/object/public/story-media/default-stories/Salinan_dari_EDULASKAR_KELOMPOK_2_SASTRA_ANAK_1_.pdf",
+    module_pdf_url: "https://gghdnrnjlyvmmfosierc.supabase.co/storage/v1/object/public/story-media/default-stories/Salinan%20dari%20EDULASKAR%20KELOMPOK%202%20SASTRA%20ANAK%281%29_compressed%20%281%29.pdf",
   },
   {
     title: "Jaranan Reog",
