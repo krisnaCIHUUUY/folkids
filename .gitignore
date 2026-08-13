@@ -42,3 +42,6 @@ next-env.d.ts
 
 # claude code local skills (tooling personal, bukan bagian repo)
 .claude/skills/
+
+# default story PDFs (too large for git, upload to Supabase Storage for production)
+/public/cerita/

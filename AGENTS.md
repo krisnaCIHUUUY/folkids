@@ -33,6 +33,8 @@ No test suite exists. Verify changes with `npm run build` (catches type errors +
 
 **Storage**: `story-media` bucket (public, 100MB). Upload via browser client in `src/components/guru/media-uploader.tsx`.
 
+**Default stories**: Saat guru membuat kelas baru, 3 cerita default otomatis di-seed (dari `public/cerita/`). Story di-reuse per guru (cek by `module_pdf_url`). Lihat `src/lib/seed/default-stories.ts`.
+
 ## Key Patterns
 
 **Supabase clients** (3 variants):
@@ -53,7 +55,7 @@ No test suite exists. Verify changes with `npm run build` (catches type errors +
 - **Middleware**: Don't add logic between `createServerClient()` and `getUser()` in `src/lib/supabase/middleware.ts` — breaks session refresh.
 - **Cookies**: Server Components can't set cookies; rely on `proxy.ts` for session refresh.
 - **Service role key**: `SUPABASE_SERVICE_ROLE_KEY` bypasses RLS — never import in client code or expose to browser.
-- **PDF embedding**: Supabase Storage blocks iframe embedding. Use Google Docs Viewer URL (`docs.google.com/gview?url=...&embedded=true`) instead of direct `<iframe src>`.
+- **PDF embedding**: Supabase Storage blocks iframe embedding — gunakan Google Docs Viewer URL (`docs.google.com/gview?url=...&embedded=true`). Untuk file di `public/cerita/`, PdfViewer embed langsung via `<iframe src>` (same-origin, tanpa Google Viewer).
 - **Animations**: Respects `prefers-reduced-motion`. Use `useReducedMotion()` from framer-motion for conditional animation.
 - **Tailwind v4**: Uses `@theme` directive (not `tailwind.config`). Custom colors in `globals.css`.
 - **Zod v4**: Import from `"zod"` (not `"zod/v4"`). Use `.optional().or(z.literal(""))` for optional string fields.
