@@ -16,6 +16,7 @@ export type LibraryStory = {
   coverUrl: string | null;
   progress: number; // 0-100
   completed: boolean;
+  modulePdfUrl?: string | null;
 };
 
 export function LibraryCard({ story }: { story: LibraryStory }) {
@@ -70,7 +71,9 @@ export function LibraryCard({ story }: { story: LibraryStory }) {
         )}
 
         <Link
-          href={`/cerita/${story.id}`}
+          href={story.id < 0 && story.modulePdfUrl
+            ? `/cerita/default/${Math.abs(story.id) - 1}`
+            : `/cerita/${story.id}`}
           className="clay-sm mt-3 inline-flex w-full items-center justify-center gap-1.5 bg-clay-rose py-2.5 text-sm font-black text-white transition hover:[transform:translateY(-2px)] active:[transform:translateY(2px)]"
         >
           <BookOpen className="size-4" />

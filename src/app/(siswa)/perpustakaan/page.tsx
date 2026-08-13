@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "@/lib/auth";
 import type { LibraryStory } from "@/components/siswa/library-card";
 import { LibraryBrowser } from "@/components/siswa/library-browser";
+import { DEFAULT_STORIES } from "@/lib/seed/default-stories";
 
 export default async function PerpustakaanPage() {
   const user = await getCurrentUser();
@@ -12,7 +13,7 @@ export default async function PerpustakaanPage() {
   const [storiesRes, pagesRes, progressRes] = await Promise.all([
     supabase
       .from("stories")
-      .select("id, title, region_origin, difficulty, cover_image_url")
+      .select("id, title, region_origin, difficulty, cover_image_url, module_pdf_url")
       .order("created_at", { ascending: false }),
     supabase.from("story_pages").select("story_id"),
     supabase
@@ -31,25 +32,43 @@ export default async function PerpustakaanPage() {
     (progressRes.data ?? []).map((r) => [r.story_id, r]),
   );
 
-  const list: LibraryStory[] = (storiesRes.data ?? []).map((s) => {
-    const prog = progressByStory.get(s.id);
-    const total = pageCount.get(s.id) ?? 0;
-    const percent =
-      prog?.is_completed
-        ? 100
-        : prog && total > 0
-          ? Math.min(100, Math.round((prog.last_page_read / total) * 100))
-          : 0;
-    return {
-      id: s.id,
-      title: s.title,
-      region: s.region_origin,
-      difficulty: s.difficulty,
-      coverUrl: s.cover_image_url,
-      progress: percent,
-      completed: prog?.is_completed ?? false,
-    };
-  });
+  // Gabungkan stories dari DB dengan default stories (deduping by module_pdf_url)
+  const dbStories = storiesRes.data ?? [];
+  const dbStoryUrls = new Set(dbStories.map((s) => s.module_pdf_url).filter(Boolean));
+  const extraDefaults = DEFAULT_STORIES.filter((d) => !dbStoryUrls.has(d.module_pdf_url));
+
+  const list: LibraryStory[] = [
+    ...dbStories.map((s) => {
+      const prog = progressByStory.get(s.id);
+      const total = pageCount.get(s.id) ?? 0;
+      const percent =
+        prog?.is_completed
+          ? 100
+          : prog && total > 0
+            ? Math.min(100, Math.round((prog.last_page_read / total) * 100))
+            : 0;
+      return {
+        id: s.id,
+        title: s.title,
+        region: s.region_origin,
+        difficulty: s.difficulty,
+        coverUrl: s.cover_image_url,
+        progress: percent,
+        completed: prog?.is_completed ?? false,
+        modulePdfUrl: s.module_pdf_url,
+      };
+    }),
+    ...extraDefaults.map((d, i) => ({
+      id: -1 - i,
+      title: d.title,
+      region: d.region_origin,
+      difficulty: d.difficulty,
+      coverUrl: null,
+      progress: 0,
+      completed: false,
+      modulePdfUrl: d.module_pdf_url,
+    })),
+  ];
 
   return (
     <div className="pt-6">
