@@ -17,7 +17,7 @@ export const DEFAULT_STORIES: DefaultStory[] = [
     region_origin: "Indonesia",
     character_theme: "Sastra Anak",
     difficulty: "sedang",
-    module_pdf_url: "/cerita/Salinan%20dari%20EDULASKAR%20KELOMPOK%202%20SASTRA%20ANAK(1).pdf",
+    module_pdf_url: "https://gghdnrnjlyvmmfosierc.supabase.co/storage/v1/object/public/story-media/default-stories/Salinan_dari_EDULASKAR_KELOMPOK_2_SASTRA_ANAK_1_.pdf",
   },
   {
     title: "Jaranan Reog",
@@ -25,7 +25,7 @@ export const DEFAULT_STORIES: DefaultStory[] = [
     region_origin: "Jawa Timur",
     character_theme: "Kesenian Tradisional",
     difficulty: "sedang",
-    module_pdf_url: "/cerita/Salinan%20dari%20Krem%20Cokelat%20Ilustratif%20Pertunjukan%20Kesenian%20Tradisional%20Jawa%20Jaranan%20Reog%20Flyer(1).pdf",
+    module_pdf_url: "https://gghdnrnjlyvmmfosierc.supabase.co/storage/v1/object/public/story-media/default-stories/Salinan_dari_Krem_Cokelat_Ilustratif_Pertunjukan_Kesenian_Tradisional_Jawa_Jaranan_Reog_Flyer_1_.pdf",
   },
   {
     title: "Tradisi Bulusan Kudus",
@@ -33,7 +33,7 @@ export const DEFAULT_STORIES: DefaultStory[] = [
     region_origin: "Kudus, Jawa Tengah",
     character_theme: "Tradisi Lokal",
     difficulty: "sedang",
-    module_pdf_url: "/cerita/Salinan%20dari%20Tradisi%20BULUSAN%20Kudus(1).pdf",
+    module_pdf_url: "https://gghdnrnjlyvmmfosierc.supabase.co/storage/v1/object/public/story-media/default-stories/Salinan_dari_Tradisi_BULUSAN_Kudus_1_.pdf",
   },
 ];
 
