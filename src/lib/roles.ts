@@ -28,7 +28,8 @@ export function isPublicPath(pathname: string): boolean {
     pathname === "/" ||
     pathname === "/login" ||
     pathname === "/register" ||
-    pathname === "/lupa-password"
+    pathname === "/lupa-password" ||
+    pathname === "/reset-password"
   ) {
     return true;
   }
